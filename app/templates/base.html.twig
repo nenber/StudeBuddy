@@ -3,10 +3,26 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Logo</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="{{ path('default_index') }}">Accueil</a></li>
+                    <li><a href="{{ path('default_say_my_name', {'name': 'paul'}) }}">SayMyName</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
