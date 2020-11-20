@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition du livre {{ book.name }}{% endblock %}
+
+{% block body %}
+    <h1>Edition du livre {{ book.name }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_rest(form) }}
+        <button type="submit" class="btn">Editer</button>
+    {{ form_end(form) }}
+{% endblock %}
