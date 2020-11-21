@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 x-cache-from:
   - &app-cache-from
     cache_from:
@@ -9,7 +9,6 @@ x-cache-from:
       - ${NODE_IMAGE:-iw/node}
 
 services:
-
   db:
     image: postgres:9.6-alpine
     environment:
@@ -19,7 +18,7 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data:rw
     ports:
-      - '5432:5432'
+      - "5432:5432"
 
   php:
     image: ${PHP_IMAGE:-iw/php}
