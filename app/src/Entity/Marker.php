@@ -42,6 +42,11 @@ class Marker
      */
     private $adress;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $marker_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class Marker
     public function setAdress(?string $adress): self
     {
         $this->adress = $adress;
+
+        return $this;
+    }
+
+    public function getMarkerId(): ?int
+    {
+        return $this->marker_id;
+    }
+
+    public function setMarkerId(?int $marker_id): self
+    {
+        $this->marker_id = $marker_id;
 
         return $this;
     }

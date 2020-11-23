@@ -37,6 +37,11 @@ class Evenement
      */
     private $event_name;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $evenement_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Evenement
     public function setEventName(?string $event_name): self
     {
         $this->event_name = $event_name;
+
+        return $this;
+    }
+
+    public function getEvenementId(): ?int
+    {
+        return $this->evenement_id;
+    }
+
+    public function setEvenementId(?int $evenement_id): self
+    {
+        $this->evenement_id = $evenement_id;
 
         return $this;
     }
