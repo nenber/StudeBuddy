@@ -17,10 +17,6 @@ class ThreadUser
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $thread_user_id;
 
     /**
      * @ORM\Column(type="integer")

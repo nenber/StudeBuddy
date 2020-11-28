@@ -35,6 +35,51 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $first_name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $last_name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $phone_number;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $school;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_connected;
+
+    /**
+     * @ORM\Column(type="datetimetz")
+     */
+    private $created_at;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_parrain;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $spoken_languge;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $language_to_learn;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -111,5 +156,113 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->first_name;
+    }
+
+    public function setFirstName(string $first_name): self
+    {
+        $this->first_name = $first_name;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->last_name;
+    }
+
+    public function setLastName(string $last_name): self
+    {
+        $this->last_name = $last_name;
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phone_number;
+    }
+
+    public function setPhoneNumber(string $phone_number): self
+    {
+        $this->phone_number = $phone_number;
+
+        return $this;
+    }
+
+    public function getSchool(): ?string
+    {
+        return $this->school;
+    }
+
+    public function setSchool(string $school): self
+    {
+        $this->school = $school;
+
+        return $this;
+    }
+
+    public function getIsConnected(): ?bool
+    {
+        return $this->is_connected;
+    }
+
+    public function setIsConnected(bool $is_connected): self
+    {
+        $this->is_connected = $is_connected;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getIsParrain(): ?bool
+    {
+        return $this->is_parrain;
+    }
+
+    public function setIsParrain(?bool $is_parrain): self
+    {
+        $this->is_parrain = $is_parrain;
+
+        return $this;
+    }
+
+    public function getSpoken�Languge(): ?string
+    {
+        return $this->spoken�_languge;
+    }
+
+    public function setSpoken�Languge(string $spoken�_languge): self
+    {
+        $this->spoken�_languge = $spoken�_languge;
+
+        return $this;
+    }
+
+    public function getLanguageToLearn(): ?string
+    {
+        return $this->language_to_learn;
+    }
+
+    public function setLanguageToLearn(?string $language_to_learn): self
+    {
+        $this->language_to_learn = $language_to_learn;
+
+        return $this;
     }
 }
