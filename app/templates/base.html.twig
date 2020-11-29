@@ -222,26 +222,31 @@
 				border-radius: 0 100% 0 0;
 				z-index = -10;
 			}
+
 			.register {
-				padding: 10% 10% 0;
+				padding: 5% 10% 0;
 				display: flex;
-				justify-content: space-evenly;
+				justify-content: space-between;
 				align-items: flex-start;
 				flex-direction: row;
 			}
+
 			.container-button {
 				display: flex;
 				justify-content: center;
 				align-items: flex-end;
 				align-content: center;
 			}
+
 			.already_sign {
 				text-align: right;
 			}
+
 			.p-password {
 				font-size: 14px;
 				color: #E03030;
 			}
+
 			@media(max-width: 575.98px) {
 				.register {
 					padding: 25% 0 0;
@@ -258,8 +263,8 @@
 				<img src="{{ asset('/img/logo.png') }}" alt="logo studandbuddy" width="180px"/>
 			</a>
 			{# <button class="navbar-toggler" type="button" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							<img [src]="openButton" width="20px"/>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						</button> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<img [src]="openButton" width="20px"/>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											</button> #}
 
 			<div class="collapse navbar-collapse" [ngClass]="{ show: navbarOpen }" id="navbarSupportedContent">
 				<ul class="navbar-nav ml-auto">
