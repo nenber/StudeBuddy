@@ -123,7 +123,7 @@
 			}
 			#login .block-blue {
 				background: #97CCEF;
-				height: 100vh;
+				height: auto;
 				overflow: hidden;
 
 			}
@@ -192,8 +192,8 @@
 				<img src="{{ asset('/img/logo.png') }}" alt="logo studandbuddy" width="180px"/>
 			</a>
 			{# <button class="navbar-toggler" type="button" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
-																																																																																																																																																																																																																																																																																																							<img [src]="openButton" width="20px"/>
-																																																																																																																																																																																																																																																																																																						</button> #}
+																																																																																																																																																																																																																																																																																																																												<img [src]="openButton" width="20px"/>
+																																																																																																																																																																																																																																																																																																																											</button> #}
 
 			<div class="collapse navbar-collapse" [ngClass]="{ show: navbarOpen }" id="navbarSupportedContent">
 				<ul class="navbar-nav ml-auto">
@@ -207,7 +207,7 @@
 						<a class="nav-link login" href="{{ path('user_login') }}">Se connecter</a>
 					</li>
 					<li class="nav-item ml-4">
-						<button>
+						<button type="button" onclick="location.href='{{ path('user_register') }}';">
 							S'inscrire
 						</button>
 					</li>
