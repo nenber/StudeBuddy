@@ -5,31 +5,31 @@
 
 {% block body %}
 	<div id="login">
-		<div id="register" class="row">
+		<div class="row register mt-sm-4">
 			<div class="circle-right"></div>
 			<div class="col-lg-5 col-sm-12 circle-parent" data-aos="fade-right">
 				<h1>Inscription
 					<hr></h1>
-				<form action="">
+				<form class="mt-5">
 					<div class="form-group row">
 						<div class="col">
 							<label for="lastName">Nom :</label>
 							<input type="text" class="form-control" placeholder="Nom" required>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="form-group row mt-5">
 						<div class="col">
 							<label for="inputFirstName">Prénom :</label>
 							<input type="text" class="form-control" placeholder="Prénom" required>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="form-group row mt-5">
 						<div class="col">
 							<label for="inputEmail">Adresse mail :</label>
 							<input type="email" class="form-control" aria-describedby="emailHelp" placeholder="toi@buddy.fr" required>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="form-group row mt-5">
 						<div class="col">
 							<label for="inputPassword">Mot de passe :</label>
 							<input type="password" class="form-control" placeholder="Mot de passe" required>
@@ -40,38 +40,41 @@
 					</div>
 				</form>
 			</div>
-			<div class="col-lg-2 col-sm-12"></div>
-			<div class="col-lg-5 col-sm-12" data-aos="fade-left">
-				<div class="row order-last">
-					<div class="col align-self-end">
-						<p class="already_sign">
+
+			<div class="col-lg-5 col-sm-12 mt-lg-n1 mt-sm-0 pt-lg-4 pt-sm-0" data-aos="fade-left" data-aos-once="true">
+				<div class="row">
+					<div class="col">
+						<p class="already_sign d-none d-lg-block">
 							<a href="{{ path('user_login') }}">Déjà inscrit ? Cliquez-ici !</a>
 						</p>
 					</div>
 				</div>
-				<form>
-					<div class="form-group row">
-						<div class="col">
+				<form class="mt-lg-5">
+					<div class="form-group mt-lg-n2 mt-sm-0 row">
+						<div class="col mt-lg-4">
 							<label for="inputSchool">Ecole :</label>
 							<input type="text" class="form-control" placeholder="Ecole" required>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="form-group row mt-5">
 						<div class="col">
 							<label for="inputSchool">Numéro de téléphone :</label>
 							<input type="tel" class="form-control" placeholder="Numéro de téléphone" required>
 						</div>
 					</div>
-					<div class="form-group form-check">
+					<div class="form-group form-check mt-5">
 						<input type="checkbox" class="form-check-input" id="exampleCheck1">
 						<label class="form-check-label" for="exampleCheck1">J’accepte la politique de confidentialité du site et j’ai bien lu le règlement</label>
 					</div>
 				</form>
 			</div>
 		</div>
-		<div class="row container-flex">
+		<div class="row container-button">
 			<div class="">
 				<button type="submit" class="btn-lg">Valider</button>
+				<p class="d-lg-none d-xl-none">
+					<a href="{{ path('user_login') }}">Déjà inscrit ? Cliquez-ici !</a>
+				</p>
 			</div>
 		</div>
 		<div class="circle-left"></div>
