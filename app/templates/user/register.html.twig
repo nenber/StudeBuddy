@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}S'inscrire
+{% endblock %}
+
+{% block body %}
+
+	<div id="login">
+		<div class="row">
+			<div class="col">
+				<div class="contenu" data-aos="fade-right" data-aos-offset="400">
+					<h1>
+						Inscription<hr>
+					</h1>
+					<form>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="inputLastName">Nom *</label>
+								<input type="text" class="form-control" placeholder="Nom" required>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="inputFirstName">Prénom *</label>
+								<input type="text" class="form-control" placeholder="Prénom" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPhoneNumber">Numéro de téléphone *</label>
+							<input type="text" class="form-control" placeholder="Numéro de téléphone" required>
+						</div>
+						<div class="form-group">
+							<label for="inputAddress">Adresse E-mail *</label>
+							<input type="email" class="form-control" placeholder="toi@buddy.fr" required>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword">Mot de passe *</label>
+							<small id="passwordHelpInline" class="text-muted">
+								Must be 8-20 characters long.
+							</small>
+							<input type="password" class="form-control" placeholder="Mot de passe" required>
+							<label for="inputPassword">Confirmer le mot de passe *</label>
+							<input type="password" class="form-control" placeholder="Mot de passe" required>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-8">
+								<label for="inputSchool">Ecole *</label>
+								<input type="text" class="form-control" placeholder="Ecole" required>
+							</div>
+							<div class="form-group col-md-4">
+								<label for="inputParrain">Parrainage *</label>
+								<select id="inputParrain" class="form-control">
+									<option selected>Option</option>
+									<option>Oui</option>
+									<option>Non</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="inputSpokenLanguage">Langue parlée *</label>
+								<input type="text" class="form-control" placeholder="Langue parlée" required>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="inputParrain">Langue d'apprentissage</label>
+								<input type="text" class="form-control" placeholder="Langue d'apprentissage">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="gridCheck">
+								<label class="form-check-label" for="gridCheck">
+									J'ai lu et j'accepte les conditions ....
+								</label>
+							</div>
+						</div>
+						<button type="submit" class="btn-lg">Valider</button>
+					</form>
+				</div>
+			</div>
+			<div class="col block-blue">
+				<img src="{{ asset('/img/8576.png') }}" alt="logo studandbuddy" width="180px"/>
+			</div>
+		</div>
+	{% endblock %}

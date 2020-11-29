@@ -242,14 +242,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSpoken�Languge(): ?string
+    public function getSpokenLanguge(): ?string
     {
-        return $this->spoken�_languge;
+        return $this->spoken_languge;
     }
 
-    public function setSpoken�Languge(string $spoken�_languge): self
+    public function setSpokenLanguge(string $spoken_languge): self
     {
-        $this->spoken�_languge = $spoken�_languge;
+        $this->spoken_languge = $spoken_languge;
 
         return $this;
     }
