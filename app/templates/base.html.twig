@@ -123,7 +123,7 @@
 			}
 			#login .block-blue {
 				background: #97CCEF;
-				height: auto;
+				height: 100vh;
 				overflow: hidden;
 
 			}
@@ -182,6 +182,76 @@
 					width: 100%;
 				}
 			}
+
+			{
+				# REGISTER #
+			}
+			.circle-right:before {
+				display: block;
+				overflow: hidden;
+				position: relative;
+				z-index = -10;
+			}
+
+			.circle-right {
+				display: block;
+				position: absolute;
+				content: '';
+				border-radius: 0 0 0 100%;
+				width: 120px;
+				height: 120px;
+				background: #97CCEF;
+				right: 0;
+				top: 10vh;
+				z-index = -10;
+			}
+			.circle-left:before {
+				display: block;
+				overflow: hidden;
+				position: relative;
+				z-index = -10;
+			}
+
+			.circle-left {
+				display: block;
+				position: absolute;
+				content: '';
+				width: 120px;
+				height: 120px;
+				background: #97CCEF;
+				border-radius: 0 100% 0 0;
+				z-index = -10;
+			}
+			#register {
+				padding: 10% 10% 0;
+				display: flex;
+				justify-content: space-evenly;
+				align-items: flex-start;
+				flex-direction: row;
+			}
+			.container-flex {
+				display: flex;
+				justify-content: center;
+				align-items: flex-end;
+				align-content: center;
+			}
+			.already_sign {
+				text-align: right;
+			}
+			.p-password {
+				font-size: 14px;
+				color: #E03030;
+			}
+			@media(max-width: 575.98px) {
+				.lower {
+					padding: 25% 0 0;
+				}
+
+				div.align-self-end {
+					order: 5;
+				}
+			}
+			</head> </html>
 		</style>
 	</head>
 	<body>
@@ -192,8 +262,8 @@
 				<img src="{{ asset('/img/logo.png') }}" alt="logo studandbuddy" width="180px"/>
 			</a>
 			{# <button class="navbar-toggler" type="button" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
-																																																																																																																																																																																																																																																																																																																												<img [src]="openButton" width="20px"/>
-																																																																																																																																																																																																																																																																																																																											</button> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				<img [src]="openButton" width="20px"/>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			</button> #}
 
 			<div class="collapse navbar-collapse" [ngClass]="{ show: navbarOpen }" id="navbarSupportedContent">
 				<ul class="navbar-nav ml-auto">
@@ -230,3 +300,4 @@
 			</script>
 		</body>
 	</html>
+</head></html>
