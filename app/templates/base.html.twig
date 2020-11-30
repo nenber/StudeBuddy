@@ -17,6 +17,11 @@
 			{
 				# GLOBAL BODY #
 			}
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+			}
 			body {
 				font-family: 'Nunito', sans-serif;
 				scroll-behavior: smooth;
@@ -186,33 +191,34 @@
 			{
 				# REGISTER #
 			}
-			.circle-right:before {
+			#register .circle-right:before {
 				display: block;
 				overflow: hidden;
 				position: relative;
 				z-index = -10;
 			}
 
-			.circle-right {
+			#register .circle-right {
 				display: block;
 				position: absolute;
 				content: '';
 				border-radius: 0 0 0 100%;
 				width: 120px;
-				height: 120px;
+				height: 140px;
 				background: #97CCEF;
 				right: 0;
 				top: 10vh;
 				z-index = -10;
+				top: 0
 			}
-			.circle-left:before {
+			#register .circle-left:before {
 				display: block;
 				overflow: hidden;
 				position: relative;
 				z-index = -10;
 			}
 
-			.circle-left {
+			#register .circle-left {
 				display: block;
 				position: absolute;
 				content: '';
@@ -221,9 +227,10 @@
 				background: #97CCEF;
 				border-radius: 0 100% 0 0;
 				z-index = -10;
+				left: 0;
 			}
 
-			.register {
+			#register .register {
 				padding: 5% 10% 0;
 				display: flex;
 				justify-content: space-between;
@@ -231,28 +238,35 @@
 				flex-direction: row;
 			}
 
-			.container-button {
+			#register a {
+				color: #97CCEF;
+			}
+
+			#register h1 {
+				color: #366DB4;
+			}
+
+			#register .container-button {
 				display: flex;
 				justify-content: center;
 				align-items: flex-end;
 				align-content: center;
 			}
 
-			.already_sign {
+			#register .already_sign {
 				text-align: right;
 			}
 
-			.p-password {
+			#register .p-password {
 				font-size: 14px;
 				color: #E03030;
 			}
 
 			@media(max-width: 575.98px) {
-				.register {
+				#register .register {
 					padding: 25% 0 0;
 				}
 			}
-			</head> </html>
 		</style>
 	</head>
 	<body>
@@ -263,8 +277,8 @@
 				<img src="{{ asset('/img/logo.png') }}" alt="logo studandbuddy" width="180px"/>
 			</a>
 			{# <button class="navbar-toggler" type="button" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<img [src]="openButton" width="20px"/>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											</button> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										<img [src]="openButton" width="20px"/>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									</button> #}
 
 			<div class="collapse navbar-collapse" [ngClass]="{ show: navbarOpen }" id="navbarSupportedContent">
 				<ul class="navbar-nav ml-auto">
