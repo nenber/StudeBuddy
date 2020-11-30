@@ -4,12 +4,13 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -19,9 +20,20 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $user_id;
+    private $email;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -36,11 +48,6 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $email_adress;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $phone_number;
 
     /**
@@ -49,29 +56,24 @@ class User
     private $school;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $password;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $is_connected;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetimetz")
      */
     private $created_at;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $is_parrain;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $spoken_language;
+    private $spoken_languge;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -83,16 +85,77 @@ class User
         return $this->id;
     }
 
-    public function getUserId(): ?int
+    public function getEmail(): ?string
     {
-        return $this->user_id;
+        return $this->email;
     }
 
-    public function setUserId(int $user_id): self
+    public function setEmail(string $email): self
     {
-        $this->user_id = $user_id;
+        $this->email = $email;
 
         return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getFirstName(): ?string
@@ -119,18 +182,6 @@ class User
         return $this;
     }
 
-    public function getEmailAdress(): ?string
-    {
-        return $this->email_adress;
-    }
-
-    public function setEmailAdress(string $email_adress): self
-    {
-        $this->email_adress = $email_adress;
-
-        return $this;
-    }
-
     public function getPhoneNumber(): ?string
     {
         return $this->phone_number;
@@ -151,18 +202,6 @@ class User
     public function setSchool(string $school): self
     {
         $this->school = $school;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
 
         return $this;
     }
@@ -196,21 +235,21 @@ class User
         return $this->is_parrain;
     }
 
-    public function setIsParrain(bool $is_parrain): self
+    public function setIsParrain(?bool $is_parrain): self
     {
         $this->is_parrain = $is_parrain;
 
         return $this;
     }
 
-    public function getSpokenLanguage(): ?string
+    public function getSpokenLanguge(): ?string
     {
-        return $this->spoken_language;
+        return $this->spoken_languge;
     }
 
-    public function setSpokenLanguage(string $spoken_language): self
+    public function setSpokenLanguge(string $spoken_languge): self
     {
-        $this->spoken_language = $spoken_language;
+        $this->spoken_languge = $spoken_languge;
 
         return $this;
     }

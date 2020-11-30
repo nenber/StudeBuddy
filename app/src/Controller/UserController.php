@@ -32,4 +32,14 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
+
+    /**
+     * @Route("/register", name="register")
+     */
+    public function register()
+    {
+        return $this->render('user/register.html.twig', [
+            'controller_name' => 'UserController',
+        ]);
+    }
 }
