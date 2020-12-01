@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EvenementRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,20 +19,6 @@ class Evenement
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $organisateur_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $participant_id;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $marker_id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -42,45 +30,29 @@ class Evenement
      */
     private $evenement_id;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Marker::class, inversedBy="evenements")
+     */
+    private $marker_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Parrain::class, inversedBy="evenements")
+     */
+    private $organisateur_id;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Filleul::class, inversedBy="evenements")
+     */
+    private $participant_id;
+
+    public function __construct()
+    {
+        $this->participant_id = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getOrganisateurId(): ?int
-    {
-        return $this->organisateur_id;
-    }
-
-    public function setOrganisateurId(?int $organisateur_id): self
-    {
-        $this->organisateur_id = $organisateur_id;
-
-        return $this;
-    }
-
-    public function getParticipantId(): ?int
-    {
-        return $this->participant_id;
-    }
-
-    public function setParticipantId(int $participant_id): self
-    {
-        $this->participant_id = $participant_id;
-
-        return $this;
-    }
-
-    public function getMarkerId(): ?int
-    {
-        return $this->marker_id;
-    }
-
-    public function setMarkerId(?int $marker_id): self
-    {
-        $this->marker_id = $marker_id;
-
-        return $this;
     }
 
     public function getEventName(): ?string
@@ -103,6 +75,56 @@ class Evenement
     public function setEvenementId(?int $evenement_id): self
     {
         $this->evenement_id = $evenement_id;
+
+        return $this;
+    }
+
+    public function getMarkerId(): ?Marker
+    {
+        return $this->marker_id;
+    }
+
+    public function setMarkerId(?Marker $marker_id): self
+    {
+        $this->marker_id = $marker_id;
+
+        return $this;
+    }
+
+    public function getOrganisateurId(): ?Parrain
+    {
+        return $this->organisateur_id;
+    }
+
+    public function setOrganisateurId(?Parrain $organisateur_id): self
+    {
+        $this->organisateur_id = $organisateur_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Filleul[]
+     */
+    public function getParticipantId(): Collection
+    {
+        return $this->participant_id;
+    }
+
+    public function addParticipantId(Filleul $participantId): self
+    {
+        if (!$this->participant_id->contains($participantId)) {
+            $this->participant_id[] = $participantId;
+        }
+
+        return $this;
+    }
+
+    public function removeParticipantId(Filleul $participantId): self
+    {
+        if ($this->participant_id->contains($participantId)) {
+            $this->participant_id->removeElement($participantId);
+        }
 
         return $this;
     }

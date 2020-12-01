@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FilleulRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,16 @@ class Filleul
      * @ORM\ManyToOne(targetEntity=Parrain::class, inversedBy="fillieul_id")
      */
     private $parrain;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Evenement::class, mappedBy="participant_id")
+     */
+    private $evenements;
+
+    public function __construct()
+    {
+        $this->evenements = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +81,34 @@ class Filleul
     public function setParrain(?Parrain $parrain): self
     {
         $this->parrain = $parrain;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Evenement[]
+     */
+    public function getEvenements(): Collection
+    {
+        return $this->evenements;
+    }
+
+    public function addEvenement(Evenement $evenement): self
+    {
+        if (!$this->evenements->contains($evenement)) {
+            $this->evenements[] = $evenement;
+            $evenement->addParticipantId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvenement(Evenement $evenement): self
+    {
+        if ($this->evenements->contains($evenement)) {
+            $this->evenements->removeElement($evenement);
+            $evenement->removeParticipantId($this);
+        }
 
         return $this;
     }
