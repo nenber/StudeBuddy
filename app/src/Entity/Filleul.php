@@ -27,6 +27,11 @@ class Filleul
      */
     private $user_id;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Parrain::class, inversedBy="fillieul_id")
+     */
+    private $parrain;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,18 @@ class Filleul
     public function setUserId(?User $user_id): self
     {
         $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    public function getParrain(): ?Parrain
+    {
+        return $this->parrain;
+    }
+
+    public function setParrain(?Parrain $parrain): self
+    {
+        $this->parrain = $parrain;
 
         return $this;
     }
