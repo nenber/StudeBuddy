@@ -17,41 +17,25 @@ class Parrain
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $user_id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      */
-    private $filleul_id;
+    private $user_id;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserId(): ?int
+    public function getUserId(): ?User
     {
         return $this->user_id;
     }
 
-    public function setUserId(?int $user_id): self
+    public function setUserId(?User $user_id): self
     {
         $this->user_id = $user_id;
-
-        return $this;
-    }
-
-    public function getFilleulId(): ?int
-    {
-        return $this->filleul_id;
-    }
-
-    public function setFilleulId(?int $filleul_id): self
-    {
-        $this->filleul_id = $filleul_id;
 
         return $this;
     }

@@ -18,23 +18,40 @@ class Filleul
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity=Parrain::class, inversedBy="filleul")
      */
     private $parrain_id;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     */
+    private $user_id;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getParrainId(): ?int
+    public function getParrainId(): ?Parrain
     {
         return $this->parrain_id;
     }
 
-    public function setParrainId(?int $parrain_id): self
+    public function setParrainId(?Parrain $parrain_id): self
     {
         $this->parrain_id = $parrain_id;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(?User $user_id): self
+    {
+        $this->user_id = $user_id;
 
         return $this;
     }
