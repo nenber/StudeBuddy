@@ -75,7 +75,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $spoken_languge;
+    private $spoken_language;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -266,14 +266,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSpokenLanguge(): ?string
+    public function getSpokenLanguage(): ?string
     {
-        return $this->spoken_languge;
+        return $this->spoken_language;
     }
 
-    public function setSpokenLanguge(string $spoken_languge): self
+    public function setSpokenLanguage(string $spoken_language): self
     {
-        $this->spoken_languge = $spoken_languge;
+        $this->spoken_language = $spoken_language;
 
         return $this;
     }
