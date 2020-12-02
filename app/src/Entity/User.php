@@ -82,6 +82,16 @@ class User implements UserInterface
      */
     private $language_to_learn;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ThreadUser::class, mappedBy="user_id")
+     */
+    private $thread_user_id;
+
+    public function __construct()
+    {
+        $this->thread_user_id = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -265,6 +275,37 @@ class User implements UserInterface
     public function setLanguageToLearn(?string $language_to_learn): self
     {
         $this->language_to_learn = $language_to_learn;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ThreadUser[]
+     */
+    public function getThreadUserId(): Collection
+    {
+        return $this->thread_user_id;
+    }
+
+    public function addThreadUserId(ThreadUser $threadUserId): self
+    {
+        if (!$this->thread_user_id->contains($threadUserId)) {
+            $this->thread_user_id[] = $threadUserId;
+            $threadUserId->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeThreadUserId(ThreadUser $threadUserId): self
+    {
+        if ($this->thread_user_id->contains($threadUserId)) {
+            $this->thread_user_id->removeElement($threadUserId);
+            // set the owning side to null (unless already changed)
+            if ($threadUserId->getUserId() === $this) {
+                $threadUserId->setUserId(null);
+            }
+        }
 
         return $this;
     }
