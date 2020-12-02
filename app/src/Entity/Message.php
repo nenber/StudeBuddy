@@ -38,6 +38,16 @@ class Message
      */
     private $thread_id;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $sender_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ThreadUser::class, inversedBy="message_received")
+     */
+    private $send_to;
+
 
     public function getId(): ?int
     {
@@ -88,6 +98,30 @@ class Message
     public function setThreadId(?Thread $thread_id): self
     {
         $this->thread_id = $thread_id;
+
+        return $this;
+    }
+
+    public function getSenderId(): ?User
+    {
+        return $this->sender_id;
+    }
+
+    public function setSenderId(?User $sender_id): self
+    {
+        $this->sender_id = $sender_id;
+
+        return $this;
+    }
+
+    public function getSendTo(): ?ThreadUser
+    {
+        return $this->send_to;
+    }
+
+    public function setSendTo(?ThreadUser $send_to): self
+    {
+        $this->send_to = $send_to;
 
         return $this;
     }

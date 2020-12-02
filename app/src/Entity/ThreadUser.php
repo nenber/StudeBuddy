@@ -29,9 +29,15 @@ class ThreadUser
      */
     private $user_id;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="send_to")
+     */
+    private $message_received;
+
     public function __construct()
     {
         $this->thread_id = new ArrayCollection();
+        $this->message_received = new ArrayCollection();
     }
 
 
@@ -74,6 +80,37 @@ class ThreadUser
     public function setUserId(?User $user_id): self
     {
         $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessageReceived(): Collection
+    {
+        return $this->message_received;
+    }
+
+    public function addMessageReceived(Message $messageReceived): self
+    {
+        if (!$this->message_received->contains($messageReceived)) {
+            $this->message_received[] = $messageReceived;
+            $messageReceived->setSendTo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessageReceived(Message $messageReceived): self
+    {
+        if ($this->message_received->contains($messageReceived)) {
+            $this->message_received->removeElement($messageReceived);
+            // set the owning side to null (unless already changed)
+            if ($messageReceived->getSendTo() === $this) {
+                $messageReceived->setSendTo(null);
+            }
+        }
 
         return $this;
     }
