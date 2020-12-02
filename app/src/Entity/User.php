@@ -82,27 +82,6 @@ class User implements UserInterface
      */
     private $language_to_learn;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ThreadUser::class, mappedBy="thread_user_id")
-     */
-    private $threadUsers;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="send_to")
-     */
-    private $messages_received;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender_id")
-     */
-    private $message_send;
-
-    public function __construct()
-    {
-        $this->threadUsers = new ArrayCollection();
-        $this->messages_received = new ArrayCollection();
-        $this->message_send = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -286,76 +265,6 @@ class User implements UserInterface
     public function setLanguageToLearn(?string $language_to_learn): self
     {
         $this->language_to_learn = $language_to_learn;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ThreadUser[]
-     */
-    public function getThreadUsers(): Collection
-    {
-        return $this->threadUsers;
-    }
-
-    /**
-     * @return Collection|Message[]
-     */
-    public function getMessagesReceived(): Collection
-    {
-        return $this->messages_received;
-    }
-
-    public function addMessagesReceived(Message $messagesReceived): self
-    {
-        if (!$this->messages_received->contains($messagesReceived)) {
-            $this->messages_received[] = $messagesReceived;
-            $messagesReceived->setSendTo($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessagesReceived(Message $messagesReceived): self
-    {
-        if ($this->messages_received->contains($messagesReceived)) {
-            $this->messages_received->removeElement($messagesReceived);
-            // set the owning side to null (unless already changed)
-            if ($messagesReceived->getSendTo() === $this) {
-                $messagesReceived->setSendTo(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Message[]
-     */
-    public function getMessageSend(): Collection
-    {
-        return $this->message_send;
-    }
-
-    public function addMessageSend(Message $messageSend): self
-    {
-        if (!$this->message_send->contains($messageSend)) {
-            $this->message_send[] = $messageSend;
-            $messageSend->setSenderId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessageSend(Message $messageSend): self
-    {
-        if ($this->message_send->contains($messageSend)) {
-            $this->message_send->removeElement($messageSend);
-            // set the owning side to null (unless already changed)
-            if ($messageSend->getSenderId() === $this) {
-                $messageSend->setSenderId(null);
-            }
-        }
 
         return $this;
     }

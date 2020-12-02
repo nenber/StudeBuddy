@@ -24,12 +24,6 @@ class ThreadUser
      */
     private $thread_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="threadUsers")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $thread_user_id;
-
     public function __construct()
     {
         $this->thread_id = new ArrayCollection();
@@ -39,18 +33,6 @@ class ThreadUser
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getThreadUserId(): ?int
-    {
-        return $this->thread_user_id;
-    }
-
-    public function setThreadUserId(int $thread_user_id): self
-    {
-        $this->thread_user_id = $thread_user_id;
-
-        return $this;
     }
 
     /**

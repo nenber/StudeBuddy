@@ -26,7 +26,7 @@ class Parrain
     private $user_id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Filleul::class, mappedBy="parrain")
+     * @ORM\OneToMany(targetEntity=Filleul::class, mappedBy="parrain_id")
      */
     private $fillieul_id;
 
@@ -70,7 +70,7 @@ class Parrain
     {
         if (!$this->fillieul_id->contains($fillieulId)) {
             $this->fillieul_id[] = $fillieulId;
-            $fillieulId->setParrain($this);
+            $fillieulId->setParrainId($this);
         }
 
         return $this;
@@ -81,8 +81,8 @@ class Parrain
         if ($this->fillieul_id->contains($fillieulId)) {
             $this->fillieul_id->removeElement($fillieulId);
             // set the owning side to null (unless already changed)
-            if ($fillieulId->getParrain() === $this) {
-                $fillieulId->setParrain(null);
+            if ($fillieulId->getParrainId() === $this) {
+                $fillieulId->setParrainId(null);
             }
         }
 

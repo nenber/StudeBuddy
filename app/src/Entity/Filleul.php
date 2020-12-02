@@ -20,11 +20,6 @@ class Filleul
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Parrain::class, inversedBy="filleul")
-     */
-    private $parrain_id;
-
-    /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      */
     private $user_id;
@@ -32,7 +27,7 @@ class Filleul
     /**
      * @ORM\ManyToOne(targetEntity=Parrain::class, inversedBy="fillieul_id")
      */
-    private $parrain;
+    private $parrain_id;
 
     /**
      * @ORM\ManyToMany(targetEntity=Evenement::class, mappedBy="participant_id")
@@ -69,18 +64,6 @@ class Filleul
     public function setUserId(?User $user_id): self
     {
         $this->user_id = $user_id;
-
-        return $this;
-    }
-
-    public function getParrain(): ?Parrain
-    {
-        return $this->parrain;
-    }
-
-    public function setParrain(?Parrain $parrain): self
-    {
-        $this->parrain = $parrain;
 
         return $this;
     }
