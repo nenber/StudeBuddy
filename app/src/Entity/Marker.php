@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MarkerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,20 +34,22 @@ class Marker
      */
     private $name;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $user_id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $adress;
+    private $address;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\OneToMany(targetEntity=Event::class, mappedBy="marker_id")
      */
-    private $marker_id;
+    private $events;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -88,38 +92,46 @@ class Marker
         return $this;
     }
 
-    public function getUserId(): ?int
+
+    public function getAddress(): ?string
     {
-        return $this->user_id;
+        return $this->address;
     }
 
-    public function setUserId(?int $user_id): self
+    public function setAddress(?string $address): self
     {
-        $this->user_id = $user_id;
+        $this->address = $address;
 
         return $this;
     }
 
-    public function getAdress(): ?string
+    /**
+     * @return Collection|Event[]
+     */
+    public function getEvents(): Collection
     {
-        return $this->adress;
+        return $this->events;
     }
 
-    public function setAdress(?string $adress): self
+    public function addEvent(Event $event): self
     {
-        $this->adress = $adress;
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->setMarkerId($this);
+        }
 
         return $this;
     }
 
-    public function getMarkerId(): ?int
+    public function removeEvent(Event $event): self
     {
-        return $this->marker_id;
-    }
-
-    public function setMarkerId(?int $marker_id): self
-    {
-        $this->marker_id = $marker_id;
+        if ($this->events->contains($event)) {
+            $this->events->removeElement($event);
+            // set the owning side to null (unless already changed)
+            if ($event->getMarkerId() === $this) {
+                $event->setMarkerId(null);
+            }
+        }
 
         return $this;
     }

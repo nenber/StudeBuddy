@@ -3,12 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity; 
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email") 
  */
 class User implements UserInterface
 {
@@ -56,7 +60,7 @@ class User implements UserInterface
     private $school;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $is_connected;
 
@@ -68,17 +72,28 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $is_parrain;
+    private $is_godparent;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $spoken_languge;
+    private $spoken_language;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $language_to_learn;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ThreadUser::class, mappedBy="user_id")
+     */
+    private $thread_user_id;
+
+    public function __construct()
+    {
+        $this->thread_user_id = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -230,26 +245,26 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getIsParrain(): ?bool
+    public function getIsGodparent(): ?bool
     {
-        return $this->is_parrain;
+        return $this->is_godparent;
     }
 
-    public function setIsParrain(?bool $is_parrain): self
+    public function setIsGodparent(?bool $is_godparent): self
     {
-        $this->is_parrain = $is_parrain;
+        $this->is_godparent = $is_godparent;
 
         return $this;
     }
 
-    public function getSpokenLanguge(): ?string
+    public function getSpokenLanguage(): ?string
     {
-        return $this->spoken_languge;
+        return $this->spoken_language;
     }
 
-    public function setSpokenLanguge(string $spoken_languge): self
+    public function setSpokenLanguage(string $spoken_language): self
     {
-        $this->spoken_languge = $spoken_languge;
+        $this->spoken_language = $spoken_language;
 
         return $this;
     }
@@ -262,6 +277,37 @@ class User implements UserInterface
     public function setLanguageToLearn(?string $language_to_learn): self
     {
         $this->language_to_learn = $language_to_learn;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ThreadUser[]
+     */
+    public function getThreadUserId(): Collection
+    {
+        return $this->thread_user_id;
+    }
+
+    public function addThreadUserId(ThreadUser $threadUserId): self
+    {
+        if (!$this->thread_user_id->contains($threadUserId)) {
+            $this->thread_user_id[] = $threadUserId;
+            $threadUserId->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeThreadUserId(ThreadUser $threadUserId): self
+    {
+        if ($this->thread_user_id->contains($threadUserId)) {
+            $this->thread_user_id->removeElement($threadUserId);
+            // set the owning side to null (unless already changed)
+            if ($threadUserId->getUserId() === $this) {
+                $threadUserId->setUserId(null);
+            }
+        }
 
         return $this;
     }
