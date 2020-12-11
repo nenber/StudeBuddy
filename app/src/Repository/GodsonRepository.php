@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Filleul;
+use App\Entity\Godson;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Filleul|null find($id, $lockMode = null, $lockVersion = null)
- * @method Filleul|null findOneBy(array $criteria, array $orderBy = null)
- * @method Filleul[]    findAll()
- * @method Filleul[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Godson|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Godson|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Godson[]    findAll()
+ * @method Godson[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FilleulRepository extends ServiceEntityRepository
+class GodsonRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Filleul::class);
+        parent::__construct($registry, Godson::class);
     }
 
     // /**
-    //  * @return Filleul[] Returns an array of Filleul objects
+    //  * @return Godson[] Returns an array of Godson objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class FilleulRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Filleul
+    public function findOneBySomeField($value): ?Godson
     {
         return $this->createQueryBuilder('f')
             ->andWhere('f.exampleField = :val')
