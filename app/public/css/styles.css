@@ -105,6 +105,66 @@ button:hover {
 }
 
 /* {
+    # INDEX ou bien HOME #
+} */
+.container-fluid{
+}
+
+#presentation .block-blue{
+  background: #97ccef;
+  height: 75vh;
+  overflow: hidden;
+  margin-top: 4em;
+  padding-top: 5%;
+}
+#presentation h1 {
+  color: #366DB4;
+  font-size: 40px;
+  padding-bottom: 10px;
+}
+
+#presentation p {
+  color: white;
+  font-size: 30px;
+}
+
+#presentation button {
+  margin-top: 8%;
+  background: #5bb572;
+  width: 310px;
+  border-radius: 20px;
+  height: 56px;
+}
+
+#description h1{
+  color: #366DB4;
+  text-align: center;
+}
+
+#description h3{
+  color:#97CCEF;
+  padding-top: 10%;
+}
+#features h1{
+  color: #366DB4;
+
+}
+
+#features p{
+  font-size:30px;
+  color: #97CCEF;
+}
+#gallery h1{
+  color: #5bb572;
+}
+
+#footer .col {
+  background-color: #366DB4;
+  color: white;
+  width: 100%;
+}
+
+/* {
     # LOGIN #
 } */
 #login .block-blue {
