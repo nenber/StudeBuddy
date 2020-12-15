@@ -34,9 +34,15 @@ class Godson
      */
     private $events;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Godparent::class)
+     */
+    private $godparents;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->godparents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,6 +97,32 @@ class Godson
         if ($this->events->contains($event)) {
             $this->events->removeElement($event);
             $event->removeParticipantId($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Godparent[]
+     */
+    public function getGodparents(): Collection
+    {
+        return $this->godparents;
+    }
+
+    public function addGodparent(Godparent $godparent): self
+    {
+        if (!$this->godparents->contains($godparent)) {
+            $this->godparents[] = $godparent;
+        }
+
+        return $this;
+    }
+
+    public function removeGodparent(Godparent $godparent): self
+    {
+        if ($this->godparents->contains($godparent)) {
+            $this->godparents->removeElement($godparent);
         }
 
         return $this;
