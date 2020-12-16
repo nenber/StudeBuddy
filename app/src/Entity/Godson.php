@@ -24,10 +24,6 @@ class Godson
      */
     private $user_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Godparent::class, inversedBy="godson_id")
-     */
-    private $godparent_id;
 
     /**
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="participant_id")
@@ -48,18 +44,6 @@ class Godson
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getGodparentId(): ?Godparent
-    {
-        return $this->godparent_id;
-    }
-
-    public function setGodparentId(?Godparent $godparent_id): self
-    {
-        $this->godparent_id = $godparent_id;
-
-        return $this;
     }
 
     public function getUserId(): ?User
