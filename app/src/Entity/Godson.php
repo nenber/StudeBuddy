@@ -24,26 +24,20 @@ class Godson
      */
     private $user_id;
 
-
     /**
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="participant_id")
      */
     private $events;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Godparent::class)
-     */
-    private $godparents;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Godparent::class, inversedBy="godson_id")
      */
     private $godparent_id;
 
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
-        $this->godparents = new ArrayCollection();
         $this->godparent_id = new ArrayCollection();
     }
 
@@ -87,32 +81,6 @@ class Godson
         if ($this->events->contains($event)) {
             $this->events->removeElement($event);
             $event->removeParticipantId($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Godparent[]
-     */
-    public function getGodparents(): Collection
-    {
-        return $this->godparents;
-    }
-
-    public function addGodparent(Godparent $godparent): self
-    {
-        if (!$this->godparents->contains($godparent)) {
-            $this->godparents[] = $godparent;
-        }
-
-        return $this;
-    }
-
-    public function removeGodparent(Godparent $godparent): self
-    {
-        if ($this->godparents->contains($godparent)) {
-            $this->godparents->removeElement($godparent);
         }
 
         return $this;
