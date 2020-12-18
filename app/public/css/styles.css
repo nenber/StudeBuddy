@@ -161,6 +161,7 @@ button:hover {
 footer {
   background: #366DB4;
   margin-top: 10vh;
+  max-width: 100vw;
   
 }
 footer p{
