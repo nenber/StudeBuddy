@@ -107,18 +107,31 @@ button:hover {
 /* {
     # INDEX ou bien HOME #
 } */
-.container-fluid{
+#presentation {
+  margin-top: 4%;
+}
+#presentation .bloc {
+  height: 100%;
+}
+#presentation .block-blue {
+  background: #97ccef;
+  height: 600px;
+}
+@media (min-width: 1200px) {
+  #presentation .block-blue .m-xl-5 {
+    margin: 6rem !important;
+  }
 }
 
-#presentation .block-blue{
-  background: #97ccef;
-  height: 75vh;
+#presentation .block-image {
   overflow: hidden;
-  margin-top: 4em;
-  padding-top: 5%;
 }
+#presentation .col-xl-6 {
+  padding: 0 !important;
+}
+
 #presentation h1 {
-  color: #366DB4;
+  color: #366db4;
   font-size: 40px;
   padding-bottom: 10px;
 }
@@ -136,32 +149,42 @@ button:hover {
   height: 56px;
 }
 
-#description h1{
-  color: #366DB4;
+#description h1 {
+  color: #366db4;
   text-align: center;
 }
 
-#description h3{
-  color:#97CCEF;
+#description h3 {
+  color: #97ccef;
   padding-top: 10%;
 }
-#features h1{
-  color: #366DB4;
-
+#features h1 {
+  color: #366db4;
 }
 
-#features p{
-  font-size:30px;
-  color: #97CCEF;
+#features p {
+  font-size: 30px;
+  color: #97ccef;
 }
-#gallery h1{
+#gallery h1 {
   color: #5bb572;
 }
 
 #footer .col {
-  background-color: #366DB4;
+  background-color: #366db4;
   color: white;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  #presentation .block-image {
+    height: 300px;
+  }
+
+  #presentation .block-image img {
+    top: -169px;
+    position: relative;
+  }
 }
 
 /* {
