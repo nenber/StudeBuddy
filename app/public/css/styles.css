@@ -4,10 +4,10 @@ html,
 body {
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
 }
 body {
   font-family: "Nunito", sans-serif;
-  scroll-behavior: smooth;
 }
 h1 {
   font-family: "Nunito", sans-serif;
@@ -18,6 +18,10 @@ label {
   color: #545454 !important;
   font-size: 20px;
   font-family: "Nunito", sans-serif;
+}
+section {
+  padding-top: 20px;
+  margin-top: 10px;
 }
 
 .form-control {
@@ -157,6 +161,7 @@ button:hover {
 #description h3 {
   color: #97ccef;
   padding-top: 10%;
+  line-height: 1.5;
 }
 #features h1 {
   color: #366db4;
