@@ -184,8 +184,29 @@ button:hover {
   font-weight: lighter;
 }
 
-#gallery h1 {
-  color: #5bb572;
+#gallery .bloc {
+  height: 250px;
+  background: #97ccef;
+  color: white;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0 !important;
+  position: relative;
+  width: 105%;
+  left: -56px;
+  margin: 90px 0;
+}
+@media (max-width: 575.98px) {
+  #gallery .bloc {
+    height: 350px;
+    background: #97ccef;
+    color: white;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    width: 106%;
+    left: -10px;
+    position: relative;
+  }
 }
 
 #footer .col {
@@ -196,11 +217,11 @@ button:hover {
 
 @media (max-width: 768px) {
   #presentation .block-image {
-    height: 300px;
+    height: 250px;
   }
 
   #presentation .block-image img {
-    top: -169px;
+    top: -198px;
     position: relative;
   }
 }
