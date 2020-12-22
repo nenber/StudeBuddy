@@ -111,6 +111,7 @@ button:hover {
 /* {
     # INDEX ou bien HOME #
 } */
+
 #presentation {
   margin-top: 4%;
 }
@@ -209,22 +210,19 @@ button:hover {
   }
 }
 
-#footer .col {
-  background-color: #366db4;
+
+/* # FOOTER # */
+footer {
+  background: #366DB4;
+  margin-top: 10vh;
+  
+}
+footer p{
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
   color: white;
-  width: 100%;
 }
 
-@media (max-width: 768px) {
-  #presentation .block-image {
-    height: 250px;
-  }
-
-  #presentation .block-image img {
-    top: -198px;
-    position: relative;
-  }
-}
 
 /* {
     # LOGIN #

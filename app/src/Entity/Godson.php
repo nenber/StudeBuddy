@@ -25,35 +25,25 @@ class Godson
     private $user_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Godparent::class, inversedBy="godson_id")
-     */
-    private $godparent_id;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="participant_id")
      */
     private $events;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Godparent::class, inversedBy="godson_id")
+     */
+    private $godparent_id;
+
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->godparent_id = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getGodparentId(): ?Godparent
-    {
-        return $this->godparent_id;
-    }
-
-    public function setGodparentId(?Godparent $godparent_id): self
-    {
-        $this->godparent_id = $godparent_id;
-
-        return $this;
     }
 
     public function getUserId(): ?User
@@ -91,6 +81,32 @@ class Godson
         if ($this->events->contains($event)) {
             $this->events->removeElement($event);
             $event->removeParticipantId($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Godparent[]
+     */
+    public function getGodparentId(): Collection
+    {
+        return $this->godparent_id;
+    }
+
+    public function addGodparentId(Godparent $godparentId): self
+    {
+        if (!$this->godparent_id->contains($godparentId)) {
+            $this->godparent_id[] = $godparentId;
+        }
+
+        return $this;
+    }
+
+    public function removeGodparentId(Godparent $godparentId): self
+    {
+        if ($this->godparent_id->contains($godparentId)) {
+            $this->godparent_id->removeElement($godparentId);
         }
 
         return $this;
