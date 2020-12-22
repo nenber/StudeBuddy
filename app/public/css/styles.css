@@ -107,8 +107,7 @@ button:hover {
 /* {
     # INDEX ou bien HOME #
 } */
-.container-fluid{
-}
+
 
 #presentation .block-blue{
   background: #97ccef;
@@ -158,11 +157,18 @@ button:hover {
   color: #5bb572;
 }
 
-#footer .col {
-  background-color: #366DB4;
-  color: white;
-  width: 100%;
+/* # FOOTER # */
+footer {
+  background: #366DB4;
+  margin-top: 10vh;
+  
 }
+footer p{
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  color: white;
+}
+
 
 /* {
     # LOGIN #

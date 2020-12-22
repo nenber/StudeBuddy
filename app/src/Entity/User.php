@@ -6,7 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity; 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -75,19 +75,39 @@ class User implements UserInterface
     private $is_godparent;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $spoken_language;
+    private $spoken_language = [];
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $language_to_learn;
+    private $language_to_learn = [];
 
     /**
      * @ORM\OneToMany(targetEntity=ThreadUser::class, mappedBy="user_id")
      */
     private $thread_user_id;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="blob", nullable=true)
+     */
+    private $profil_image;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_godson;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $token;
 
     public function __construct()
     {
@@ -257,24 +277,24 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSpokenLanguage(): ?string
+    public function getSpokenLanguage(): ?array
     {
         return $this->spoken_language;
     }
 
-    public function setSpokenLanguage(string $spoken_language): self
+    public function setSpokenLanguage(?array $spoken_language): self
     {
         $this->spoken_language = $spoken_language;
 
         return $this;
     }
 
-    public function getLanguageToLearn(): ?string
+    public function getLanguageToLearn(): ?array
     {
         return $this->language_to_learn;
     }
 
-    public function setLanguageToLearn(?string $language_to_learn): self
+    public function setLanguageToLearn(?array $language_to_learn): self
     {
         $this->language_to_learn = $language_to_learn;
 
@@ -308,6 +328,54 @@ class User implements UserInterface
                 $threadUserId->setUserId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getProfilImage()
+    {
+        return $this->profil_image;
+    }
+
+    public function setProfilImage($profil_image): self
+    {
+        $this->profil_image = $profil_image;
+
+        return $this;
+    }
+
+    public function getIsGodson(): ?bool
+    {
+        return $this->is_godson;
+    }
+
+    public function setIsGodson(?bool $is_godson): self
+    {
+        $this->is_godson = $is_godson;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }

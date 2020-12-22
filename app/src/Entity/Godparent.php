@@ -19,26 +19,25 @@ class Godparent
      */
     private $id;
 
-
     /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      */
     private $user_id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Godson::class, mappedBy="godparent_id")
-     */
-    private $godson_id;
-
-    /**
      * @ORM\OneToMany(targetEntity=Event::class, mappedBy="organizer_id")
      */
     private $events;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Godson::class, mappedBy="godparent_id")
+     */
+    private $godson_id;
+
     public function __construct()
     {
-        $this->godson_id = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->godson_id = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,36 +57,6 @@ class Godparent
         return $this;
     }
 
-    /**
-     * @return Collection|Godson[]
-     */
-    public function getGodsonId(): Collection
-    {
-        return $this->godson_id;
-    }
-
-    public function addGodsonId(godson $godsonId): self
-    {
-        if (!$this->godson_id->contains($godsonId)) {
-            $this->godson_id[] = $godsonId;
-            $godsonId->setGodparentId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGodsonId(Godson $godsonId): self
-    {
-        if ($this->godson_id->contains($godsonId)) {
-            $this->godson_id->removeElement($godsonId);
-            // set the owning side to null (unless already changed)
-            if ($godsonId->getGodparentId() === $this) {
-                $godsonId->setGodparentId(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Event[]
@@ -115,6 +84,34 @@ class Godparent
             if ($event->getOrganizerId() === $this) {
                 $event->setOrganizerId(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Godson[]
+     */
+    public function getGodsonId(): Collection
+    {
+        return $this->godson_id;
+    }
+
+    public function addGodsonId(Godson $godsonId): self
+    {
+        if (!$this->godson_id->contains($godsonId)) {
+            $this->godson_id[] = $godsonId;
+            $godsonId->addGodparentId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGodsonId(Godson $godsonId): self
+    {
+        if ($this->godson_id->contains($godsonId)) {
+            $this->godson_id->removeElement($godsonId);
+            $godsonId->removeGodparentId($this);
         }
 
         return $this;
