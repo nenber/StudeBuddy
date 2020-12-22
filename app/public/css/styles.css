@@ -166,11 +166,24 @@ button:hover {
 #features h1 {
   color: #366db4;
 }
-
-#features p {
-  font-size: 30px;
-  color: #97ccef;
+#features .value-card img {
+  width: 85px;
 }
+
+#features .value-card h2 {
+  width: 250px;
+  color: #5bb572;
+  font-size: 30px;
+  font-weight: 600;
+}
+#features .value-card p {
+  width: 300px;
+  line-height: 30px;
+  font-size: 25px;
+  color: #97ccef;
+  font-weight: lighter;
+}
+
 #gallery h1 {
   color: #5bb572;
 }
