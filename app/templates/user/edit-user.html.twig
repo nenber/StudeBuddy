@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Se connecter
+{% endblock %}
+
+{% block body %}
+{{ form_start(form) }}
+<div id="register">
+	<div class="row register mt-sm-5">
+		<div class="circle-right"></div>
+		<div class="col-lg-5 col-sm-12 circle-parent" data-aos="fade-right">
+			<h1>Inscription
+				<hr></h1>
+			<div class="form-group row mt-5">
+				<div class="col">
+					{{ form_label(form.lastName, "Nom :") }}
+					{{ form_widget(form.lastName, {
+                                'attr': {'placeholder': "Nom", 'class' : 'form-control'}
+                            }) }}
+				</div>
+			</div>
+			<div class="form-group row mt-5">
+				<div class="col">
+					{{ form_label(form.firstName, "Prénom :") }}
+					{{ form_widget(form.firstName, {
+                                'attr': {'placeholder': "Prénom", 'class' : 'form-control'}
+                            }) }}
+				</div>
+			</div>
+			<div class="form-group row mt-5">
+				<div class="col">
+					{{ form_label(form.email, "Adresse mail :") }}
+					{{ form_widget(form.email, {
+                                'attr': {'placeholder': "Adresse mail", 'class' : 'form-control'}
+                            }) }}
+				</div>
+			</div>
+			<div class="form-group row mt-5">
+				<div class="col">
+					{{ form_label(form.plainPassword, "Mot de passe :") }}
+					{{ form_widget(form.plainPassword, {
+                                'attr': {'placeholder': "Mot de passe", 'class' : 'form-control'}
+                            }) }}
+					<p class="p-password">
+						* Format incorrect : votre mot de passe doit contenir au minimum 6 caractères avec au moins 1 majuscule, 1 minusculte, 1 chiffre et 1 caractère spécial.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-5 col-sm-12 mt-lg-n1 mt-sm-0 pt-lg-4 pt-sm-0" data-aos="fade-left" data-aos-once="true">
+			<div class="row">
+				<div class="col">
+					<p class="already_sign d-none d-lg-block">
+						<a href="{{ path('app_login') }}">Déjà inscrit ? Cliquez-ici !</a>
+					</p>
+				</div>
+			</div>
+			<div class="mt-lg-5">
+				<div class="form-group mt-lg-n2 mt-sm-0 row">
+					<div class="col mt-lg-4">
+						{{ form_label(form.school, "Ecole :") }}
+						{{ form_widget(form.school, {
+                                'attr': {'placeholder': "Ecole", 'class' : 'form-control'}
+                            }) }}
+					</div>
+				</div>
+				<div class="form-group row mt-5">
+					<div class="col">
+						{{ form_label(form.phoneNumber, "Numéro de téléphone :") }}
+						{{ form_widget(form.phoneNumber, {
+                                'attr': {'placeholder': "Numéro de téléphone", 'class' : 'form-control'}
+                            }) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row container-button">
+		<div class="">
+			<button class="btn-lg">Valider</button>
+			<p class="d-lg-none d-xl-none">
+				<a href="{{ path('app_login') }}">Déjà inscrit ? Cliquez-ici !</a>
+			</p>
+		</div>
+	</div>
+	<div class="circle-left"></div>
+</div></div>{{ form_end(form) }}
