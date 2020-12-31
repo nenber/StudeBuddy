@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use App\Form\EditUserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+
 
 /**
  * Class UserController
@@ -47,6 +48,8 @@ class UserController extends AbstractController
 
     /**
      * @Route("/edit-user", name="edit-user")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editUser(Request $request)
     {
@@ -61,11 +64,21 @@ class UserController extends AbstractController
             $em->flush();
 
             $this->addFlash('message', 'Compte mis à jour');
-            return $this->redirectToRoute('user');
+            return $this->redirectToRoute('user-account');
         }
 
         return $this->render('user/edit-user.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/user-account", name="user-account")
+     */
+    public function userAccount()
+    {
+        return $this->render('user/user-account.html.twig', [
+            'controller_name' => 'UserController',
         ]);
     }
 }
