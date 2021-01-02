@@ -61,11 +61,19 @@
 </a>
 	</div>
 </div>
-	<div class="row">
+	<div class="row mb-4">
 		<div class="mx-auto">
 			<a href="{{ path('user_modifier-mot-de-passe') }}" class="hrefbutton">
 				Modifier mon mot de passe
 			</a>
 		</div>
 	</div>
+	<div class="row">
+		<div class="mx-auto">
+			<p><a href="{{ path('user_supprimer-compte') }}">
+					Supprimer mon compte
+				</a></p>
+		</div>
+	</div>
+
 	{% endblock %}

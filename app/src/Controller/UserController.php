@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\EditUserType;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,5 +105,41 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/edit-password.html.twig');
+    }
+
+    /**
+     * @Route("/supprimer-compte", name="supprimer-compte")
+     */
+    public function supprimerCompte(Request $request)
+    {
+        $user = $this->getUser();
+
+        if($user == null)
+        {
+            return $this->redirect($this->generateUrl('user_mon-compte'));
+        }
+
+        $form = $this->createFormBuilder()->getForm();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()
+                ->getManager()
+            ;
+
+            $em->remove($user);
+            $em->flush();
+
+            $this->get('security.context')->setToken(null);
+            $this->get('request')->getSession()->invalidate();
+
+            $request->getSession()->getFlashBag()->add('notice', "Votre compte a bien été supprimé.");
+
+            return $this->redirect($this->generateUrl('user_mon-compte'));
+        }
+
+        return $this->render('delete-account.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
