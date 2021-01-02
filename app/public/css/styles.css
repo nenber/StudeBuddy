@@ -32,6 +32,10 @@ section {
   height: 52px;
 }
 
+.form-error {
+  color: firebrick;
+}
+
 hr {
   border: 3px solid #366db4;
   max-width: 60%;

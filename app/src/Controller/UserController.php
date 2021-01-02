@@ -62,7 +62,7 @@ class UserController extends AbstractController
             $em->flush();
 
             $this->addFlash('message', 'Compte mis à jour');
-            return $this->redirectToRoute('user-account');
+            return $this->redirectToRoute('user_user-account');
         }
 
         return $this->render('user/edit.html.twig', [

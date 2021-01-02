@@ -1,8 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Se connecter
-{% endblock %}
+{% block title %}Modification du profil de {{ app.user.firstname }}{% endblock %}
 
 {% block body %}
-	{{ form(form) }}
+	{{ form_start(form) }}
+	<div id="register">
+		<div class="row register mt-sm-5">
+			<div class="circle-right"></div>
+			<div class="col-lg-5 col-sm-12 circle-parent" data-aos="fade-right">
+				<h1>Modifier mon compte
+					<hr></h1>
+				<div class="form-group row mt-5">
+					<div class="col">
+						{{ form_label(form.last_name, "Nom :") }}
+						{{ form_widget(form.last_name, {
+							'attr': {'placeholder': "Nom", 'class' : 'form-control'}
+						}) }}
+						<div class="form-error">
+							{{ form_errors(form.last_name) }}
+						</div>
+					</div>
+				</div>
+				<div class="form-group row mt-5">
+					<div class="col">
+						{{ form_label(form.first_name, "Prénom :") }}
+						{{ form_widget(form.first_name, {
+							'attr': {'placeholder': "Prénom", 'class' : 'form-control'}
+						}) }}
+						<div class="form-error">
+							{{ form_errors(form.first_name) }}
+						</div>
+					</div>
+				</div>
+				<div class="form-group row mt-5">
+					<div class="col">
+						{{ form_label(form.email, "Adresse mail :") }}
+						{{ form_widget(form.email, {
+							'attr': {'placeholder': "Adresse mail", 'class' : 'form-control'}
+						}) }}
+						<div class="form-error">
+							{{ form_errors(form.email) }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-5 col-sm-12 mt-lg-n1 mt-sm-0 pt-lg-4 pt-sm-0" data-aos="fade-left" data-aos-once="true">
+				<div class="mt-lg-5">
+					<div class="form-group mt-lg-n2 mt-sm-0 row">
+						<div class="col mt-lg-4">
+							{{ form_label(form.school, "Ecole :") }}
+							{{ form_widget(form.school, {
+								'attr': {'placeholder': "Ecole", 'class' : 'form-control'}
+							}) }}
+							<div class="form-error">
+								{{ form_errors(form.school) }}
+							</div>
+						</div>
+					</div>
+					<div class="form-group row mt-5">
+						<div class="col">
+							{{ form_label(form.phone_number, "Numéro de téléphone :") }}
+							{{ form_widget(form.phone_number, {
+								'attr': {'placeholder': "Numéro de téléphone", 'class' : 'form-control'}
+							}) }}
+							<div class="form-error">
+								{{ form_errors(form.phone_number) }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row container-button">
+			<div class="">
+				<button class="btn-lg">Valider</button>
+			</div>
+		</div>
+		<div class="circle-left"></div>
+	</div>
+	</div>
+	{{ form_end(form) }}
 {% endblock %}
