@@ -1,42 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Se connecter
+{% block title %}Profil de {{ app.user.firstname }}
 {% endblock %}
 
 {% block body %}
 	<div id="register">
-		{% for message in app.flashes('message') %}
-			<div class="col-xs4">
-				<div class="p-3 my-2 rounded-2 success">{{message}}</div>
-			</div>
-		{% endfor %}
 		<div class="row register mt-sm-5">
 			<div class="circle-right"></div>
 			<div class="col-lg-5 col-sm-12 circle-parent" data-aos="fade-right">
-				<h1>Modifier son compte
+				{% for message in app.flashes('message') %}
+					<div class="alert alert-success" role="alert">
+						{{message}}
+					</div>
+				{% endfor %}
+				<h1>Mon compte
 					<hr></h1>
 				<div class="form-group row mt-5">
 					<div class="col">
-						<p>Nom :
+						<p><strong>Nom :</strong>
 							{{ app.user.lastname|default('undefined') }}</p>
 					</div>
 				</div>
 				<div class="form-group row mt-5">
 					<div class="col">
-						<p>Prénom :
+						<p><strong>Prénom :</strong>
 							{{ app.user.firstname|default('undefined') }}</p>
 					</div>
 				</div>
 				<div class="form-group row mt-5">
 					<div class="col">
-							<p>Adresse mail :
+						<p><strong>Adresse mail :</strong>
 								{{ app.user.email|default('undefined') }}</p>
-					</div>
-				</div>
-				<div class="form-group row mt-5">
-					<div class="col">
-						<p>Mot de passe:
-							{{ app.user.password|default('undefined') }}</p>
 					</div>
 				</div>
 			</div>
@@ -45,14 +39,14 @@
 				<div class="mt-lg-5">
 					<div class="form-group mt-lg-n2 mt-sm-0 row">
 						<div class="col mt-lg-4">
-							<p>École :
+							<p><strong>École :</strong>
 								{{ app.user.school|default('undefined') }}</p>
 						</div>
 					</div>
 				</div>
 				<div class="form-group row mt-5">
 					<div class="col">
-						<p>Numéro de téléphone :
+						<p><strong>Numéro de téléphone :</strong>
 							{{ app.user.phonenumber|default('undefined') }}</p>
 					</div>
 				</div>
@@ -60,10 +54,18 @@
 		</div>
 	</div>
 </div>
-<div class="row container-button">
-	<div class="">
-		<a href="{{ path('user_edit') }}" class="btn blue">Modifier le profil</a>
-
+<div class="row mb-4">
+	<div class="mx-auto">
+<a href="{{ path('user_modifier-compte') }}" class="hrefbutton">
+		Modifier mes informations
+</a>
 	</div>
 </div>
+	<div class="row">
+		<div class="mx-auto">
+			<a href="{{ path('user_modifier-mot-de-passe') }}" class="hrefbutton">
+				Modifier mon mot de passe
+			</a>
+		</div>
+	</div>
 	{% endblock %}
