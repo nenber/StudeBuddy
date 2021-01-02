@@ -47,9 +47,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/edit-user", name="edit-user")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("/edit", name="edit")
      */
     public function editUser(Request $request)
     {
@@ -67,7 +65,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user-account');
         }
 
-        return $this->render('user/edit-user.html.twig', [
+        return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }

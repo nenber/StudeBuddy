@@ -5,6 +5,11 @@
 
 {% block body %}
 	<div id="register">
+		{% for message in app.flashes('message') %}
+			<div class="col-xs4">
+				<div class="p-3 my-2 rounded-2 success">{{message}}</div>
+			</div>
+		{% endfor %}
 		<div class="row register mt-sm-5">
 			<div class="circle-right"></div>
 			<div class="col-lg-5 col-sm-12 circle-parent" data-aos="fade-right">
@@ -57,6 +62,7 @@
 </div>
 <div class="row container-button">
 	<div class="">
+		<a href="{{ path('user_edit') }}" class="btn blue">Modifier le profil</a>
 
 	</div>
 </div>
