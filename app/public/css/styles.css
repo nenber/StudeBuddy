@@ -32,6 +32,50 @@ section {
   height: 52px;
 }
 
+.form-error {
+  color: firebrick;
+}
+.hrefbutton {
+  padding: 10px 24px;
+  border: 0;
+  outline: none !important;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #366db4;
+  border-radius: 15px;
+  font-family: "Nunito", sans-serif;
+  transition: 0.3s ease all;
+  width: 160px;
+}
+
+a {
+  text-decoration: none; !important;
+}
+
+button {
+  padding: 10px 24px;
+  border: 0;
+  outline: none !important;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #366db4;
+  border-radius: 20px;
+  font-family: "Nunito", sans-serif;
+  transition: 0.3s ease all;
+  width: 160px;
+}
+
+button:hover {
+  background-color: #97ccef;
+  box-shadow: 0 1px 2px #a9dbd181, 0 4px 4px #a9dbd181;
+  transform: translateY(-2px);
+}
+
+.green {
+  background-color: #5BB572 !important;
+}
 hr {
   border: 3px solid #366db4;
   max-width: 60%;
@@ -88,25 +132,6 @@ hr {
   color: #366db4 !important;
 }
 
-button {
-  padding: 10px 24px;
-  border: 0;
-  outline: none !important;
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  background-color: #366db4;
-  border-radius: 20px;
-  font-family: "Nunito", sans-serif;
-  transition: 0.3s ease all;
-  width: 160px;
-}
-
-button:hover {
-  background-color: #97ccef;
-  box-shadow: 0 1px 2px #a9dbd181, 0 4px 4px #a9dbd181;
-  transform: translateY(-2px);
-}
 
 /* {
     # INDEX ou bien HOME #

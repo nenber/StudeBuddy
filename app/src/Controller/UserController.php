@@ -2,8 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\EditUserType;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 /**
  * Class UserController
@@ -40,6 +46,100 @@ class UserController extends AbstractController
     {
         return $this->render('user/register.html.twig', [
             'controller_name' => 'UserController',
+        ]);
+    }
+
+    /**
+     * @Route("/modifier-compte", name="modifier-compte")
+     */
+    public function editUser(Request $request)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(EditUserType::class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('message', 'Compte mis à jour');
+            return $this->redirectToRoute('user_mon-compte');
+        }
+
+        return $this->render('user/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/mon-compte", name="mon-compte")
+     */
+    public function userAccount()
+    {
+        return $this->render('user/user-account.html.twig', [
+            'controller_name' => 'UserController',
+        ]);
+    }
+
+    /**
+     * @Route("/modifier-mot-de-passe", name="modifier-mot-de-passe")
+     */
+    public function editPass(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        if($request->isMethod('POST')){
+            $em = $this->getDoctrine()->getManager();
+
+            $user = $this->getUser();
+
+            if($request->request->get('pass') == $request->request->get('pass2')){
+                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('pass')));
+                $em->flush();
+                $this->addFlash('message', 'Mot de passe mis à jour !');
+
+                return $this->redirectToRoute('user_mon-compte');
+            }else{
+                $this->addFlash('error', 'Les deux mots de passe ne sont pas identiques');
+            }
+        }
+
+        return $this->render('user/edit-password.html.twig');
+    }
+
+    /**
+     * @Route("/supprimer-compte", name="supprimer-compte")
+     */
+    public function supprimerCompte(Request $request)
+    {
+        $user = $this->getUser();
+
+        if($user == null)
+        {
+            return $this->redirect($this->generateUrl('user_mon-compte'));
+        }
+
+        $form = $this->createFormBuilder()->getForm();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()
+                ->getManager()
+            ;
+
+            $em->remove($user);
+            $em->flush();
+
+            $this->get('security.context')->setToken(null);
+            $this->get('request')->getSession()->invalidate();
+
+            $request->getSession()->getFlashBag()->add('notice', "Votre compte a bien été supprimé.");
+
+            return $this->redirect($this->generateUrl('user_mon-compte'));
+        }
+
+        return $this->render('delete-account.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }
