@@ -5,10 +5,12 @@ body {
   margin: 0;
   padding: 0;
 }
+
 body {
   font-family: "Nunito", sans-serif;
   scroll-behavior: smooth;
 }
+
 h1 {
   font-family: "Nunito", sans-serif;
   font-weight: bold;
@@ -38,10 +40,12 @@ hr {
   label {
     font-size: 16px;
   }
+
   .form-control {
     height: 42px;
   }
 }
+
 /* {
     # NAVBAR #
 } */
@@ -68,6 +72,7 @@ hr {
   background-color: white !important;
   box-shadow: 0 0 8px 1px #b4b4b4;
 }
+
 .navbar-light .navbar-nav .nav-link {
   margin-left: 25px;
   font-family: "Nunito", sans-serif;
@@ -107,16 +112,16 @@ button:hover {
 /* {
     # INDEX ou bien HOME #
 } */
-.container-fluid{
-}
+.container-fluid {}
 
-#presentation .block-blue{
+#presentation .block-blue {
   background: #97ccef;
   height: 75vh;
   overflow: hidden;
   margin-top: 4em;
   padding-top: 5%;
 }
+
 #presentation h1 {
   color: #366DB4;
   font-size: 40px;
@@ -136,25 +141,27 @@ button:hover {
   height: 56px;
 }
 
-#description h1{
+#description h1 {
   color: #366DB4;
   text-align: center;
 }
 
-#description h3{
-  color:#97CCEF;
+#description h3 {
+  color: #97CCEF;
   padding-top: 10%;
 }
-#features h1{
+
+#features h1 {
   color: #366DB4;
 
 }
 
-#features p{
-  font-size:30px;
+#features p {
+  font-size: 30px;
   color: #97CCEF;
 }
-#gallery h1{
+
+#gallery h1 {
   color: #5bb572;
 }
 
@@ -172,9 +179,11 @@ button:hover {
   height: 100vh;
   overflow: hidden;
 }
+
 #login .block-blue p {
   margin-top: 15%;
 }
+
 #login .block-blue a {
   color: white;
   font-weight: bold;
@@ -249,6 +258,7 @@ button:hover {
   z-index: -10;
   top: 0;
 }
+
 #register .circle-left:before {
   display: block;
   overflow: hidden;
@@ -298,6 +308,18 @@ button:hover {
 #register .p-password {
   font-size: 14px;
   color: #e03030;
+}
+
+#register .p-email {
+  font-size: 14px;
+  color: #e03030;
+  display: none;
+}
+
+#register .p-phone {
+  font-size: 14px;
+  color: #e03030;
+  display: none;
 }
 
 @media (max-width: 575.98px) {

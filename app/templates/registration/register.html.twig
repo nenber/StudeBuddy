@@ -1,50 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription{% endblock %}
+{% block title %}Inscription
+{% endblock %}
 
 {% block body %}
-    {{ form_start(registrationForm) }}
+	{{ form_start(registrationForm) }}
 	<div id="register">
 		<div class="row register mt-sm-5">
 			<div class="circle-right"></div>
 			<div class="col-lg-5 col-sm-12 circle-parent" data-aos="fade-right">
 				<h1>Inscription
 					<hr></h1>
-					<div class="form-group row mt-5">
-						<div class="col">
-							{{ form_label(registrationForm.lastName, "Nom :") }} 
-                            {{ form_widget(registrationForm.lastName, {
+				<div class="form-group row mt-5">
+					<div class="col">
+						{{ form_label(registrationForm.lastName, "Nom :") }}
+						{{ form_widget(registrationForm.lastName, {
                                 'attr': {'placeholder': "Nom", 'class' : 'form-control'}
                             }) }}
-						</div>
 					</div>
-					<div class="form-group row mt-5">
-						<div class="col">
-							{{ form_label(registrationForm.firstName, "Prénom :") }} 
-                            {{ form_widget(registrationForm.firstName, {
+				</div>
+				<div class="form-group row mt-5">
+					<div class="col">
+						{{ form_label(registrationForm.firstName, "Prénom :") }}
+						{{ form_widget(registrationForm.firstName, {
                                 'attr': {'placeholder': "Prénom", 'class' : 'form-control'}
                             }) }}
-						</div>
 					</div>
-					<div class="form-group row mt-5">
-						<div class="col">
-							{{ form_label(registrationForm.email, "Adresse mail :") }} 
-							{{ form_widget(registrationForm.email, {
+				</div>
+				<div class="form-group row mt-5">
+					<div class="col">
+						{{ form_label(registrationForm.email, "Adresse mail :") }}
+						{{ form_widget(registrationForm.email, {
                                 'attr': {'placeholder': "Adresse mail", 'class' : 'form-control'}
                             }) }}
-						</div>
+						<p class="p-email">
+							* Email incorrecte.
+						</p>
 					</div>
-					<div class="form-group row mt-5">
-						<div class="col">
-							{{ form_label(registrationForm.plainPassword, "Mot de passe :") }} 
-							{{ form_widget(registrationForm.plainPassword, {
-                                'attr': {'placeholder': "Mot de passe", 'class' : 'form-control'}
+				</div>
+				<div class="form-group row mt-5">
+					<div class="col">
+						{{ form_label(registrationForm.plainPassword, "Mot de passe :") }}
+						{{ form_widget(registrationForm.plainPassword, {
+'attr': {'placeholder': "Mot de passe", 'class' : 'form-control',"pattern":"(?=^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"}
+
                             }) }}
-							<p class="p-password">
-								* Format incorrect : votre mot de passe doit contenir au minimum 6 caractères avec au moins 1 majuscule, 1 minusculte, 1 chiffre et 1 caractère spécial.
-							</p>
-						</div>
+						<p class="p-password">
+							* Format incorrect : votre mot de passe doit contenir au minimum 6 caractères avec au moins 1 majuscule, 1 minusculte, 1 chiffre et 1 caractère spécial.
+						</p>
 					</div>
+				</div>
 			</div>
 
 			<div class="col-lg-5 col-sm-12 mt-lg-n1 mt-sm-0 pt-lg-4 pt-sm-0" data-aos="fade-left" data-aos-once="true">
@@ -58,23 +63,27 @@
 				<div class="mt-lg-5">
 					<div class="form-group mt-lg-n2 mt-sm-0 row">
 						<div class="col mt-lg-4">
-							{{ form_label(registrationForm.school, "Ecole :") }} 
-                            {{ form_widget(registrationForm.school, {
+							{{ form_label(registrationForm.school, "Ecole :") }}
+							{{ form_widget(registrationForm.school, {
                                 'attr': {'placeholder': "Ecole", 'class' : 'form-control'}
                             }) }}
 						</div>
 					</div>
 					<div class="form-group row mt-5">
 						<div class="col">
-							{{ form_label(registrationForm.phoneNumber, "Numéro de téléphone :") }} 
+							{{ form_label(registrationForm.phoneNumber, "Numéro de téléphone :") }}
 							{{ form_widget(registrationForm.phoneNumber, {
                                 'attr': {'placeholder': "Numéro de téléphone", 'class' : 'form-control'}
-                            }) }} 
+                            }) }}
+							<p class="p-phone">
+								* Format incorrect.
+							</p>
 						</div>
+
 					</div>
 					<div class="form-group form-check mt-5">
-                        {{ form_widget(registrationForm.agreeTerms, {'attr': {'placeholder': "Confirmer", 'class' : 'form-check-label'}}) }}
-                        {{ form_label(registrationForm.agreeTerms, "J'accepte la politique de confidentialité du site et j’ai bien lu le règlement.") }}
+						{{ form_widget(registrationForm.agreeTerms, {'attr': {'placeholder': "Confirmer", 'class' : 'form-check-label'}}) }}
+						{{ form_label(registrationForm.agreeTerms, "J'accepte la politique de confidentialité du site et j’ai bien lu le règlement.") }}
 					</div>
 				</div>
 			</div>
@@ -90,5 +99,36 @@
 		<div class="circle-left"></div>
 	</div>
 </div>
-{{ form_end(registrationForm) }}
-{% endblock %}
+{{ form_end(registrationForm) }}{% endblock %}{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+
+	$(document).ready(function () {
+var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
+
+
+$('#registration_form_plainPassword').change(function () {
+if ($(this).val().match(strongRegex)) {
+$(".p-password").css("display", "none")
+} else {
+$(".p-password").css("display", "block")
+}
+});
+var emailRegex = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*");
+$('#registration_form_email').change(function () {
+if ($(this).val().match(emailRegex)) {
+$(".p-email").css("display", "none")
+} else {
+$(".p-email").css("display", "block")
+}
+});
+var phoneRegex = new RegExp("^(0[1-68])(?:[ _.-]?(\d{2})){4}$");
+$("#registration_form_phoneNumber").keyup(function () {
+if ($(this).val().match(phoneRegex)) {
+$(".p-phone").css("display", "none")
+} else {
+$(".p-phone").css("display", "block")
+}
+});
+});
+</script>{% endblock %}
