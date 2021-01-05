@@ -30,11 +30,11 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/forget-password", name="forget-password")
+     * @Route("/forgot-password", name="forgot-password")
      */
-    public function forgetPassword()
+    public function forgotPassword()
     {
-        return $this->render('user/forget-password.html.twig', [
+        return $this->render('user/forgot-password.html.twig', [
             'controller_name' => 'UserController',
         ]);
     }
@@ -50,7 +50,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/modifier-compte", name="modifier-compte")
+     * @Route("/edit", name="edit")
      */
     public function editUser(Request $request)
     {
@@ -65,7 +65,7 @@ class UserController extends AbstractController
             $em->flush();
 
             $this->addFlash('message', 'Compte mis à jour');
-            return $this->redirectToRoute('user_mon-compte');
+            return $this->redirectToRoute('user_account');
         }
 
         return $this->render('user/edit.html.twig', [
@@ -74,7 +74,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/mon-compte", name="mon-compte")
+     * @Route("/account", name="account")
      */
     public function userAccount()
     {
@@ -84,9 +84,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/modifier-mot-de-passe", name="modifier-mot-de-passe")
+     * @Route("/edit-password", name="edit-password")
      */
-    public function editPass(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         if($request->isMethod('POST')){
             $em = $this->getDoctrine()->getManager();
@@ -98,7 +98,7 @@ class UserController extends AbstractController
                 $em->flush();
                 $this->addFlash('message', 'Mot de passe mis à jour !');
 
-                return $this->redirectToRoute('user_mon-compte');
+                return $this->redirectToRoute('user_account');
             }else{
                 $this->addFlash('error', 'Les deux mots de passe ne sont pas identiques');
             }
@@ -108,15 +108,15 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/supprimer-compte", name="supprimer-compte")
+     * @Route("/delete", name="delete")
      */
-    public function supprimerCompte(Request $request)
+    public function deleteUser(Request $request)
     {
         $user = $this->getUser();
 
         if($user == null)
         {
-            return $this->redirect($this->generateUrl('user_mon-compte'));
+            return $this->redirect($this->generateUrl('user_account'));
         }
 
         $form = $this->createFormBuilder()->getForm();
@@ -135,10 +135,10 @@ class UserController extends AbstractController
 
             $request->getSession()->getFlashBag()->add('notice', "Votre compte a bien été supprimé.");
 
-            return $this->redirect($this->generateUrl('user_mon-compte'));
+            return $this->redirect($this->generateUrl('user_account'));
         }
 
-        return $this->render('delete-account.html.twig', [
+        return $this->render('user/delete-account.html.twig', [
             'form' => $form->createView(),
         ]);
     }
