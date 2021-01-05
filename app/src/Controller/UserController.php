@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\EditUserType;
+use App\Form\CustomUserAccountType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -80,6 +81,35 @@ class UserController extends AbstractController
     {
         return $this->render('user/user-account.html.twig', [
             'controller_name' => 'UserController',
+        ]);
+    }
+
+    /**
+     * @Route("/account/custom", name="custom")
+     */
+    public function customUserAccount(Request $request)
+    {
+        $user = $this->getUser();
+
+        if($user == null)
+        {
+            return $this->redirectToRoute('user_account');
+        }
+
+        $form = $this->createForm(CustomUserAccountType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('user_account');
+        }
+
+        return $this->render('user/custom-user-account.html.twig', [
+            'customUserAccountForm' => $form->createView(),
         ]);
     }
 

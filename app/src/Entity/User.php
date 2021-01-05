@@ -97,7 +97,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="blob", nullable=true)
      */
-    private $profil_image;
+    private $profile_image;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
