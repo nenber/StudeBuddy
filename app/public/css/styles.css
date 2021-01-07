@@ -240,6 +240,7 @@ hr {
 footer {
   background: #366DB4;
   margin-top: 10vh;
+  width: 100vw;
   
 }
 footer p{
