@@ -4,10 +4,10 @@ html,
 body {
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
 }
 body {
   font-family: "Nunito", sans-serif;
-  scroll-behavior: smooth;
 }
 h1 {
   font-family: "Nunito", sans-serif;
@@ -19,6 +19,10 @@ label {
   font-size: 20px;
   font-family: "Nunito", sans-serif;
 }
+section {
+  padding-top: 20px;
+  margin-top: 10px;
+}
 
 .form-control {
   border: 1px solid #868686;
@@ -28,6 +32,50 @@ label {
   height: 52px;
 }
 
+.form-error {
+  color: firebrick;
+}
+.hrefbutton {
+  padding: 10px 24px;
+  border: 0;
+  outline: none !important;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #366db4;
+  border-radius: 15px;
+  font-family: "Nunito", sans-serif;
+  transition: 0.3s ease all;
+  width: 160px;
+}
+
+a {
+  text-decoration: none; !important;
+}
+
+button {
+  padding: 10px 24px;
+  border: 0;
+  outline: none !important;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #366db4;
+  border-radius: 20px;
+  font-family: "Nunito", sans-serif;
+  transition: 0.3s ease all;
+  width: 160px;
+}
+
+button:hover {
+  background-color: #97ccef;
+  box-shadow: 0 1px 2px #a9dbd181, 0 4px 4px #a9dbd181;
+  transform: translateY(-2px);
+}
+
+.green {
+  background-color: #5BB572 !important;
+}
 hr {
   border: 3px solid #366db4;
   max-width: 60%;
@@ -84,40 +132,36 @@ hr {
   color: #366db4 !important;
 }
 
-button {
-  padding: 10px 24px;
-  border: 0;
-  outline: none !important;
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  background-color: #366db4;
-  border-radius: 20px;
-  font-family: "Nunito", sans-serif;
-  transition: 0.3s ease all;
-  width: 160px;
-}
-
-button:hover {
-  background-color: #97ccef;
-  box-shadow: 0 1px 2px #a9dbd181, 0 4px 4px #a9dbd181;
-  transform: translateY(-2px);
-}
 
 /* {
     # INDEX ou bien HOME #
 } */
 
-
-#presentation .block-blue{
-  background: #97ccef;
-  height: 75vh;
-  overflow: hidden;
-  margin-top: 4em;
-  padding-top: 5%;
+#presentation {
+  margin-top: 4%;
 }
+#presentation .bloc {
+  height: 100%;
+}
+#presentation .block-blue {
+  background: #97ccef;
+  height: 600px;
+}
+@media (min-width: 1200px) {
+  #presentation .block-blue .m-xl-5 {
+    margin: 6rem !important;
+  }
+}
+
+#presentation .block-image {
+  overflow: hidden;
+}
+#presentation .col-xl-6 {
+  padding: 0 !important;
+}
+
 #presentation h1 {
-  color: #366DB4;
+  color: #366db4;
   font-size: 40px;
   padding-bottom: 10px;
 }
@@ -135,27 +179,62 @@ button:hover {
   height: 56px;
 }
 
-#description h1{
-  color: #366DB4;
+#description h1 {
+  color: #366db4;
   text-align: center;
 }
 
-#description h3{
-  color:#97CCEF;
+#description h3 {
+  color: #97ccef;
   padding-top: 10%;
+  line-height: 1.5;
 }
-#features h1{
-  color: #366DB4;
+#features h1 {
+  color: #366db4;
+}
+#features .value-card img {
+  width: 85px;
+}
 
-}
-
-#features p{
-  font-size:30px;
-  color: #97CCEF;
-}
-#gallery h1{
+#features .value-card h2 {
+  width: 250px;
   color: #5bb572;
+  font-size: 30px;
+  font-weight: 600;
 }
+#features .value-card p {
+  width: 300px;
+  line-height: 30px;
+  font-size: 25px;
+  color: #97ccef;
+  font-weight: lighter;
+}
+
+#gallery .bloc {
+  height: 250px;
+  background: #97ccef;
+  color: white;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0 !important;
+  position: relative;
+  width: 105%;
+  left: -56px;
+  margin: 90px 0;
+}
+@media (max-width: 575.98px) {
+  #gallery .bloc {
+    height: 350px;
+    background: #97ccef;
+    color: white;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    width: 106%;
+    left: -10px;
+    position: relative;
+  }
+}
+
 
 /* # FOOTER # */
 footer {
