@@ -18,8 +18,9 @@
 			<a class="navbar-brand" href="{{ path('default_index') }}">
 				<img src="{{ asset('/img/logo.png') }}" alt="logo studandbuddy" width="180px"/>
 			</a>
-					{# {# <button class="navbar-toggler" type="button" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()"> #}
-
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
 
 			<div class="collapse navbar-collapse" [ngClass]="{ show: navbarOpen }" id="navbarSupportedContent">
@@ -33,7 +34,12 @@
 					<li class="nav-item">
 						<a class="nav-link login" href="{{ path('app_login') }}">Se connecter</a>
 					</li>
-					<li class="nav-item ml-4">
+					<li class="nav-item ml-4 d-none d-lg-block">
+						<button type="button" onclick="location.href='{{ path('app_register') }}';">
+							S'inscrire
+						</button>
+					</li>
+					<li class="nav-item d-lg-none d-xl-none">
 						<button type="button" onclick="location.href='{{ path('app_register') }}';">
 							S'inscrire
 						</button>
