@@ -82,24 +82,33 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
+    /**
+     * @Route("/edit-profil", name="edit-profil")
+     */
+    public function editProfil()
+    {
+        return $this->render('user/edit-profil.html.twig', [
+            'controller_name' => 'UserController',
+        ]);
+    }
 
     /**
      * @Route("/edit-password", name="edit-password")
      */
     public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        if($request->isMethod('POST')){
+        if ($request->isMethod('POST')) {
             $em = $this->getDoctrine()->getManager();
 
             $user = $this->getUser();
 
-            if($request->request->get('pass') == $request->request->get('pass2')){
+            if ($request->request->get('pass') == $request->request->get('pass2')) {
                 $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('pass')));
                 $em->flush();
                 $this->addFlash('message', 'Mot de passe mis à jour !');
 
                 return $this->redirectToRoute('user_account');
-            }else{
+            } else {
                 $this->addFlash('error', 'Les deux mots de passe ne sont pas identiques');
             }
         }
@@ -114,18 +123,15 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
 
-        if($user == null)
-        {
+        if ($user == null) {
             return $this->redirect($this->generateUrl('user_account'));
         }
 
         $form = $this->createFormBuilder()->getForm();
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()
-                ->getManager()
-            ;
+                ->getManager();
 
             $em->remove($user);
             $em->flush();

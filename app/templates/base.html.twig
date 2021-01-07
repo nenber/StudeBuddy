@@ -40,8 +40,8 @@
 								<img src="{{ asset('/img/profil.png') }}" alt="profil" width="35px"/>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="#profil">Voir mon profil</a>
-								<a class="dropdown-item" href="#compte">Mon compte</a>
+								<a class="dropdown-item" href="{{ path('user_edit-profil') }}">Voir mon profil</a>
+								<a class="dropdown-item" href="{{ path('user_account') }}">Mon compte</a>
 								<a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a>
 							</div>
 						</li>
