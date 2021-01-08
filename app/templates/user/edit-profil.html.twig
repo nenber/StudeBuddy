@@ -115,5 +115,17 @@
 		</div>
 	</div>
 	{{ form_end(formEditProfil) }}
+	<p>
+		{{app.user.profilImage}}
+		{{app.user.description}}
+		{{app.user.isGodson}}
+		{{app.user.isGodparent}}
+		{% for item in app.user.spokenLanguage %}
+			<li>{{ item }}</li>
+		{% endfor %}
+		{% for item in app.user.languageToLearn %}
+			<li>{{ item }}</li>
+		{% endfor %}
 
+	</p>
 {% endblock %}
