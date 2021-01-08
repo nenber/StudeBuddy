@@ -57,7 +57,6 @@ class Godparent
         return $this;
     }
 
-
     /**
      * @return Collection|Event[]
      */
