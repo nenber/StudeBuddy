@@ -3,30 +3,140 @@
 {% block title %}Profil
 {% endblock %}
 {% block body %}
-	<div class="contenu" data-aos="fade-right" data-aos-offset="400">
-		<h1>
-			Bienvenue sur ton profil
-			{{ app.user.firstname }}
-			{{ app.user.lastname }}
-			<hr></h1>
-		<h1>
-			description
-			{{ app.user.description}}
-			<hr></h1>
-		<h1>
-			photo
-			<hr></h1>
-		<h1>
-			godson
-			{{ app.user.isGodson }}
-			<hr></h1>
-		<h1>
-			godparent
-			{{ app.user.isGodparent }}
-			<hr></h1>
-	</div>
-	<div>
-		{{ form(formEditProfil) }}
-		</div>
+	{{ form_start(formEditProfil) }}
+	<div id="register">
+		<div class="row register mt-sm-5">
+			<div class="col-lg-12 col-sm-12 circle-parent" data-aos="fade-right">
+				<div class="row">
+					<div class="col">
+						<h1>Bienvenue sur ton profil
+							{{ app.user.firstname }}
+							{{ app.user.lastname }}
+							<hr></h1>
+					</div>
 
-	{% endblock %}
+				</div>
+
+				<div class="row form-group">
+					<div class="col-lg-4 col-sm-12">
+						<div class="row">
+							<div class="col">
+								{% if app.user.profilImage == false %}
+									<div class="row profil-image">
+										<img src="{{ asset('/img/profil.png') }}"/>
+									</div>
+								{% else %}
+									{{app.user.profilImage}}
+								{% endif %}
+								<div class="row">
+									<p>
+										<a href="#">Modifier la photo de profil</a>
+										<!--faire un truc avec fileType pour changer les photos de profil à peaufiner-->
+									</p>
+								</div>
+
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col">
+								{{ form_label(formEditProfil.isGodparent, "Je souhaite parrainer  :") }}
+								{{ form_widget(formEditProfil.isGodparent) }}
+							</div>
+
+						</div>
+						<div class="row form-group">
+							<div class="col">
+								{{ form_label(formEditProfil.isGodson, "Je veux être fillieul :") }}
+								{{ form_widget(formEditProfil.isGodson) }}
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-12">
+						<div class="row form-group">
+							<div class="col">
+								<h5>Tes langues parlées :
+								</h5>
+								{{ form_label(formEditProfil.spokenLanguage, "Langue :")}}
+								{{ form_widget(formEditProfil.spokenLanguage, {
+										'attr': {
+											'class' : 'form-control'
+										}
+									})
+								}}
+							</div>
+							<br>
+						</div>
+						<div class="row form-goup">
+							<div class="col">
+								<h5>Tes langues en apprentissage :
+								</h5>
+								{{ form_label(formEditProfil.languageToLearn, "Langue :")}}
+								{{ form_widget(formEditProfil.languageToLearn, {
+										'attr': {
+											'class' : 'form-control'
+										}
+									})
+								}}
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-12">
+						<div class="row form-group">
+							<div class="col">
+								<h5>Ta description :</h5>
+								{{ form_widget(formEditProfil.description, {
+											'attr': {
+												'placeholder': "Présente-toi et parles-nous de tes hobbies !",
+												'class' : 'form-control'
+												}
+										})
+									}}
+								<p class="countDescription">{{ app.user.description|length }}/600</p>
+							</div>
+						</div>
+						<div class="row container-button">
+							<div class="">
+								<button class="btn-l green">Valider mes modifications !</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	{{ form_end(formEditProfil) }}
+	{#
+					TEST
+				<div>
+					<p>
+						spoken language:
+						{% for item in app.user.spokenLanguage %}
+							<li>{{ item }}</li>
+						{% endfor %}
+					</p>
+					<p>
+						language to learn:
+						{% for item in app.user.languageToLearn %}
+							<li>{{ item }}</li>
+						{% endfor %}
+					</p>
+					<p>
+						description:
+						{{ app.user.description }}
+					</p>
+					<p>
+						godparent:
+						{{ app.user.isGodparent }}
+					</p>
+					<p>
+						godson:
+						{{ app.user.isGodson }}
+					</p>
+				</div>	
+					
+					#}
+
+
+{% endblock %}
