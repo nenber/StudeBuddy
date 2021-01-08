@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\CustomUserAccountType;
 use App\Form\EditUserType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,10 +86,18 @@ class UserController extends AbstractController
     /**
      * @Route("/edit-profil", name="edit-profil")
      */
-    public function editProfil()
+    public function editProfil(Request $request)
     {
+        $user = $this->getUser();
+        $form = $this->createForm(CustomUserAccountType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->redirectToRoute('user_account');
+        }
         return $this->render('user/edit-profil.html.twig', [
-            'controller_name' => 'UserController',
+            'formEditProfil' => $form->createView(),
         ]);
     }
 

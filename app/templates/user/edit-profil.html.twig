@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil
+{% endblock %}
+{% block body %}
+	<div class="contenu" data-aos="fade-right" data-aos-offset="400">
+		<h1>
+			Bienvenue sur ton profil
+			{{ app.user.firstname }}
+			{{ app.user.lastname }}
+			<hr></h1>
+		<h1>
+			description
+			{{ app.user.description}}
+			<hr></h1>
+		<h1>
+			photo
+			<hr></h1>
+		<h1>
+			godson
+			{{ app.user.isGodson }}
+			<hr></h1>
+		<h1>
+			godparent
+			{{ app.user.isGodparent }}
+			<hr></h1>
+	</div>
+	<div>
+		{{ form(formEditProfil) }}
+		</div>
+
+	{% endblock %}
