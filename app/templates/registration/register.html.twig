@@ -11,12 +11,14 @@
 			<div class="col-lg-5 col-sm-12 circle-parent" data-aos="fade-right">
 				<h1>Inscription
 					<hr></h1>
+
+
 				<div class="form-group row mt-5">
 					<div class="col">
 						{{ form_label(registrationForm.lastName, "Nom :") }}
 						{{ form_widget(registrationForm.lastName, {
                                 'attr': {'placeholder': "Nom", 'class' : 'form-control'}
-                            }) }}
+                            }) }}port
 					</div>
 				</div>
 				<div class="form-group row mt-5">
@@ -33,6 +35,10 @@
 						{{ form_widget(registrationForm.email, {
                                 'attr': {'placeholder': "Adresse mail", 'class' : 'form-control'}
                             }) }}
+
+						{{ form_errors(registrationForm.email)}}
+
+
 						<p class="p-email">
 							* Email incorrecte.
 						</p>
@@ -41,13 +47,10 @@
 				<div class="form-group row mt-5">
 					<div class="col">
 						{{ form_label(registrationForm.plainPassword, "Mot de passe :") }}
-						{{ form_widget(registrationForm.plainPassword, {
-'attr': {'placeholder': "Mot de passe", 'class' : 'form-control',"pattern":"(?=^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"}
+						{{ form_widget(registrationForm.plainPassword, {'attr': {'placeholder': "Mot de passe", 'class' : 'form-control'}}) }}
+						{{ form_errors(registrationForm.plainPassword) }}
 
-                            }) }}
-						<p class="p-password">
-							* Format incorrect : votre mot de passe doit contenir au minimum 6 caractères avec au moins 1 majuscule, 1 minusculte, 1 chiffre et 1 caractère spécial.
-						</p>
+
 					</div>
 				</div>
 			</div>
@@ -75,6 +78,8 @@
 							{{ form_widget(registrationForm.phoneNumber, {
                                 'attr': {'placeholder': "Numéro de téléphone", 'class' : 'form-control'}
                             }) }}
+							{{ form_errors(registrationForm.phoneNumber) }}
+
 							<p class="p-phone">
 								* Format incorrect.
 							</p>
@@ -101,34 +106,4 @@
 </div>
 {{ form_end(registrationForm) }}{% endblock %}{% block javascripts %}
 {{ parent() }}
-<script type="text/javascript">
-
-	$(document).ready(function () {
-var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
-
-
-$('#registration_form_plainPassword').change(function () {
-if ($(this).val().match(strongRegex)) {
-$(".p-password").css("display", "none")
-} else {
-$(".p-password").css("display", "block")
-}
-});
-var emailRegex = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*");
-$('#registration_form_email').change(function () {
-if ($(this).val().match(emailRegex)) {
-$(".p-email").css("display", "none")
-} else {
-$(".p-email").css("display", "block")
-}
-});
-var phoneRegex = new RegExp("^(0[1-68])(?:[ _.-]?(\d{2})){4}$");
-$("#registration_form_phoneNumber").keyup(function () {
-if ($(this).val().match(phoneRegex)) {
-$(".p-phone").css("display", "none")
-} else {
-$(".p-phone").css("display", "block")
-}
-});
-});
-</script>{% endblock %}
+<script type="text/javascript"></script>{% endblock %}
