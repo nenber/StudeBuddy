@@ -248,8 +248,20 @@ footer p{
   font-weight: 600;
   color: white;
 }
+/* # EDIT-PROFIL # */
 
+.edit-profil h5{
+  font-weight: bolder;
+  color: #97ccef;
+}
 
+.edit-profil textarea{
+  height: 40vh;
+}
+.edit-profil .plusButton{
+  height: 18px;
+  width: 18px;
+}
 /* {
     # LOGIN #
 } */
