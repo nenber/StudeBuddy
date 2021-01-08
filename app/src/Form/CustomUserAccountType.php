@@ -24,24 +24,23 @@ class CustomUserAccountType extends AbstractType
             //     'required' => true,
             // ])
             ->add('isGodson', CheckboxType::class, [
-                'required' => true,
+                'required' => false,
             ])
             ->add('isGodparent', CheckboxType::class, [
-                'required' => true,
+                'required' => false,
             ])
             ->add('spokenLanguage', LanguageType::class, [
                 'required' => true,
             ])
             ->add('languageToLearn', LanguageType::class, [
                 'required' => true,
-                
+
             ])
             ->add('description', TextareaType::class, [
                 'required' => true,
-            ])
-            ;
+            ]);
 
-            $builder->get('spokenLanguage')
+        $builder->get('spokenLanguage')
             ->addModelTransformer(new CallbackTransformer(
                 function ($tagsAsArray) {
                     // transform the array to a string
@@ -51,10 +50,9 @@ class CustomUserAccountType extends AbstractType
                     // transform the string back to an array
                     return explode(', ', $tagsAsString);
                 }
-            ))
-            ;
+            ));
 
-            $builder->get('languageToLearn')
+        $builder->get('languageToLearn')
             ->addModelTransformer(new CallbackTransformer(
                 function ($tagsAsArray) {
                     // transform the array to a string
@@ -64,8 +62,7 @@ class CustomUserAccountType extends AbstractType
                     // transform the string back to an array
                     return explode(', ', $tagsAsString);
                 }
-            ))
-            ;
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
