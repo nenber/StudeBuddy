@@ -125,8 +125,6 @@ class UserController extends AbstractController
             $newMdp  = $request->request->get("inputMdp");
             if(preg_match_all("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})^", $newMdp) > 0)
             {
-                dump("test");
-                die(0);
                 $result->setPassword(
                             $passwordEncoder->encodePassword(
                                 $result,
