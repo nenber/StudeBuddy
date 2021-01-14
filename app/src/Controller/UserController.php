@@ -101,7 +101,8 @@ class UserController extends AbstractController
         {
             return $this->render('user/reset-password.html.twig', [
                         'controller_name' => 'UserController',
-                        "email" => $result->getEmail()
+                        "email" => $result->getEmail(),
+                        'token' => $result->getToken()
                     ]);
         }
         else
@@ -118,19 +119,29 @@ class UserController extends AbstractController
     public function changePassword(Request $request,$email,UserPasswordEncoderInterface $passwordEncoder) 
     {
         $em = $this->getDoctrine()->getManager();
+        $token = $request->query->get('token');
         $result = $em->getRepository(User::class)->findOneBy(['email' => $email]);
         if ($result != null) {
             $newMdp  = $request->request->get("inputMdp");
-            $result->setPassword(
-                $passwordEncoder->encodePassword(
-                    $result,
-                    $newMdp
-                )
-            );
-            $em->persist($result);
-            $em->flush();
+            if(preg_match_all("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})^", $newMdp) > 0)
+            {
+                dump("test");
+                die(0);
+                $result->setPassword(
+                            $passwordEncoder->encodePassword(
+                                $result,
+                                $newMdp
+                            )
+                        );
+                        $em->persist($result);
+                        $em->flush();
+            }
+            else{
+                $this->redirectToRoute('user_reset_password',['token'=>$token]);
+            }
+     
         }
-                    return $this->redirectToRoute("default_index");
+         return $this->redirectToRoute("default_index");
 
 
         
