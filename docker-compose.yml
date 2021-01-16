@@ -59,6 +59,11 @@ services:
       #- app-front:/srv/app/public/build:ro
     ports:
       - "8082:80"
+  mailcatcher:
+    image: yappabe/mailcatcher
+    ports:
+        - 1025:1025
+        - 1080:1080
 
 volumes:
   db-data: {}
