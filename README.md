@@ -32,4 +32,4 @@ docker-compose exec php bin/console doctrine:schema:update --dump-sql
 docker-compose exec php bin/console doctrine:schema:update --force
 ```
 
-## STUD&BUDDY
+## STUD&BUDDY by Céline, Bérenger, Mathieu, Nathalie, Victor
