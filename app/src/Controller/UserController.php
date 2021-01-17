@@ -13,6 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Form\CustomUserAccountType;
+use App\Form\EditUserType;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 
 
@@ -132,6 +135,114 @@ class UserController extends AbstractController
     {
         return $this->render('user/register.html.twig', [
             'controller_name' => 'UserController',
+        ]);
+    }
+
+    /**
+     * @Route("/edit", name="edit")
+     */
+    public function editUser(Request $request)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(EditUserType::class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('message', 'Compte mis à jour');
+            return $this->redirectToRoute('user_account');
+        }
+
+        return $this->render('user/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/account", name="account")
+     */
+    public function userAccount()
+    {
+        return $this->render('user/user-account.html.twig', [
+            'controller_name' => 'UserController',
+        ]);
+    }
+    /**
+     * @Route("/edit-profil", name="edit-profil")
+     */
+    public function editProfil(Request $request)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(CustomUserAccountType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->redirectToRoute('user_edit-profil');
+        }
+        return $this->render('user/edit-profil.html.twig', [
+            'formEditProfil' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/edit-password", name="edit-password")
+     */
+    public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        if ($request->isMethod('POST')) {
+            $em = $this->getDoctrine()->getManager();
+
+            $user = $this->getUser();
+
+            if ($request->request->get('pass') == $request->request->get('pass2')) {
+                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('pass')));
+                $em->flush();
+                $this->addFlash('message', 'Mot de passe mis à jour !');
+
+                return $this->redirectToRoute('user_account');
+            } else {
+                $this->addFlash('error', 'Les deux mots de passe ne sont pas identiques');
+            }
+        }
+
+        return $this->render('user/edit-password.html.twig');
+    }
+
+    /**
+     * @Route("/delete", name="delete")
+     */
+    public function deleteUser(Request $request)
+    {
+        $user = $this->getUser();
+
+        if ($user == null) {
+            return $this->redirect($this->generateUrl('user_account'));
+        }
+
+        $form = $this->createFormBuilder()->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()
+                ->getManager();
+
+            $em->remove($user);
+            $em->flush();
+
+            $this->get('security.context')->setToken(null);
+            $this->get('request')->getSession()->invalidate();
+
+            $request->getSession()->getFlashBag()->add('notice', "Votre compte a bien été supprimé.");
+
+            return $this->redirect($this->generateUrl('user_account'));
+        }
+
+        return $this->render('user/delete-account.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }
