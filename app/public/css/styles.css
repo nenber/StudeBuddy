@@ -6,9 +6,11 @@ body {
   padding: 0;
   scroll-behavior: smooth;
 }
+
 body {
   font-family: "Nunito", sans-serif;
 }
+
 h1 {
   font-family: "Nunito", sans-serif;
   font-weight: bold;
@@ -86,10 +88,12 @@ hr {
   label {
     font-size: 16px;
   }
+
   .form-control {
     height: 42px;
   }
 }
+
 /* {
     # NAVBAR #
 } */
@@ -116,6 +120,7 @@ hr {
   background-color: white !important;
   box-shadow: 0 0 8px 1px #b4b4b4;
 }
+
 .navbar-light .navbar-nav .nav-link {
   margin-left: 25px;
   font-family: "Nunito", sans-serif;
@@ -136,6 +141,8 @@ hr {
 /* {
     # INDEX ou bien HOME #
 } */
+.container-fluid {}
+
 
 #presentation {
   margin-top: 4%;
@@ -180,11 +187,13 @@ hr {
 }
 
 #description h1 {
+  color: #366DB4;
   color: #366db4;
   text-align: center;
 }
 
 #description h3 {
+  color: #97CCEF;
   color: #97ccef;
   padding-top: 10%;
   line-height: 1.5;
@@ -195,6 +204,9 @@ hr {
 #features .value-card img {
   width: 85px;
 }
+
+#features h1 {
+  color: #366DB4;}
 
 #features .value-card h2 {
   width: 250px;
@@ -210,6 +222,13 @@ hr {
   font-weight: lighter;
 }
 
+#features p {
+  font-size: 30px;
+  color: #97CCEF;
+}
+
+#gallery h1 {
+  color: #5bb572;}
 #gallery .bloc {
   height: 250px;
   background: #97ccef;
@@ -270,9 +289,11 @@ footer p{
   height: 100vh;
   overflow: hidden;
 }
+
 #login .block-blue p {
   margin-top: 15%;
 }
+
 #login .block-blue a {
   color: white;
   font-weight: bold;
@@ -347,6 +368,7 @@ footer p{
   z-index: -10;
   top: 0;
 }
+
 #register .circle-left:before {
   display: block;
   overflow: hidden;
@@ -396,6 +418,18 @@ footer p{
 #register .p-password {
   font-size: 14px;
   color: #e03030;
+}
+
+#register .p-email {
+  font-size: 14px;
+  color: #e03030;
+  display: none;
+}
+
+#register .p-phone {
+  font-size: 14px;
+  color: #e03030;
+  display: none;
 }
 
 @media (max-width: 575.98px) {
