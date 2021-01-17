@@ -1,107 +1,109 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Stud & Buddy - Plateforme d'entraide{% endblock %}
+{% block title %}Stud & Buddy - Plateforme d'entraide
+{% endblock %}
 
 {% block body %}
 
-    <div id="presentation">
-        <div class="row">
-            <div class="col-lg-5 block-blue d-none d-lg-block d-xl-block">
-                    <div class="col-xl-12 d-flex flex-column align-middle align-items-center" data-aos="fade-right" data-aos-offset="400">
+	<div id="presentation">
+		<div class="bloc">
+			<div class="row">
+				<div class="col-xl-6 order-xl-1 order-2">
+					<div class="block-blue">
+						<div class="d-flex ml-auto d-flex align-items-center">
+							<div class="d-flex flex-column m-xl-5 m-4">
+								<h1 class="mt-xl-1 mt-5">
+									L'entraide internationale étudiante
+								</h1>
+								<p>
+									Intégrez-vous facilement que vous veniez ici
+									<br/>
+									ou d'ailleurs !
+								</p>
+								<button type="button" class="btn-lg">S'inscrire</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-6 order-xl-2 order-1">
+					<div class="block-image">
+						<img src="{{ asset('/img/header-img.jpg') }}" alt="talking strangers" width="833px"/>
+					</div>
+				</div>
+			</div>
+		</div>
 
-                        <h1 > L'entraide internationale étudiante </h1>
-                        <p > Intégrez-vous facilement que vous veniez ici <br/> ou d'ailleurs ! </p>
-                        <button type="button" class="btn-lg">S'inscrire</button>
-                    </div>
+	</div>
+	<section id="description" class="mt-5">
+		<h1 class="mx-auto pt-5">
+			Stud&Buddy ? Kézako ?
+		</h1>
+		<div class="row">
+			<div class="col-lg-5 offset-lg-1 p-xl-5 p-0">
+				<img src="{{ asset('/img/6461.png') }}" alt="talking strangers" width="100%"/>
+			</div>
 
-            </div>
-            <div class="col-lg-7">
-                <img src="{{ asset('/img/10827.png') }}" alt="talking strangers" width="100%" />
-            </div>
-        </div>
+			<div class="col-lg-5 p-5 p-xl-5">
+				<h3>
+					Stud&Buddy est une plateforme permettant aux étudiants de France et aux étudiants étrangers de mieux s’intégrer grâce à un parrain étudiant.
+				</h3>
+			</div>
+		</div>
+	</section>
+	<section id="gallery">
+		<div class="bloc">
+			<div class="container h-100">
+				<div class="row h-100 align-items-center">
+					<div class="col-12 text-center">
+						<h1 data-aos="zoom-in" data-aos-easing="ease-in-sine">
+							L'entraide internationale étudiante
+							<br/>avec un système parrain/filleul.
+						</h1>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    </div>
-    <div id="description">
-            <h1 class="vertical-align-middle pt-5"> Stud & Buddy ? Kézako ? </h1>
-        <div class="row">
-            <div class="col-lg-6 p-5">
-                <img src="{{ asset('/img/6461.png') }}" alt="talking strangers" width="100%" />
-            </div>
+	</section>
+	<section id="features" class="mb-5">
+		<div class="container-fluid overflow-hidden">
+			<h1 class="text-left mb-5">
+				Fonctionnalités de la plateforme
+			</h1>
 
-            <div class="col-lg-6 p-5">
-                <h3> Stud&Buddy est une plateforme permettant aux étudiants de France et aux étudiants étrangers de mieux s’intégrer grâce à un parrain étudiant.   </h3>
-            </div>
-        </div>
-    </div>
-    <div id="gallery">
-        <h1 class="text-center"> Découvrez nos parrains !</h1>
+			<div class="row text-center">
+				<div class="col-xl-12">
+					<div class="d-flex flex-xl-row flex-lg-row flex-column justify-content-between flex-wrap">
+						<div class="value-card" data-aos="zoom-in" data-aos-offset="200" data-aos-easing="ease-in-sine">
+							<img src="{{ asset('/img/calendar.png') }}" alt="agenda" class="mb-5 mx-auto" width="100px"/>
+							<h2 class="mb-4 mx-auto">Organiser des évènements</h2>
+							<p class="mb-5 mx-auto">
+								Rejoignez des évènements pour rencontrer des étudiants pour vous intégrer.
+							</p>
+						</div>
 
-        <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner ">
-                <div class="carousel-item d-flex align-content-center active">
-                    <img class="d-block w-50" src="/img/1.png" alt="First slide">
-                </div>
-                <div class="carousel-item d-flex align-content-center">
-                    <img class="d-block w-50" src="/img/1.png" alt="Second slide">
-                </div>
-                <div class="carousel-item d-flex align-content-center">
-                    <img class="d-block w-50" src="/img/1.png" alt="Third slide">
-                </div>
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-    </div>
-    <div id="features">
-                <h1 class="text-center my-5"> Fonctionnalités de la plateforme </h1>
+						<div class="value-card" data-aos="zoom-in" data-aos-offset="300" data-aos-easing="ease-in-sine">
+							<img src="{{ asset('/img/chat.png') }}" alt="chat" class="mb-5 mx-auto" width="100px"/>
+							<h2 class="mb-3 mt-2 mx-auto">Échanger des messages</h2>
+							<p class="mb-5 mx-auto">
+								Discuter avec votre Buddy par messages privées afin d’en connaître davantage sur la vie étudiante.
 
-            <div class="row mb-5">
-                <div class="col-lg-4 text-center">
-                    <img src="{{ asset('/img/calendar.png') }}" alt="talking strangers"/>
-                    <br/>
-                    <p> Organiser des évènements</p>
-                </div>
-                <div class="col-lg-4 text-center">
-                    <img src="{{ asset('/img/chat.png') }}" alt="talking strangers"/>
-                    <br/>
-                    <p> Echanger des messages</p>
+							</p>
+						</div>
 
-                </div>
-                <div class="col-lg-4 text-center">
-                    <img src="{{ asset('/img/talk.png') }}" alt="talking strangers"/>
-                    <br/>
-                    <p> Apprendre des langues</p>
-                </div>
-            </div>
+						<div class="value-card" data-aos="zoom-in" data-aos-offset="400" data-aos-easing="ease-in-sine">
+							<img src="{{ asset('/img/talk.png') }}" alt="talking strangers" class="mb-5 mx-auto" width="100px"/>
+							<h2 class="mb-4 mt-1 mx-auto">Apprendre des langues</h2>
+							<p class="mb-5 mx-auto">
+								Améliorez-vous dans l’apprentissage des langues grâce à votre Buddy
 
-    </div>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <div id="footer">
-        <div class="col">
-            <svg width="268" height="57" viewBox="0 0 268 57" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <rect width="268" height="57" fill="url(#pattern0)"/>
-                <defs>
-                    <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-                        <use xlink:href="#image0" transform="translate(0 -0.0139911) scale(0.00179211 0.00842608)"/>
-                    </pattern>
-                    <image id="image0" width="558" height="122" xlink:href="data:image/png;base64,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"/>
-                </defs>
-            </svg>
-            <h3> Police de confidentialité </h3>
-            <h3> Mentions légales </h3>
-        </div>
-
-    </div>
+	</section>
 
 {% endblock %}
