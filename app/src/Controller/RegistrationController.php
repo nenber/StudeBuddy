@@ -29,6 +29,7 @@ class RegistrationController extends AbstractController
                 )
             );
             $user->setCreatedAt(new \DateTime('now'));
+            $user->setSpokenLanguage(["Francais"]);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
