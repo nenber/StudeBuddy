@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\CustomUserAccountType;
 use App\Form\EditUserType;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 
@@ -243,6 +244,30 @@ class UserController extends AbstractController
 
         return $this->render('user/delete-account.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/matching", name="matching")
+     */
+
+    public function findBuddy(UserRepository $repository)
+    {
+        $user = $this->getUser();
+        $userLanguageToLearn = $user->getLanguageToLearn();
+        $subcribers = $repository->findByPatronage(true);
+        $buddies = array();
+        foreach ($subcribers as $person) {
+            $subcriberSpokenLanguage = $person->getSpokenLanguage();
+            if (!empty(array_intersect($subcriberSpokenLanguage, $userLanguageToLearn))) {
+                array_push($buddies, $person);
+            }
+        }
+
+        return $this->render('user/matching.html.twig', [
+            'buddies' => $buddies,
+            'controller_name' => 'UserController',
+
         ]);
     }
 }

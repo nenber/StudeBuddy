@@ -53,6 +53,43 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
     */
 
+    /**
+     * @return User[] Returns an array of User objects
+     */
+
+    public function findByLanguageToLearn($language_to_learn)
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $query = "SELECT * FROM user 
+        WHERE user.spoken_language IN ({implode(',', $language_to_learn)})";
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+    }
+    public function findBySpokenLanguage($spokenLanguage): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.language_to_learn IN :value')
+            ->setParameter('value', $spokenLanguage)
+            ->setMaxResults(4)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findByPatronage($patronage): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.is_godson = :val')
+            ->orWhere('u.is_godparent = :val')
+            ->setParameter('val', $patronage)
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?User
     {
