@@ -255,8 +255,17 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $userLanguageToLearn = $user->getLanguageToLearn();
-        $subcribers = $repository->findByPatronage(true);
         $buddies = array();
+        if (($user->getIsGodparent()) && ($user->getIsGodson())) {
+            $subcribers = $repository->findByPatronage(true);
+        }
+        if (($user->getIsGodparent())) {
+            $subcribers = $repository->findGodson(true);
+        }
+        if (($user->getIsGodson())) {
+            $subcribers = $repository->findGodparent(true);
+        }
+
         foreach ($subcribers as $person) {
             if ($person != $user) {
                 $subcriberSpokenLanguage = $person->getSpokenLanguage();
