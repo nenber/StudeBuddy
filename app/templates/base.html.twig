@@ -30,8 +30,13 @@
 						<li class="nav-item">
 							<a class="nav-link" href="#matching">Matching</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#events">Mes évènements</a>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mes évènements</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdownn" >
+								<a class="dropdown-item" href="{{ path('event_map') }}">Rejoindre un évènement</a>
+								<a class="dropdown-item" href="{{ path('user_account') }}">Mes évènements</a>
+								<a class="dropdown-item" href="{{ path('app_logout') }}">Créer un évènement</a>
+							</div>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#messagerie">Messagerie</a>
