@@ -23,7 +23,11 @@
 {% block javascripts %}
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 	<script type="text/javascript">
-		// Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
+
+		function showAlert() {
+console.log("Evènement de click détecté");
+}
+// Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
 var carte = L.map('map').setView([
 51.505, -0.09
 ], 13);
@@ -34,5 +38,7 @@ minZoom: 1,
 maxZoom: 20
 }).addTo(carte);
 var marker = L.marker([51.505, -0.09]).addTo(carte);
+marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+marker.showAlert();
 	</script>
 {% endblock %}
