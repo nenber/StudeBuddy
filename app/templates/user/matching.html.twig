@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choisi ton Buddy
+{% endblock %}
+
+{% block body %}
+	<div id="register">
+		<div class="row register mt-sm-5">
+			<div class="col-lg-12 col-sm-12" data-aos="fade-right">
+				<div class="row">
+					<div class="col">
+						<h1>Choisis ton Buddy
+							{{ app.user.firstname }}
+							{{ app.user.lastname }}
+							<hr></h1>
+					</div>
+					{{buddies|length}}
+					{{ app.user.languageToLearn|json_encode(constant('JSON_PRETTY_PRINT')) }}
+					<ul>
+						{% for item in buddies %}
+							<li>{{ item.spokenLanguage|json_encode(constant('JSON_PRETTY_PRINT')) }}
+								{{ item.languageToLearn|json_encode(constant('JSON_PRETTY_PRINT')) }}
+								{{ item.firstname|json_encode(constant('JSON_PRETTY_PRINT')) }}
+								{{ item.lastname|json_encode(constant('JSON_PRETTY_PRINT')) }}
+								{{ item.description|json_encode(constant('JSON_PRETTY_PRINT')) }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
