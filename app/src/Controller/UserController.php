@@ -258,9 +258,11 @@ class UserController extends AbstractController
         $subcribers = $repository->findByPatronage(true);
         $buddies = array();
         foreach ($subcribers as $person) {
-            $subcriberSpokenLanguage = $person->getSpokenLanguage();
-            if (!empty(array_intersect($subcriberSpokenLanguage, $userLanguageToLearn))) {
-                array_push($buddies, $person);
+            if ($person != $user) {
+                $subcriberSpokenLanguage = $person->getSpokenLanguage();
+                if (!empty(array_intersect($subcriberSpokenLanguage, $userLanguageToLearn))) {
+                    array_push($buddies, $person);
+                }
             }
         }
 
