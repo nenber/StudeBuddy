@@ -8,23 +8,46 @@
 		<div class="row register mt-sm-5">
 			<div class="col-lg-12 col-sm-12" data-aos="fade-right">
 				<div class="row">
-					<div class="col">
+					<div class="col-lg-12">
 						<h1>Choisis ton Buddy
 							{{ app.user.firstname }}
 							{{ app.user.lastname }}
 							<hr></h1>
 					</div>
-					{{buddies|length}}
-					{{ app.user.languageToLearn|json_encode(constant('JSON_PRETTY_PRINT')) }}
-					<ul>
-						{% for item in buddies %}
-							<li>{{ item.spokenLanguage|json_encode(constant('JSON_PRETTY_PRINT')) }}
-								{{ item.languageToLearn|json_encode(constant('JSON_PRETTY_PRINT')) }}
-								{{ item.firstname|json_encode(constant('JSON_PRETTY_PRINT')) }}
-								{{ item.lastname|json_encode(constant('JSON_PRETTY_PRINT')) }}
-								{{ item.description|json_encode(constant('JSON_PRETTY_PRINT')) }}</li>
-						{% endfor %}
-					</ul>
+					<div class="row">
+						{{buddies|length}}
+						{{ app.user.languageToLearn|json_encode(constant('JSON_PRETTY_PRINT')) }}
+
+						{% if warning == true %}
+							<div class="alert alert-info alert-dismissible">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								<strong>Stop ! Contrôle d'identité !</strong>
+								<p>
+									Fillieul ?
+									<small>Non...</small>
+									Parrain ?
+									<small>Non plus...</small>
+									<br>
+									Donc on ne peut pas te mettre en lien avec des Buddies.<br>
+									Et en plus tu ne peux pas profité de l'intégralité du site.<br>
+									Reviens après avoir modifié ton
+									<a href="{{ path('user_edit-profile') }}" class="alert-link">
+										profile</a>
+								</p>
+
+							</div>
+						{% endif %}
+						<ul>
+							{% for item in buddies %}
+								<li>{{ item.spokenLanguage|json_encode(constant('JSON_PRETTY_PRINT')) }}
+									{{ item.languageToLearn|json_encode(constant('JSON_PRETTY_PRINT')) }}
+									{{ item.firstname|json_encode(constant('JSON_PRETTY_PRINT')) }}
+									{{ item.lastname|json_encode(constant('JSON_PRETTY_PRINT')) }}
+									{{ item.description|json_encode(constant('JSON_PRETTY_PRINT')) }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+
 				</div>
 			</div>
 		</div>

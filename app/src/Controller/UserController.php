@@ -256,20 +256,19 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $userLanguageToLearn = $user->getLanguageToLearn();
-        $buddies = array();
-        if ((($user->getIsGodparent()) && ($user->getIsGodson())) || (($user->getIsGodparent() == false) && ($user->getIsGodson() == false))) {
+        $subcribers = $buddies = array();
+        $warning = false;
+        if (($user->getIsGodparent()) && ($user->getIsGodson())) {
             $subcribers = $repository->findByPatronage(true);
-            if (($user->getIsGodparent() == false) && ($user->getIsGodson() == false)) {
-                $this->addFlash('message', "tu n'es ni fillieul ni parrain, tu ne pourras pas partciper aux évènements");
-            }
         }
         if (($user->getIsGodparent())) {
             $subcribers = $repository->findGodson(true);
         }
         if (($user->getIsGodson())) {
             $subcribers = $repository->findGodparent(true);
+        } else {
+            $warning = true;
         }
-
         foreach ($subcribers as $person) {
             if ($person != $user) {
                 $subcriberSpokenLanguage = $person->getSpokenLanguage();
@@ -282,7 +281,7 @@ class UserController extends AbstractController
         return $this->render('user/matching.html.twig', [
             'buddies' => $buddies,
             'controller_name' => 'UserController',
-
+            'warning' => $warning,
         ]);
     }
 }
