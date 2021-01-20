@@ -19,9 +19,11 @@ class EventController extends AbstractController
      */
     public function index(): Response
     {
+
         return $this->render('event/index.html.twig', [
             'controller_name' => 'EventController',
         ]);
+        
     }
 
     /**
@@ -29,6 +31,8 @@ class EventController extends AbstractController
      */
     public function displayMap()
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('event/map.html.twig', [
             'controller_name' => 'EventController',
         ]);
