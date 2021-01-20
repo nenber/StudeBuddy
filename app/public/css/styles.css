@@ -137,9 +137,9 @@ hr {
   color: #366db4 !important;
 }
 
-/* 
+/* {
     # INDEX ou bien HOME #
- */
+} */
 
 #presentation {
   margin-top: 4%;
@@ -228,7 +228,7 @@ hr {
 }
 
 #gallery h1 {
-  color: #ffffff;
+  color: #5bb572;
 }
 #gallery .bloc {
   height: 250px;
@@ -435,4 +435,18 @@ footer p {
   #register .register {
     padding: 25% 0 0;
   }
+}
+
+/* {
+    # MAP #
+} */
+#map-display #map {
+  height: 100vh;
+}
+#map-display {
+  margin-top: 5%;
+}
+
+#map-display h1 {
+  color: #366db4;
 }
