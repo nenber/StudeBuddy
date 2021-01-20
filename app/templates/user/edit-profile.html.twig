@@ -20,12 +20,12 @@
 					<div class="col-lg-4 col-sm-12">
 						<div class="row">
 							<div class="col">
-								{% if app.user.profilImage == false %}
+								{% if app.user.profileImage == false %}
 									<div class="row profil-image">
 										<img src="{{ asset('/img/profil.png') }}"/>
 									</div>
 								{% else %}
-									{{app.user.profilImage}}
+									{{app.user.profileImage}}
 								{% endif %}
 								<div class="row">
 									<p>
@@ -116,7 +116,7 @@
 	</div>
 	{{ form_end(formEditProfil) }}
 	<p>
-		{{app.user.profilImage}}
+		{{app.user.profileImage}}
 		{{app.user.description}}
 		{{app.user.isGodson}}
 		{{app.user.isGodparent}}

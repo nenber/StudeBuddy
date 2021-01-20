@@ -173,7 +173,7 @@ class UserController extends AbstractController
         ]);
     }
     /**
-     * @Route("/edit-profil", name="edit-profil")
+     * @Route("/edit-profile", name="edit-profile")
      */
     public function editProfil(Request $request)
     {
@@ -183,9 +183,10 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            return $this->redirectToRoute('user_edit-profil');
+            $this->addFlash('message', 'Profile mis à jour');
+            return $this->redirectToRoute('user_edit-profile');
         }
-        return $this->render('user/edit-profil.html.twig', [
+        return $this->render('user/edit-profile.html.twig', [
             'formEditProfil' => $form->createView(),
         ]);
     }
@@ -256,8 +257,11 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $userLanguageToLearn = $user->getLanguageToLearn();
         $buddies = array();
-        if (($user->getIsGodparent()) && ($user->getIsGodson())) {
+        if ((($user->getIsGodparent()) && ($user->getIsGodson())) || (($user->getIsGodparent() == false) && ($user->getIsGodson() == false))) {
             $subcribers = $repository->findByPatronage(true);
+            if (($user->getIsGodparent() == false) && ($user->getIsGodson() == false)) {
+                $this->addFlash('message', "tu n'es ni fillieul ni parrain, tu ne pourras pas partciper aux évènements");
+            }
         }
         if (($user->getIsGodparent())) {
             $subcribers = $repository->findGodson(true);
