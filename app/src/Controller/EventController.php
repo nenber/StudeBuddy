@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\EventRepository;
@@ -11,7 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/event")
+ * Class EventController
+ * @package App\Controller
+ * 
+ * * @Route("/event", name="event_")
  */
 class EventController extends AbstractController
 {
@@ -91,4 +95,17 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('event_index');
     }
+
+    /**
+     * @Route("/map", name="map")
+     */
+    public function displayMap()
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('event/map.html.twig', [
+            'controller_name' => 'EventController',
+        ]);
+    }
+
 }
