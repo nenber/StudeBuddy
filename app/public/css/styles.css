@@ -453,6 +453,9 @@ footer p {
 #eventIndex p .gras {
   font-weight: bold;
 }
+#eventIndex .card {
+  display:inline-block;
+}
 
 /* {
     # MAP #

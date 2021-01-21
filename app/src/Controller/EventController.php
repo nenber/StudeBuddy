@@ -13,9 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class EventController
- * @package App\Controller
  * 
- * * @Route("/event", name="event_")
+ * * @Route("/event")
  */
 class EventController extends AbstractController
 {
