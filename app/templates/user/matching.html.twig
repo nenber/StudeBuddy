@@ -38,7 +38,7 @@
 							</div>
 						{% endif %}
 						<ul>
-							{% for item in buddies %}
+							{% for item in buddies|shuffle %}
 								<li>{{ item.spokenLanguage|json_encode(constant('JSON_PRETTY_PRINT')) }}
 									{{ item.languageToLearn|json_encode(constant('JSON_PRETTY_PRINT')) }}
 									{{ item.firstname|json_encode(constant('JSON_PRETTY_PRINT')) }}
