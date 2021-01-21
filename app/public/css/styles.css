@@ -437,3 +437,19 @@ footer p{
     padding: 25% 0 0;
   }
 }
+
+#eventIndex {
+  margin-top: 100px !important;
+}
+
+#eventIndex h1 {
+  color: #366db4;
+}
+
+#eventIndex h3 {
+  color: #366db4;
+}
+
+#eventIndex p .gras {
+  font-weight: bold;
+}
