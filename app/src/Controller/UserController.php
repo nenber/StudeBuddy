@@ -257,23 +257,27 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $userLanguageToLearn = $user->getLanguageToLearn();
         $subcribers = $buddies = array();
-        $warning = false;
+        $warning = $sorry = false;
         if (($user->getIsGodparent()) && ($user->getIsGodson())) {
             $subcribers = $repository->findByPatronage(true);
         }
-        if (($user->getIsGodparent())) {
+        if (($user->getIsGodparent()) && ($user->getIsGodson() == false)) {
             $subcribers = $repository->findGodson(true);
         }
-        if (($user->getIsGodson())) {
+        if (($user->getIsGodson()) && ($user->getIsGodparent() == false)) {
             $subcribers = $repository->findGodparent(true);
-        } else {
+        }
+        if (($user->getIsGodparent() == false) && ($user->getIsGodson() == false)) {
             $warning = true;
         }
+
         foreach ($subcribers as $person) {
             if ($person != $user) {
                 $subcriberSpokenLanguage = $person->getSpokenLanguage();
                 if (!empty(array_intersect($subcriberSpokenLanguage, $userLanguageToLearn))) {
                     array_push($buddies, $person);
+                } else {
+                    $sorry = true;
                 }
             }
         }
@@ -282,6 +286,7 @@ class UserController extends AbstractController
             'buddies' => $buddies,
             'controller_name' => 'UserController',
             'warning' => $warning,
+            'sorry' => $sorry,
         ]);
     }
 }

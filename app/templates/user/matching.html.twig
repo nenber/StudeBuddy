@@ -37,6 +37,16 @@
 
 							</div>
 						{% endif %}
+
+						{% if sorry == true %}
+							<div class="alert alert-warning alert-dismissible">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								<strong>Oups...</strong>
+								<p>
+									C'est un peu embarrassant mais y a personne qui correspond à ton profil.
+								</p>
+							</div>
+						{% endif %}
 						<ul>
 							{% for item in buddies %}
 								<li>{{ item.spokenLanguage|json_encode(constant('JSON_PRETTY_PRINT')) }}
