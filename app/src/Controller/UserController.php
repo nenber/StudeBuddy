@@ -276,7 +276,7 @@ class UserController extends AbstractController
                 $subcriberSpokenLanguage = $person->getSpokenLanguage();
                 if (!empty(array_intersect($subcriberSpokenLanguage, $userLanguageToLearn))) {
                     array_push($buddies, $person);
-                } else {
+                } else if (empty($buddies)) {
                     $sorry = true;
                 }
             }

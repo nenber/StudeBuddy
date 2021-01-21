@@ -15,9 +15,6 @@
 							<hr></h1>
 					</div>
 					<div class="row">
-						{{buddies|length}}
-						{{ app.user.languageToLearn|json_encode(constant('JSON_PRETTY_PRINT')) }}
-
 						{% if warning == true %}
 							<div class="alert alert-info alert-dismissible">
 								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -43,10 +40,15 @@
 								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 								<strong>Oups...</strong>
 								<p>
-									C'est un peu embarrassant mais y a personne qui correspond à ton profil.
+									C'est un peu embarrassant mais y a personne qui correspond ton profil.<br>
+									On t'invite modifier ton
+									<a href="{{ path('user_edit-profile') }}" class="alert-link">
+										profile</a>
+									soit en changeant ton role ou bien en ajoutant des langues d'apprentissage.
 								</p>
 							</div>
 						{% endif %}
+
 						<ul>
 							{% for item in buddies %}
 								<li>{{ item.spokenLanguage|json_encode(constant('JSON_PRETTY_PRINT')) }}
