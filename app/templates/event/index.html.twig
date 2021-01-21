@@ -31,12 +31,10 @@
                         <p><span class="gras">Organisateur :</span> {{ event.name }}</p>
                         <p><span class="gras">Adresse :</span> {{ event.address }}</p>
                         <p><span class="gras">Date :</span> {{ event.date ? event.date|date('Y-m-d') : '' }}</p>
-                        <a href="{{ path('event_show', {'id': event.id}) }}">Plus de détail</a>
-                        <br>
                         <a href="{{ path('event_edit', {'id': event.id}) }}">Modifier</a>
                         <br>
                         <div class="mt-2 text-right">
-                            <button>Supprimer</button>
+                            {{ include('event/_delete_form.html.twig') }}
                         </div>
                     </div>
                 </div>
