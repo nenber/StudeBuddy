@@ -255,31 +255,67 @@ class UserController extends AbstractController
     public function findBuddy(UserRepository $repository)
     {
         $user = $this->getUser();
-        $userLanguageToLearn = $user->getLanguageToLearn();
-        $subcribers = $buddies = array();
+        $userMatchingLanguage = $subcribers = $buddies = array();
         $warning = $sorry = false;
+
+        //si user is GP and GS => find all willing participant
+        // match user SL and LTL with sub SL and LTL
         if (($user->getIsGodparent()) && ($user->getIsGodson())) {
             $subcribers = $repository->findByPatronage(true);
         }
+
+        //si user is GP and not GS => find all GS
+        // match user SL with GS LTL
         if (($user->getIsGodparent()) && ($user->getIsGodson() == false)) {
             $subcribers = $repository->findGodson(true);
+            $userMatchingLanguage = $user->getSpokenLanguage();
         }
+        //if user is GS and not GP => find all GP
+        // match user LTL with GP SL
         if (($user->getIsGodson()) && ($user->getIsGodparent() == false)) {
             $subcribers = $repository->findGodparent(true);
+            $userMatchingLanguage = $user->getLanguageToLearn();
         }
+
+        //if user not GS and not GP => warning
         if (($user->getIsGodparent() == false) && ($user->getIsGodson() == false)) {
             $warning = true;
         }
 
         foreach ($subcribers as $person) {
             if ($person != $user) {
-                $subcriberSpokenLanguage = $person->getSpokenLanguage();
-                if (!empty(array_intersect($subcriberSpokenLanguage, $userLanguageToLearn))) {
-                    array_push($buddies, $person);
-                } else if (empty($buddies)) {
-                    $sorry = true;
+                // user is GS and !GP => match user LTL with GP SL
+                if (($user->getIsGodson()) && ($user->getIsGodparent() == false)) {
+                    $subcriberMatchingLanguage = $person->getSpokenLanguage();
+                    if (!empty(array_intersect($subcriberMatchingLanguage, $userMatchingLanguage))) {
+                        array_push($buddies, $person);
+                    }
+                }
+                // user !GP and GS => match user SL with GS LTL
+                if (($user->getIsGodson() == false) && ($user->getIsGodparent())) {
+                    $subcriberMatchingLanguage = $person->getLanguageToLearn();
+                    if (!empty(array_intersect($subcriberMatchingLanguage, $userMatchingLanguage))) {
+                        array_push($buddies, $person);
+                    }
+                }
+                // user GS GP => match subcriber SL w/ user LTL and subLTL w/userSL
+                if (($user->getIsGodson()) && ($user->getIsGodparent())) {
+                    $userSpokenLanguage = $user->getSpokenLanguage();
+                    $userLanguageToLearn = $user->getLanguageToLearn();
+                    $subcriberSpokenLanguage = $person->getSpokenLanguage();
+                    $subcriberLanguageToLearn = $person->getLanguageToLearn();
+
+                    if ((!empty(array_intersect($userSpokenLanguage, $subcriberLanguageToLearn)))
+                        || (!empty(array_intersect($userLanguageToLearn, $subcriberSpokenLanguage)))
+                    ) {
+                        array_push($buddies, $person);
+                    }
                 }
             }
+        }
+        //if no buddies -> warning
+        if (empty($buddies)) {
+            $sorry = true;
         }
 
         return $this->render('user/matching.html.twig', [
