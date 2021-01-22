@@ -28,7 +28,7 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new Unique([
                         'groups' =>'string',
-            'message' => 'Il existe déjà un compte avec cette email',
+            'message' => 'Il existe déjà un compte avec cet email',
         ])
                 ]
             ])
@@ -52,14 +52,14 @@ class RegistrationFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => '* Format incorrect : votre mot de passe doit contenir au minimum 6 caractères avec au moins 1 majuscule, 1 minusculte, 1 chiffre et 1 caractère spécial.',
+                        'minMessage' => '* Format incorrect : votre mot de passe doit contenir au minimum 6 caractères.',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                     new Regex(array(
                  'pattern'   => '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})^',
                 'match'     => true,
-                'message'   => '* Format incorrect : votre mot de passe doit contenir au minimum 6 caractères avec au moins 1 majuscule, 1 minusculte, 1 chiffre et 1 caractère spécial.'
+                'message'   => '* Format incorrect : votre mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial.'
             ))
                 ],
             ])

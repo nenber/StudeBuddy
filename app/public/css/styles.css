@@ -437,6 +437,26 @@ footer p {
   }
 }
 
+
+#eventIndex {
+  margin-top: 100px !important;
+}
+
+#eventIndex h1 {
+  color: #366db4;
+}
+
+#eventIndex h3 {
+  color: #366db4;
+}
+
+#eventIndex p .gras {
+  font-weight: bold;
+}
+#eventIndex .card {
+  display:inline-block;
+}
+
 /* {
     # MAP #
 } */
@@ -450,3 +470,4 @@ footer p {
 #map-display h1 {
   color: #366db4;
 }
+

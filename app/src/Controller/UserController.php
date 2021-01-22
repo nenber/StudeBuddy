@@ -120,6 +120,7 @@ class UserController extends AbstractController
                         $newMdp
                     )
                 );
+                $result->setToken(null);
                 $em->persist($result);
                 $em->flush();
             } else {
