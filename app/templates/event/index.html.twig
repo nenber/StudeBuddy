@@ -31,8 +31,9 @@
                         <p><span class="gras">Organisateur :</span> {{ event.name }}</p>
                         <p><span class="gras">Adresse :</span> {{ event.address }}</p>
                         <p><span class="gras">Date :</span> {{ event.date ? event.date|date('Y-m-d') : '' }}</p>
-                        <div class="row">
-                            <a class="btn btn-warning" href="{{ path('event_edit', {'id': event.id}) }}">Modifier</a>
+                        <a href="{{ path('event_edit', {'id': event.id}) }}">Modifier</a>
+                        <br>
+                        <div class="mt-2 text-right">
                             {{ include('event/_delete_form.html.twig') }}
                         </div>
                     </div>
