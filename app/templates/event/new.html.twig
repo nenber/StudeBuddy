@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un évènement{% endblock %}
+
+{% block body %}
+    {# TODO: add margin entre nav et body #}
+    <div style="height: 100px;"></div>
+    {{ form_start(form) }}
+    <div id="register">
+        <div class="mb-5">
+            <h1>Créer un évènement
+            </h1>
+            <hr>
+        </div>
+
+        <div class="circle-right"></div>
+        <div class="container">
+        <div class="row form-group">
+            <div class="col-xl-6">
+                <div class="mb-xl-5 mb-2">
+                    {{ form_label(form.name, "Nom de l'évènement :") }}
+                    {{ form_widget(form.name, {
+                        'attr': {'placeholder': "Nom de l'évènement", 'class' : 'form-control'}
+                    }) }}
+            </div>
+                <div class="mb-2 mb-xl-0">
+                    {{ form_label(form.address, "Adresse :") }}
+                    {{ form_widget(form.address, {
+                        'attr': {'placeholder': "Adresse", 'class' : 'form-control'}
+                    }) }}
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="mb-xl-5 mb-2">
+                    {{ form_label(form.description, "Description :") }}
+                    {{ form_widget(form.description, {
+                        'attr': {'placeholder': "Description", 'class' : 'form-control'}
+                    }) }}
+                </div>
+                <div class="mb-2 mb-xl-0">
+                    {{ form_label(form.date, "Date : ") }}
+                    {{ form_widget(form.date, {
+                        'attr': {'placeholder': "Date"}
+                    }) }}
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+        <div class="row container-button mt-5">
+            <div>
+                <button class="btn-l green">Créer un évènement</button>
+            </div>
+        </div>
+        <div class="circle-left"></div>
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}
