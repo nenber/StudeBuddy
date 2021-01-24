@@ -19,6 +19,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class EventController extends AbstractController
 {
     /**
+     * @Route("/map", name="event_map")
+     */
+    public function displayMap()
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('event/map.html.twig', [
+            'controller_name' => 'EventController',
+        ]);
+    }
+
+    /**
      * @Route("/", name="event_index", methods={"GET"})
      */
     public function index(EventRepository $eventRepository): Response
@@ -95,16 +107,5 @@ class EventController extends AbstractController
         return $this->redirectToRoute('event_index');
     }
 
-    /**
-     * @Route("/map", name="map")
-     */
-    public function displayMap()
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        return $this->render('event/map.html.twig', [
-            'controller_name' => 'EventController',
-        ]);
-    }
 
 }
