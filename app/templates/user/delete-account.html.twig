@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation suppression du compte
+{% endblock %}
+
+{% block body %}
+    <div id="register">
+        <div class="row register mt-sm-5">
+            <div class="circle-right"></div>
+            <div class="col-lg-12 col-sm-12 circle-parent" data-aos="fade-right">
+                <h1>Êtes-vous sûr de supprimer votre compte ?
+                    <hr></h1>
+                    <div class="mx-auto">
+                        <a href="{{ path('user_delete') }}" class="hrefbutton">
+                            Oui, je souhaite supprimer définitivement mon compte !
+                        </a>
+                    </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

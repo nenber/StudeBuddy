@@ -4,16 +4,19 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Unique;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 class RegistrationFormType extends AbstractType
 {
@@ -22,6 +25,12 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'required' => true,
+                'constraints' => [
+                    new Unique([
+                        'groups' =>'string',
+            'message' => 'Il existe déjà un compte avec cet email',
+        ])
+                ]
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'required' => true,
@@ -43,10 +52,15 @@ class RegistrationFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => '* Format incorrect : votre mot de passe doit contenir au minimum 6 caractères avec au moins 1 majuscule, 1 minusculte, 1 chiffre et 1 caractère spécial.',
+                        'minMessage' => '* Format incorrect : votre mot de passe doit contenir au minimum 6 caractères.',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
+                    new Regex(array(
+                 'pattern'   => '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})^',
+                'match'     => true,
+                'message'   => '* Format incorrect : votre mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial.'
+            ))
                 ],
             ])
             ->add('firstName', null, [
@@ -57,6 +71,16 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('phoneNumber', TelType::class, [
                 'required' => true,
+                'constraints' => [
+ new Regex(
+                    array(
+                        'pattern' => '^(0|(\\+33)|(0033))[1-9][0-9]{8}^',
+                        'match' => true,
+                        'message' => 'Numéro de téléphone incorrect'
+                    )
+                )
+                ]
+               
             ])
             ->add('school', null, [
                 'required' => true,

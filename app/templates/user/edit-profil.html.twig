@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil
+{% endblock %}
+{% block body %}
+	{{ form_start(formEditProfil) }}
+	<div id="register">
+		<div class="row register mt-sm-5">
+			<div class="col-lg-12 col-sm-12" data-aos="fade-right">
+				<div class="row">
+					<div class="col">
+						<h1>Bienvenue sur ton profil
+							{{ app.user.firstname }}
+							{{ app.user.lastname }}
+							<hr></h1>
+					</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-lg-4 col-sm-12">
+						<div class="row">
+							<div class="col">
+								{% if app.user.profilImage == false %}
+									<div class="row profil-image">
+										<img src="{{ asset('/img/profil.png') }}"/>
+									</div>
+								{% else %}
+									{{app.user.profilImage}}
+								{% endif %}
+								<div class="row">
+									<p>
+										<a href="#">Modifier la photo de profil</a>
+										<!--faire un truc avec fileType pour changer les photos de profil à peaufiner-->
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col">
+								{{ form_widget(formEditProfil.isGodparent) }}
+								{{ form_label(formEditProfil.isGodparent, "Je souhaite parrainer ") }}
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col">
+								{{ form_widget(formEditProfil.isGodson) }}
+								{{ form_label(formEditProfil.isGodson, "Je veux être fillieul") }}
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-4 col-sm-12">
+						<div class="row form-group">
+							<div class="col edit-profil">
+								<h5>Tes langues parlées :
+								</h5>
+								{{ form_label(formEditProfil.spokenLanguage, "Langue :")}}
+								{{ form_widget(formEditProfil.spokenLanguage, {
+										'attr': {
+											'class' : 'form-control'
+										}
+									})
+								}}
+							</div>
+							<br>
+						</div>
+
+						<div class="row form-goup mb-4">
+							<div class="col edit-profil">
+								<h5>Tes langues en apprentissage :
+								</h5>
+								{{ form_label(formEditProfil.languageToLearn, "Langue :")}}
+								{{ form_widget(formEditProfil.languageToLearn, {
+										'attr': {
+											'class' : 'form-control'
+										}
+									})
+								}}
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-12 ">
+						<div class="row form-group">
+							<div class="col">
+								<div class="edit-profil">
+									<h5>Ta description :</h5>
+									{{ form_widget(formEditProfil.description, {
+											'attr': {
+												'placeholder': "Présente-toi et parles-nous de tes hobbies !",
+												'class' : 'form-control'
+												}
+										})
+									}}
+								</div>
+								<div class="row float-right">
+									<p>
+										<small>
+											{{ app.user.description|length }}
+											/ 600</small>
+									</p>
+								</div>
+								{#a faire un count pour text taper dans textarea-->#}
+							</div>
+						</div>
+						<div class="row container-button">
+							<div class="edit-profil">
+								<button class="btn-l green">Valider mes modifications !</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{ form_end(formEditProfil) }}
+{% endblock %}

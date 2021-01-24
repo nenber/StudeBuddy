@@ -60,6 +60,12 @@ services:
     ports:
       - "8082:80"
 
+  mailcatcher:
+    image: yappabe/mailcatcher
+    ports:
+      - 1025:1025
+      - 1080:1080
+
 volumes:
   db-data: {}
   app-sf-cache: {}

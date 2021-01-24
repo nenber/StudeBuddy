@@ -20,7 +20,6 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
@@ -30,6 +29,7 @@ class RegistrationController extends AbstractController
                 )
             );
             $user->setCreatedAt(new \DateTime('now'));
+            $user->setSpokenLanguage(["Francais"]);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

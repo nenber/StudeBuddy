@@ -51,32 +51,36 @@ class Godparent
 
         return $this;
     }
-
+  
     /**
-     * @return Collection|Godson[]
+     * @return Collection|Event[]
      */
-    public function getGodsonId(): Collection
+    public function getEvents(): Collection
     {
-        return $this->godson_id;
+        return $this->events;
     }
 
-    public function addGodsonId(Godson $godsonId): self
+    public function addEvent(Event $event): self
     {
-        if (!$this->godson_id->contains($godsonId)) {
-            $this->godson_id[] = $godsonId;
-            $godsonId->addGodparentId($this);
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->setOrganizerId($this);
         }
 
         return $this;
     }
 
-    public function removeGodsonId(Godson $godsonId): self
+    public function removeEvent(Event $event): self
     {
-        if ($this->godson_id->contains($godsonId)) {
-            $this->godson_id->removeElement($godsonId);
-            $godsonId->removeGodparentId($this);
+        if ($this->events->contains($event)) {
+            $this->events->removeElement($event);
+            // set the owning side to null (unless already changed)
+            if ($event->getOrganizerId() === $this) {
+                $event->setOrganizerId(null);
+            }
         }
 
         return $this;
     }
-}
+
+

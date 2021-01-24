@@ -18,16 +18,16 @@ class Event
      * @ORM\Column(type="integer")
      */
     private $id;
+  
+     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $event_name;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $event_id;
+    private $address;
 
     /**
      * @ORM\ManyToOne(targetEntity=Marker::class, inversedBy="events")
@@ -44,6 +44,17 @@ class Event
      */
     private $participant_id;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $date;
+
+
     public function __construct()
     {
         $this->participant_id = new ArrayCollection();
@@ -55,26 +66,26 @@ class Event
         return $this->id;
     }
 
-    public function getEventName(): ?string
+    public function getName(): ?string
     {
-        return $this->event_name;
+        return $this->name;
     }
 
-    public function setEventName(?string $event_name): self
+    public function setName(?string $name): self
     {
-        $this->event_name = $event_name;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getEventId(): ?int
+    public function getAddress(): ?string
     {
-        return $this->event_id;
+        return $this->address;
     }
 
-    public function setEventId(?int $event_id): self
+    public function setAddress(?string $address): self
     {
-        $this->event_id = $event_id;
+        $this->address = $address;
 
         return $this;
     }
@@ -125,6 +136,30 @@ class Event
         if ($this->participant_id->contains($participantId)) {
             $this->participant_id->removeElement($participantId);
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }
