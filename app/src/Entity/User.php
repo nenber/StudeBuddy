@@ -117,9 +117,21 @@ class User implements UserInterface
      */
     private $token;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Event::class, mappedBy="organizer_id")
+     */
+    private $organized_events;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="participant_id")
+     */
+    private $participated_events;
+
     public function __construct()
     {
         $this->thread_user_id = new ArrayCollection();
+        $this->organized_events = new ArrayCollection();
+        $this->participated_events = new ArrayCollection();
     }
 
 
@@ -387,4 +399,65 @@ class User implements UserInterface
 
         return $this;
     }
+
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getOrganizedEvents(): Collection
+    {
+        return $this->organized_events;
+    }
+
+    public function addOrganizedEvent(Event $organizedEvent): self
+    {
+        if (!$this->organized_events->contains($organizedEvent)) {
+            $this->organized_events[] = $organizedEvent;
+            $organizedEvent->setOrganizerId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganizedEvent(Event $organizedEvent): self
+    {
+        if ($this->organized_events->contains($organizedEvent)) {
+            $this->organized_events->removeElement($organizedEvent);
+            // set the owning side to null (unless already changed)
+            if ($organizedEvent->getOrganizerId() === $this) {
+                $organizedEvent->setOrganizerId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getParticipatedEvents(): Collection
+    {
+        return $this->participated_events;
+    }
+
+    public function addParticipatedEvent(Event $participatedEvent): self
+    {
+        if (!$this->participated_events->contains($participatedEvent)) {
+            $this->participated_events[] = $participatedEvent;
+            $participatedEvent->addParticipantId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipatedEvent(Event $participatedEvent): self
+    {
+        if ($this->participated_events->contains($participatedEvent)) {
+            $this->participated_events->removeElement($participatedEvent);
+            $participatedEvent->removeParticipantId($this);
+        }
+
+        return $this;
+    }
 }
+
