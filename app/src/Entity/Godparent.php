@@ -82,5 +82,4 @@ class Godparent
 
         return $this;
     }
-
-
+}   
