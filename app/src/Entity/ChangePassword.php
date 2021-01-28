@@ -20,7 +20,7 @@ class ChangePassword
 
     /**
      * @SecurityAssert\UserPassword(
-     *     message = "Wrong value for your current password"
+     *     message = "Votre mot de passe actuel n'est pas correct"
      * )
      */
     protected $oldPassword;
