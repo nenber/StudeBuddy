@@ -24,10 +24,6 @@ class Godson
      */
     private $user_id;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="participant_id")
-     */
-    private $events;
 
     /**
      * @ORM\ManyToMany(targetEntity=Godparent::class, inversedBy="godson_id")
@@ -58,33 +54,6 @@ class Godson
         return $this;
     }
 
-    /**
-     * @return Collection|Event[]
-     */
-    public function getEvents(): Collection
-    {
-        return $this->events;
-    }
-
-    public function addEvent(Event $event): self
-    {
-        if (!$this->events->contains($event)) {
-            $this->events[] = $event;
-            $event->addParticipantId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEvent(Event $event): self
-    {
-        if ($this->events->contains($event)) {
-            $this->events->removeElement($event);
-            $event->removeParticipantId($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Godparent[]

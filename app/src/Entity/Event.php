@@ -18,7 +18,7 @@ class Event
      * @ORM\Column(type="integer")
      */
     private $id;
-
+  
      /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -35,12 +35,12 @@ class Event
     private $marker_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Godparent::class, inversedBy="events")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="organized_events")
      */
     private $organizer_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Godson::class, inversedBy="events")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="participated_events")
      */
     private $participant_id;
 
@@ -59,6 +59,7 @@ class Event
     {
         $this->participant_id = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -101,12 +102,12 @@ class Event
         return $this;
     }
 
-    public function getOrganizerId(): ?Godparent
+    public function getOrganizerId(): ?User
     {
         return $this->organizer_id;
     }
 
-    public function setOrganizerId(?Godparent $organizer_id): self
+    public function setOrganizerId(?User $organizer_id): self
     {
         $this->organizer_id = $organizer_id;
 
@@ -114,14 +115,14 @@ class Event
     }
 
     /**
-     * @return Collection|Godson[]
+     * @return Collection|User[]
      */
     public function getParticipantId(): Collection
     {
         return $this->participant_id;
     }
 
-    public function addParticipantId(Godson $participantId): self
+    public function addParticipantId(User $participantId): self
     {
         if (!$this->participant_id->contains($participantId)) {
             $this->participant_id[] = $participantId;
@@ -130,7 +131,7 @@ class Event
         return $this;
     }
 
-    public function removeParticipantId(Godson $participantId): self
+    public function removeParticipantId(User $participantId): self
     {
         if ($this->participant_id->contains($participantId)) {
             $this->participant_id->removeElement($participantId);
