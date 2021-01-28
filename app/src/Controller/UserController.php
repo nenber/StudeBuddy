@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\ChangePassword;
+use App\Form\ChangePasswordType;
 use Symfony\Mailgun;
 use Symfony\Component\Mime\Email;
 use Symfony\Core\Component\Security\Util;
@@ -195,24 +197,88 @@ class UserController extends AbstractController
      */
     public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        if ($request->isMethod('POST')) {
-            $em = $this->getDoctrine()->getManager();
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $changePassword = new ChangePassword();
+        // rattachement du formulaire avec la class changePassword
+        $form = $this->createForm('App\Form\ChangePasswordType', $changePassword);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $user = $this->getUser();
+            $newpwd = $form->get('newPassword')['first']->getData();
 
-            if ($request->request->get('pass') == $request->request->get('pass2')) {
-                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('pass')));
-                $em->flush();
-                $this->addFlash('message', 'Mot de passe mis à jour !');
+            $newEncodedPassword = $passwordEncoder->encodePassword($user, $newpwd);
+            $user->setPassword($newEncodedPassword);
 
-                return $this->redirectToRoute('user_account');
-            } else {
-                $this->addFlash('error', 'Les deux mots de passe ne sont pas identiques');
-            }
+            $em->flush();
+            $this->addFlash('message', 'Votre mot de passe à bien été changé !');
+
+            return $this->redirectToRoute('user_account');
         }
 
-        return $this->render('user/edit-password.html.twig');
+        return $this->render('user/edit-password.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $user
+        ));
     }
+
+//    /**
+//     * @Route("/edit-password", name="edit-password")
+//     */
+//    public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+//    {
+//        $this->denyAccessUnlessGranted('ROLE_USER');
+//        if ($request->isMethod('POST')) {
+//            $em = $this->getDoctrine()->getManager();
+//
+//            $user = $this->getUser();
+//
+//            if ($request->request->get('pass') == $request->request->get('pass2')) {
+//                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('pass')));
+//                $em->flush();
+//                $this->addFlash('message', 'Mot de passe mis à jour !');
+//
+//                return $this->redirectToRoute('user_account');
+//            } else {
+//                $this->addFlash('error', 'Les deux mots de passe ne sont pas identiques');
+//            }
+//        }
+//
+//        return $this->render('user/edit-password.html.twig');
+//    }
+
+//    /**
+//     * @Route("/edit-password", name="edit-password")
+//     */
+//    public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+//    {
+//        if ($request->isMethod('POST')) {
+//            $em = $this->getDoctrine()->getManager();
+//            $old_pwd = $request->get('old_password');
+//            $user = $this->getUser();
+//            dump($user);
+//            $checkPass = $passwordEncoder->isPasswordValid($user, $old_pwd);
+//            if($checkPass === true) {
+////                if ($request->request->get('new_pwd') == $request->request->get('new_pwd_confirm')) {
+////                    $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('new_pwd')));
+////                    $em->flush();
+////                    $this->addFlash('message', 'Mot de passe mis à jour !');
+////
+////                    return $this->redirectToRoute('user_account');
+////                } else {
+////                    $this->addFlash('error', 'Les deux mots de passe ne sont pas identiques');
+////                }
+//
+//            } else {
+//                $this->addFlash('error', 'Votre mot de passe actuel ne correspond pas');
+//            }
+//
+//
+//        }
+//
+//        return $this->render('user/edit-password.html.twig');
+//    }
 
     /**
      * @Route("/delete", name="delete")
