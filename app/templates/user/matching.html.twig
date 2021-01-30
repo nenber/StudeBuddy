@@ -9,11 +9,12 @@
 			<div class="col-lg-12 col-sm-12" data-aos="fade-right">
 				<div class="row">
 					<div class="col-lg-12">
-						<h1>Choisis ton Buddy
+						<h1>Choisis ton Buddy,
 							{{ app.user.firstname }}
-							{{ app.user.lastname }}
+							{{ app.user.lastname }} !
 							<hr></h1>
 					</div>
+				</div>
 					<div class="row">
 						{% if warning == true %}
 							<div class="alert alert-info alert-dismissible">
@@ -48,19 +49,44 @@
 								</p>
 							</div>
 						{% endif %}
-
-						<ul>
-							{% for item in buddies %}
-								<li>{{ item.spokenLanguage|json_encode(constant('JSON_PRETTY_PRINT')) }}
-									{{ item.languageToLearn|json_encode(constant('JSON_PRETTY_PRINT')) }}
-									{{ item.firstname|json_encode(constant('JSON_PRETTY_PRINT')) }}
-									{{ item.lastname|json_encode(constant('JSON_PRETTY_PRINT')) }}
-									{{ item.description|json_encode(constant('JSON_PRETTY_PRINT')) }}</li>
-							{% endfor %}
-						</ul>
 					</div>
 
-				</div>
+
+						<div id="matching-card">
+							<div class="row">
+								<div class="col-xl-12">
+							{% for item in buddies %}
+								<div class="card" style="width: 18rem;">
+											{% if app.user.profileImage == false %}
+												<div class="row profil-image mx-auto">
+													<img src="{{ asset('/img/profil.png') }}"/>
+												</div>
+											{% else %}
+												{{app.user.profileImage}}
+											{% endif %}
+
+									<div class="card-body text-center">
+										<h3 class="card-title">
+											{{ item.firstname}}
+											{{ item.lastname}}
+										</h3>
+										<p class="card-description">
+											{% if  item.description == null %}
+												<p>On dirait que je n'ai pas encore description !</p>
+										{% else %}
+											{{ item.description}}
+										{% endif %}
+										</p>
+										<button> Envoyer un message</button>
+									</div>
+								</div>
+							{% endfor %}
+
+								</div>
+							</div>
+						</div>
+
+
 			</div>
 		</div>
 	</div>

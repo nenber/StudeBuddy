@@ -471,3 +471,20 @@ footer p {
   color: #366db4;
 }
 
+/* {
+    # MATCHING CARD #
+} */
+
+#matching-card #card-title{
+  font-weight: bold;
+  color: #366db4;
+}
+
+#matching-card .button{
+  background: #5bb572;
+}
+
+#matching-card .card{
+  display: inline-flex;
+}
+
