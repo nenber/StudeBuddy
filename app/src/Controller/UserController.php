@@ -181,10 +181,13 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(CustomUserAccountType::class, $user);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            $this->addFlash('message', 'Profile mis à jour');
+
+            $this->addFlash('message', 'Profil mis à jour');
+
             return $this->redirectToRoute('user_edit-profile');
         }
         return $this->render('user/edit-profile.html.twig', [
@@ -255,26 +258,28 @@ class UserController extends AbstractController
 
     public function findBuddy(UserRepository $repository)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $user = $this->getUser();
-        $userMatchingLanguage = $subcribers = $buddies = array();
+        $userMatchingLanguage = $subscribers = $buddies = array();
         $warning = $sorry = false;
 
         //si user is GP and GS => find all willing participant
         // match user SL and LTL with sub SL and LTL
         if (($user->getIsGodparent()) && ($user->getIsGodson())) {
-            $subcribers = $repository->findByPatronage(true);
+            $subscribers = $repository->findByBuddies(true);
         }
 
         //si user is GP and not GS => find all GS
         // match user SL with GS LTL
         if (($user->getIsGodparent()) && ($user->getIsGodson() == false)) {
-            $subcribers = $repository->findGodson(true);
+            $subscribers = $repository->findGodson(true);
             $userMatchingLanguage = $user->getSpokenLanguage();
         }
         //if user is GS and not GP => find all GP
         // match user LTL with GP SL
         if (($user->getIsGodson()) && ($user->getIsGodparent() == false)) {
-            $subcribers = $repository->findGodparent(true);
+            $subscribers = $repository->findGodparent(true);
             $userMatchingLanguage = $user->getLanguageToLearn();
         }
 
@@ -283,31 +288,31 @@ class UserController extends AbstractController
             $warning = true;
         }
 
-        foreach ($subcribers as $person) {
+        foreach ($subscribers as $person) {
             if ($person != $user) {
                 // user is GS and !GP => match user LTL with GP SL
                 if (($user->getIsGodson()) && ($user->getIsGodparent() == false)) {
-                    $subcriberMatchingLanguage = $person->getSpokenLanguage();
-                    if (!empty(array_intersect($subcriberMatchingLanguage, $userMatchingLanguage))) {
+                    $subscriberMatchingLanguage = $person->getSpokenLanguage();
+                    if (!empty(array_intersect($subscriberMatchingLanguage, $userMatchingLanguage))) {
                         array_push($buddies, $person);
                     }
                 }
-                // user !GP and GS => match user SL with GS LTL
+                // user !GS and GP => match user LTL with GP SL
                 if (($user->getIsGodson() == false) && ($user->getIsGodparent())) {
-                    $subcriberMatchingLanguage = $person->getLanguageToLearn();
-                    if (!empty(array_intersect($subcriberMatchingLanguage, $userMatchingLanguage))) {
+                    $subscriberMatchingLanguage = $person->getLanguageToLearn();
+                    if (!empty(array_intersect($subscriberMatchingLanguage, $userMatchingLanguage))) {
                         array_push($buddies, $person);
                     }
                 }
-                // user GS GP => match subcriber SL w/ user LTL and subLTL w/userSL
+                // user GS GP => match subscriber SL w/ user LTL and subLTL w/userSL
                 if (($user->getIsGodson()) && ($user->getIsGodparent())) {
                     $userSpokenLanguage = $user->getSpokenLanguage();
                     $userLanguageToLearn = $user->getLanguageToLearn();
-                    $subcriberSpokenLanguage = $person->getSpokenLanguage();
-                    $subcriberLanguageToLearn = $person->getLanguageToLearn();
+                    $subscriberSpokenLanguage = $person->getSpokenLanguage();
+                    $subscriberLanguageToLearn = $person->getLanguageToLearn();
 
-                    if ((!empty(array_intersect($userSpokenLanguage, $subcriberLanguageToLearn)))
-                        || (!empty(array_intersect($userLanguageToLearn, $subcriberSpokenLanguage)))
+                    if ((!empty(array_intersect($userSpokenLanguage, $subscriberLanguageToLearn)))
+                        || (!empty(array_intersect($userLanguageToLearn, $subscriberSpokenLanguage)))
                     ) {
                         array_push($buddies, $person);
                     }

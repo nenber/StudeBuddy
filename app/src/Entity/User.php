@@ -110,7 +110,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_godson = true;
+    private $is_godson = false;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)

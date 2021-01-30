@@ -57,7 +57,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * @return User[]
      */
-    public function findByPatronage($patronage): array
+    public function findByBuddies($patronage): array
     {
         return $this->createQueryBuilder('u')
             ->where('u.is_godson = :val')
