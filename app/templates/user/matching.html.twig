@@ -26,10 +26,10 @@
 									<small>Non plus...</small>
 									<br>
 									Donc on ne peut pas te mettre en lien avec des Buddies.<br>
-									Et en plus tu ne peux pas profité de l'intégralité du site.<br>
+									Et en plus tu ne peux pas profiter de tous les services que le site t'offre.<br>
 									Reviens après avoir modifié ton
 									<a href="{{ path('user_edit-profile') }}" class="alert-link">
-										profile</a>
+										profil</a>
 								</p>
 
 							</div>
@@ -38,13 +38,13 @@
 						{% if sorry == true %}
 							<div class="alert alert-warning alert-dismissible">
 								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-								<strong>Oups...</strong>
+								<strong>Oops...</strong>
 								<p>
-									C'est un peu embarrassant mais y a personne qui correspond ton profil.<br>
-									On t'invite modifier ton
+									C'est un peu embarrassant mais y a personne qui correspond à ton profil.<br>
+									On t'invite à modifier ton
 									<a href="{{ path('user_edit-profile') }}" class="alert-link">
-										profile</a>
-									soit en changeant ton role ou bien en ajoutant des langues d'apprentissage.
+										profil</a>
+									soit en changeant ton rôle ou bien en ajoutant des langues d'apprentissage.
 								</p>
 							</div>
 						{% endif %}
