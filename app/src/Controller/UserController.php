@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\ChangePassword;
+use App\Form\ChangePasswordType;
 use Symfony\Mailgun;
 use Symfony\Component\Mime\Email;
 use Symfony\Core\Component\Security\Util;
@@ -205,26 +207,33 @@ class UserController extends AbstractController
      */
     public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if ($request->isMethod('POST')) {
-            $em = $this->getDoctrine()->getManager();
+       $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $changePassword = new ChangePassword();
+       
+        $form = $this->createForm('App\Form\ChangePasswordType', $changePassword);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $user = $this->getUser();
+            $newpwd = $form->get('newPassword')['first']->getData();
 
-            if ($request->request->get('pass') == $request->request->get('pass2')) {
-                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('pass')));
-                $em->flush();
-                $this->addFlash('message', 'Mot de passe mis à jour !');
+            $newEncodedPassword = $passwordEncoder->encodePassword($user, $newpwd);
+            $user->setPassword($newEncodedPassword);
 
-                return $this->redirectToRoute('user_account');
-            } else {
-                $this->addFlash('error', 'Les deux mots de passe ne sont pas identiques');
-            }
+            $em->flush();
+            $this->addFlash('message', 'Votre mot de passe à bien été changé !');
+
+            return $this->redirectToRoute('user_account');
         }
 
-        return $this->render('user/edit-password.html.twig');
+        return $this->render('user/edit-password.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $user
+        ));
     }
+    
 
     /**
      * @Route("/delete", name="delete_request")
