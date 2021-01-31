@@ -11,7 +11,7 @@
                 <h1>Êtes-vous sûr de supprimer votre compte ?
                     <hr></h1>
                     <div class="mx-auto">
-                        <a href="{{ path('user_delete') }}" class="hrefbutton">
+                        <a href="{{ path('user_delete', { 'id': app.user.id }) }}" class="hrefbutton">
                             Oui, je souhaite supprimer définitivement mon compte !
                         </a>
                     </div>
