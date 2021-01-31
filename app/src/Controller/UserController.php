@@ -109,6 +109,8 @@ class UserController extends AbstractController
      */
     public function changePassword(Request $request, $email, UserPasswordEncoderInterface $passwordEncoder)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $em = $this->getDoctrine()->getManager();
         $token = $request->query->get('token');
         $result = $em->getRepository(User::class)->findOneBy(['email' => $email]);
@@ -146,6 +148,9 @@ class UserController extends AbstractController
      */
     public function editUser(Request $request)
     {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $user = $this->getUser();
         $form = $this->createForm(EditUserType::class, $user);
 
@@ -170,6 +175,9 @@ class UserController extends AbstractController
      */
     public function userAccount()
     {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('user/user-account.html.twig', [
             'controller_name' => 'UserController',
         ]);
@@ -179,6 +187,8 @@ class UserController extends AbstractController
      */
     public function editProfil(Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $user = $this->getUser();
         $form = $this->createForm(CustomUserAccountType::class, $user);
         $form->handleRequest($request);
@@ -187,7 +197,7 @@ class UserController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('user_edit-profil');
         }
-        return $this->render('user/edit-profil.html.twig', [
+        return $this->render('user/edit-profile.html.twig', [
             'formEditProfil' => $form->createView(),
         ]);
     }
@@ -197,11 +207,12 @@ class UserController extends AbstractController
      */
     public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+
+       $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $changePassword = new ChangePassword();
-        // rattachement du formulaire avec la class changePassword
+       
         $form = $this->createForm('App\Form\ChangePasswordType', $changePassword);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -225,35 +236,40 @@ class UserController extends AbstractController
     
 
     /**
-     * @Route("/delete", name="delete")
+     * @Route("/delete", name="delete_request")
      */
-    public function deleteUser(Request $request)
+    public function deleteUserRequest(Request $request)
     {
-        $user = $this->getUser();
-
-        if ($user == null) {
-            return $this->redirect($this->generateUrl('user_account'));
-        }
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $form = $this->createFormBuilder()->getForm();
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()
-                ->getManager();
-
-            $em->remove($user);
-            $em->flush();
-
-            $this->get('security.context')->setToken(null);
-            $this->get('request')->getSession()->invalidate();
-
-            $request->getSession()->getFlashBag()->add('notice', "Votre compte a bien été supprimé.");
-
-            return $this->redirect($this->generateUrl('user_account'));
-        }
 
         return $this->render('user/delete-account.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/delete/{id}", name="delete")
+     */
+    public function deleteUser(Request $request, $id)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $em = $this->getDoctrine()->getManager();
+        $usrRepo = $em->getRepository(User::class);
+
+        $user = $usrRepo->find($id);
+        $em->remove($user);
+        $em->flush();
+
+        $this->get('security.token_storage')->setToken(null);
+
+//        $request->getSession()->getFlashBag()->add('message', "Votre compte a bien été supprimé.");
+
+        return $this->redirectToRoute('default_index');
+
+    }
+
+    
 }
