@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choisi ton Buddy
+{% endblock %}
+
+{% block body %}
+	<div id="register">
+		<div class="row register mt-sm-5">
+			<div class="col-lg-12 col-sm-12" data-aos="fade-right">
+				<div class="row">
+					<div class="col-xl-8 col-sm-12">
+						<h1>Choisis ton Buddy,
+							{{ app.user.firstname }}
+							{{ app.user.lastname }}
+							!
+							<hr></h1>
+					</div>
+					<div class="offset-xl-2 col-xl-2">
+					{% if  ((warning == false) and (sorry == false)) %}
+						<div class="row refresh">
+							<div id="refresh-btn" class="col-lg-4 d-none d-lg-block align-right">
+								<a class="right" type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
+									Actualiser</a>
+							</div>
+						</div>
+					{% endif %}
+					</div>
+				</div>
+
+				<div class="row">
+
+					{% if warning == true %}
+						<div class="alert alert-info alert-dismissible">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+							<strong>Stop ! Contrôle d'identité !</strong>
+							<p>
+								Fillieul ?
+								<small>Non...</small>
+								Parrain ?
+								<small>Non plus...</small>
+								<br>
+								Donc on ne peut pas te mettre en lien avec des Buddies.<br>
+								Et en plus tu ne peux pas profiter de tous les services que le site t'offre.<br>
+								Reviens après avoir modifié ton
+								<a href="{{ path('user_edit-profile') }}" class="alert-link">
+									profil</a>
+							</p>
+						</div>
+					{% endif %}
+
+					{% if sorry == true %}
+						<div class="alert alert-warning alert-dismissible">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+							<strong>Oops...</strong>
+							<p>
+								C'est un peu embarrassant mais y a personne qui correspond à ton profil.<br>
+								On t'invite à modifier ton
+								<a href="{{ path('user_edit-profile') }}" class="alert-link">
+									profil</a>
+								soit en changeant ton rôle ou bien en ajoutant des langues d'apprentissage.
+							</p>
+						</div>
+					{% endif %}
+
+				</div>
+
+				<div class="matching-card row">
+					<div class="col">
+						<div
+							class="row">
+							{# a faire un sorte de while #}
+							{% for item in buddies|shuffle %}
+								<div class="card text-center col-lg-3 col-sm-12 mx-4 my-4">
+									{% if app.user.profileImage == false %}
+										<div class="row profil-image mx-auto">
+											<img src="{{ asset('/img/profil.png') }}"/>
+										</div>
+									{% else %}
+										{{app.user.profileImage}}
+									{% endif %}
+
+									<div class="card-body">
+										<div class="card-title">
+											<h5>
+												{{ item.firstname}}<br>
+												{{ item.lastname}}
+											</h5>
+										</div>
+										<div class="card-description">
+											{% if  item.description == null %}
+												<p>On dirait que je n'ai pas encore description !</p>
+											{% else %}
+												<p>{{ item.description}}</p>
+											{% endif %}
+
+											<div class="text-left mt-1">
+												<p>Je parle :</p>
+												<ul>
+													{% for language in item.spokenLanguage %}
+														<li>{{language}}</li>
+													{% endfor %}
+												</ul>
+
+												<p>J'apprends :</p>
+												<ul>
+													{% for language in item.languageToLearn %}
+														<li>{{language}}</li>
+													{% endfor %}
+												</ul>
+
+											</div>
+											</div>
+
+										{# a mettre les langues parlés et les langues en apprentissage #}
+										<div class="center-btn">
+											<button>
+												Envoyer un message
+											</button>
+										</div>
+
+									</div>
+								</div>
+							{% endfor %}
+
+						</div>
+
+						{% if  ((warning == false) and (sorry == false)) %}
+							<div id="refresh-btn" class="row d-xl-none d-lg-block">
+								<a type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
+									Actualiser</a>
+							</div>
+						{% endif %}
+
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

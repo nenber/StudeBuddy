@@ -53,6 +53,47 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
     */
 
+
+    /**
+     * @return User[]
+     */
+    public function findByBuddies($willing): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.is_godson = :val')
+            ->orWhere('u.is_godparent = :val')
+            ->setParameter('val', $willing)
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findGodson($willing): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.is_godson = :val')
+            ->setParameter('val', $willing)
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findGodparent($willing): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.is_godparent = :val')
+            ->setParameter('val', $willing)
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?User
     {

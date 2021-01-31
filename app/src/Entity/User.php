@@ -78,19 +78,19 @@ class User implements UserInterface
     private $created_at;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean")
      */
-    private $is_godparent;
+    private $is_godparent = false;
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $spoken_language = [];
+    private $spoken_language = ['fr'];
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $language_to_learn = [];
+    private $language_to_learn = ['fr'];
 
     /**
      * @ORM\OneToMany(targetEntity=ThreadUser::class, mappedBy="user_id")
@@ -105,12 +105,12 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="blob", nullable=true)
      */
-    private $profil_image;
+    private $profile_image;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean")
      */
-    private $is_godson;
+    private $is_godson = false;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -364,14 +364,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getProfilImage()
+    public function getProfileImage()
     {
-        return $this->profil_image;
+        return $this->profile_image;
     }
 
-    public function setProfilImage($profil_image): self
+    public function setProfileImage($profile_image): self
     {
-        $this->profil_image = $profil_image;
+        $this->profile_image = $profile_image;
 
         return $this;
     }
@@ -399,7 +399,6 @@ class User implements UserInterface
 
         return $this;
     }
-
 
     /**
      * @return Collection|Event[]
@@ -460,4 +459,3 @@ class User implements UserInterface
         return $this;
     }
 }
-

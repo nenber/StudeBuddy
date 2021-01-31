@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\CustomUserAccountType;
 use App\Form\EditUserType;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 
@@ -183,7 +184,7 @@ class UserController extends AbstractController
         ]);
     }
     /**
-     * @Route("/edit-profil", name="edit-profil")
+     * @Route("/edit-profile", name="edit-profile")
      */
     public function editProfil(Request $request)
     {
@@ -192,10 +193,14 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(CustomUserAccountType::class, $user);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            return $this->redirectToRoute('user_edit-profil');
+
+            $this->addFlash('message', 'Profil mis à jour');
+
+            return $this->redirectToRoute('user_edit-profile');
         }
         return $this->render('user/edit-profile.html.twig', [
             'formEditProfil' => $form->createView(),
@@ -271,5 +276,85 @@ class UserController extends AbstractController
 
     }
 
-    
+
+    /**
+     * @Route("/matching", name="matching")
+     */
+
+    public function findBuddy(UserRepository $repository)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $this->getUser();
+        $userMatchingLanguage = $subscribers = $buddies = array();
+        $warning = $sorry = false;
+
+        //si user is GP and GS => find all willing participant
+        // match user SL and LTL with sub SL and LTL
+        if (($user->getIsGodparent()) && ($user->getIsGodson())) {
+            $subscribers = $repository->findByBuddies(true);
+        }
+
+        //si user is GP and not GS => find all GS
+        // match user SL with GS LTL
+        if (($user->getIsGodparent()) && ($user->getIsGodson() == false)) {
+            $subscribers = $repository->findGodson(true);
+            $userMatchingLanguage = $user->getSpokenLanguage();
+        }
+        //if user is GS and not GP => find all GP
+        // match user LTL with GP SL
+        if (($user->getIsGodson()) && ($user->getIsGodparent() == false)) {
+            $subscribers = $repository->findGodparent(true);
+            $userMatchingLanguage = $user->getLanguageToLearn();
+        }
+
+        //if user not GS and not GP => warning
+        if (($user->getIsGodparent() == false) && ($user->getIsGodson() == false)) {
+            $warning = true;
+        }
+
+        foreach ($subscribers as $person) {
+            if ($person != $user) {
+                // user is GS and !GP => match user LTL with GP SL
+                if (($user->getIsGodson()) && ($user->getIsGodparent() == false)) {
+                    $subscriberMatchingLanguage = $person->getSpokenLanguage();
+                    if (!empty(array_intersect($subscriberMatchingLanguage, $userMatchingLanguage))) {
+                        array_push($buddies, $person);
+                    }
+                }
+                // user !GS and GP => match user LTL with GP SL
+                if (($user->getIsGodson() == false) && ($user->getIsGodparent())) {
+                    $subscriberMatchingLanguage = $person->getLanguageToLearn();
+                    if (!empty(array_intersect($subscriberMatchingLanguage, $userMatchingLanguage))) {
+                        array_push($buddies, $person);
+                    }
+                }
+                // user GS GP => match subscriber SL w/ user LTL and subLTL w/userSL
+                if (($user->getIsGodson()) && ($user->getIsGodparent())) {
+                    $userSpokenLanguage = $user->getSpokenLanguage();
+                    $userLanguageToLearn = $user->getLanguageToLearn();
+                    $subscriberSpokenLanguage = $person->getSpokenLanguage();
+                    $subscriberLanguageToLearn = $person->getLanguageToLearn();
+
+                    if ((!empty(array_intersect($userSpokenLanguage, $subscriberLanguageToLearn)))
+                        || (!empty(array_intersect($userLanguageToLearn, $subscriberSpokenLanguage)))
+                    ) {
+                        array_push($buddies, $person);
+                    }
+                }
+            }
+        }
+        //if no buddies -> warning
+        if (empty($buddies)) {
+            $sorry = true;
+        }
+
+        return $this->render('user/matching.html.twig', [
+            'buddies' => $buddies,
+            'controller_name' => 'UserController',
+            'warning' => $warning,
+            'sorry' => $sorry,
+        ]);
+    }
+
 }
