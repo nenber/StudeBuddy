@@ -8,19 +8,25 @@
 		<div class="row register mt-sm-5">
 			<div class="col-lg-12 col-sm-12" data-aos="fade-right">
 				<div class="row">
-					<div class="col-lg-10 col-sm-12">
+					<div class="col-lg-8 col-sm-12">
 						<h1>Choisis ton Buddy,
 							{{ app.user.firstname }}
 							{{ app.user.lastname }}
 							!
 							<hr></h1>
 					</div>
-					<div class="refresh-btn col-lg-2 d-none d-lg-block">
-						<a type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
-							Actualiser</a>
-					</div>
+					{% if  ((warning == false) and (sorry == false)) %}
+						<div class="row refresh">
+							<div id="refresh-btn" class="col-lg-4 d-none d-lg-block align-right">
+								<a class="right" type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
+									Actualiser</a>
+							</div>
+						</div>
+					{% endif %}
 				</div>
+
 				<div class="row">
+
 					{% if warning == true %}
 						<div class="alert alert-info alert-dismissible">
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -37,7 +43,6 @@
 								<a href="{{ path('user_edit-profile') }}" class="alert-link">
 									profil</a>
 							</p>
-
 						</div>
 					{% endif %}
 
@@ -54,12 +59,14 @@
 							</p>
 						</div>
 					{% endif %}
+
 				</div>
 
 				<div class="matching-card row">
 					<div class="col">
-						<div class="row">
-
+						<div
+							class="row">
+							{# a faire un sorte de while #}
 							{% for item in buddies|shuffle %}
 								<div class="card text-center col-lg-3 col-sm-12 mx-4 my-4">
 									{% if app.user.profileImage == false %}
@@ -84,6 +91,7 @@
 												<p>{{ item.description}}</p>
 											{% endif %}
 										</div>
+										{# a mettre les langues parlés et les langues en apprentissage #}
 										<div class="center-btn">
 											<button>
 												Envoyer un message
@@ -95,12 +103,17 @@
 							{% endfor %}
 
 						</div>
+
+						{% if  ((warning == false) and (sorry == false)) %}
+							<div id="refresh-btn" class="row d-xl-none d-lg-block">
+								<a type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
+									Actualiser</a>
+							</div>
+						{% endif %}
+
 					</div>
 				</div>
-				<div class="refresh-btn col d-xl-none d-lg-block">
-					<a type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
-						Actualiser</a>
-				</div>
+
 
 			</div>
 		</div>

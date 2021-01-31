@@ -498,5 +498,16 @@ footer p {
   position: relative; 
 }
 
+#refresh-btn a{
+  font-size: 16px;
+  color: #366DB4;
+}
+#refresh-btn{
+  align-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  align-content: center;
+}
 
 
