@@ -256,7 +256,7 @@ class UserController extends AbstractController
 
         $this->get('security.token_storage')->setToken(null);
 
-        $request->getSession()->getFlashBag()->add('notice', "Votre compte a bien été supprimé.");
+//        $request->getSession()->getFlashBag()->add('message', "Votre compte a bien été supprimé.");
 
         return $this->redirectToRoute('default_index');
 
