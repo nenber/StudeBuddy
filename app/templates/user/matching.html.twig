@@ -8,12 +8,16 @@
 		<div class="row register mt-sm-5">
 			<div class="col-lg-12 col-sm-12" data-aos="fade-right">
 				<div class="row">
-					<div class="col-lg-12">
+					<div class="col-lg-10 col-sm-12">
 						<h1>Choisis ton Buddy,
 							{{ app.user.firstname }}
 							{{ app.user.lastname }}
 							!
 							<hr></h1>
+					</div>
+					<div class="refresh-btn col-lg-2 d-none d-lg-block">
+						<a type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
+							Actualiser</a>
 					</div>
 				</div>
 				<div class="row">
@@ -51,7 +55,6 @@
 						</div>
 					{% endif %}
 				</div>
-
 
 				<div class="matching-card row">
 					<div class="col">
@@ -94,7 +97,10 @@
 						</div>
 					</div>
 				</div>
-
+				<div class="refresh-btn col d-xl-none d-lg-block">
+					<a type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
+						Actualiser</a>
+				</div>
 
 			</div>
 		</div>
