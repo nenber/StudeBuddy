@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\ChangePassword;
+use App\Form\ChangePasswordType;
 use Symfony\Mailgun;
 use Symfony\Component\Mime\Email;
 use Symfony\Core\Component\Security\Util;
@@ -108,6 +110,8 @@ class UserController extends AbstractController
      */
     public function changePassword(Request $request, $email, UserPasswordEncoderInterface $passwordEncoder)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $em = $this->getDoctrine()->getManager();
         $token = $request->query->get('token');
         $result = $em->getRepository(User::class)->findOneBy(['email' => $email]);
@@ -145,6 +149,9 @@ class UserController extends AbstractController
      */
     public function editUser(Request $request)
     {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $user = $this->getUser();
         $form = $this->createForm(EditUserType::class, $user);
 
@@ -169,6 +176,9 @@ class UserController extends AbstractController
      */
     public function userAccount()
     {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('user/user-account.html.twig', [
             'controller_name' => 'UserController',
         ]);
@@ -178,6 +188,8 @@ class UserController extends AbstractController
      */
     public function editProfil(Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $user = $this->getUser();
         $form = $this->createForm(CustomUserAccountType::class, $user);
         $form->handleRequest($request);
@@ -200,57 +212,70 @@ class UserController extends AbstractController
      */
     public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        if ($request->isMethod('POST')) {
-            $em = $this->getDoctrine()->getManager();
 
-            $user = $this->getUser();
-
-            if ($request->request->get('pass') == $request->request->get('pass2')) {
-                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('pass')));
-                $em->flush();
-                $this->addFlash('message', 'Mot de passe mis à jour !');
-
-                return $this->redirectToRoute('user_account');
-            } else {
-                $this->addFlash('error', 'Les deux mots de passe ne sont pas identiques');
-            }
-        }
-
-        return $this->render('user/edit-password.html.twig');
-    }
-
-    /**
-     * @Route("/delete", name="delete")
-     */
-    public function deleteUser(Request $request)
-    {
+       $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-
-        if ($user == null) {
-            return $this->redirect($this->generateUrl('user_account'));
-        }
-
-        $form = $this->createFormBuilder()->getForm();
+        $changePassword = new ChangePassword();
+       
+        $form = $this->createForm('App\Form\ChangePasswordType', $changePassword);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()
-                ->getManager();
 
-            $em->remove($user);
+            $newpwd = $form->get('newPassword')['first']->getData();
+
+            $newEncodedPassword = $passwordEncoder->encodePassword($user, $newpwd);
+            $user->setPassword($newEncodedPassword);
+
             $em->flush();
+            $this->addFlash('message', 'Votre mot de passe à bien été changé !');
 
-            $this->get('security.context')->setToken(null);
-            $this->get('request')->getSession()->invalidate();
-
-            $request->getSession()->getFlashBag()->add('notice', "Votre compte a bien été supprimé.");
-
-            return $this->redirect($this->generateUrl('user_account'));
+            return $this->redirectToRoute('user_account');
         }
+
+        return $this->render('user/edit-password.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $user
+        ));
+    }
+    
+
+    /**
+     * @Route("/delete", name="delete_request")
+     */
+    public function deleteUserRequest(Request $request)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $form = $this->createFormBuilder()->getForm();
 
         return $this->render('user/delete-account.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/delete/{id}", name="delete")
+     */
+    public function deleteUser(Request $request, $id)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $em = $this->getDoctrine()->getManager();
+        $usrRepo = $em->getRepository(User::class);
+
+        $user = $usrRepo->find($id);
+        $em->remove($user);
+        $em->flush();
+
+        $this->get('security.token_storage')->setToken(null);
+
+//        $request->getSession()->getFlashBag()->add('message', "Votre compte a bien été supprimé.");
+
+        return $this->redirectToRoute('default_index');
+
+    }
+
 
     /**
      * @Route("/matching", name="matching")
@@ -331,4 +356,5 @@ class UserController extends AbstractController
             'sorry' => $sorry,
         ]);
     }
+
 }

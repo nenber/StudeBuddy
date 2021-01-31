@@ -20,12 +20,16 @@
 					<div class="col-lg-4 col-sm-12">
 						<div class="row">
 							<div class="col">
+
 								{% if app.user.profileImage == false %}
+
 									<div class="row profil-image">
 										<img src="{{ asset('/img/profil.png') }}"/>
 									</div>
 								{% else %}
+
 									{{app.user.profileImage}}
+
 								{% endif %}
 								<div class="row">
 									<p>
@@ -101,7 +105,9 @@
 											/ 600</small>
 									</p>
 								</div>
+
 								{#a faire un count pour text taper dans textarea-->#}
+
 							</div>
 						</div>
 						<div class="row container-button">
