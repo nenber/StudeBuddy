@@ -25,11 +25,6 @@ class Godparent
     private $user_id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Event::class, mappedBy="organizer_id")
-     */
-    private $events;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Godson::class, mappedBy="godparent_id")
      */
     private $godson_id;
@@ -56,7 +51,7 @@ class Godparent
 
         return $this;
     }
-
+  
     /**
      * @return Collection|Event[]
      */
@@ -87,32 +82,4 @@ class Godparent
 
         return $this;
     }
-
-    /**
-     * @return Collection|Godson[]
-     */
-    public function getGodsonId(): Collection
-    {
-        return $this->godson_id;
-    }
-
-    public function addGodsonId(Godson $godsonId): self
-    {
-        if (!$this->godson_id->contains($godsonId)) {
-            $this->godson_id[] = $godsonId;
-            $godsonId->addGodparentId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGodsonId(Godson $godsonId): self
-    {
-        if ($this->godson_id->contains($godsonId)) {
-            $this->godson_id->removeElement($godsonId);
-            $godsonId->removeGodparentId($this);
-        }
-
-        return $this;
-    }
-}
+}   

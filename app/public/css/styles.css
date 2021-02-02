@@ -52,7 +52,7 @@ section {
 }
 
 a {
-  text-decoration: none, !important;
+  text-decoration: none !important;
 }
 
 button {
@@ -76,7 +76,7 @@ button:hover {
 }
 
 .green {
-  background-color: #5BB572 !important;
+  background-color: #5bb572 !important;
 }
 hr {
   border: 3px solid #366db4;
@@ -137,12 +137,9 @@ hr {
   color: #366db4 !important;
 }
 
-
 /* {
     # INDEX ou bien HOME #
 } */
-.container-fluid {}
-
 
 #presentation {
   margin-top: 4%;
@@ -166,7 +163,9 @@ hr {
 #presentation .col-xl-6 {
   padding: 0 !important;
 }
-
+#presentation a {
+  color: aliceblue;
+}
 #presentation h1 {
   color: #366db4;
   font-size: 40px;
@@ -187,13 +186,13 @@ hr {
 }
 
 #description h1 {
-  color: #366DB4;
+  color: #366db4;
   color: #366db4;
   text-align: center;
 }
 
 #description h3 {
-  color: #97CCEF;
+  color: #97ccef;
   color: #97ccef;
   padding-top: 10%;
   line-height: 1.5;
@@ -206,7 +205,8 @@ hr {
 }
 
 #features h1 {
-  color: #366DB4;}
+  color: #366db4;
+}
 
 #features .value-card h2 {
   width: 250px;
@@ -224,11 +224,12 @@ hr {
 
 #features p {
   font-size: 30px;
-  color: #97CCEF;
+  color: #97ccef;
 }
 
 #gallery h1 {
-  color: #5bb572;}
+  color: #5bb572;
+}
 #gallery .bloc {
   height: 250px;
   background: #97ccef;
@@ -254,30 +255,28 @@ hr {
   }
 }
 
-
 /* # FOOTER # */
 footer {
-  background: #366DB4;
+  background: #366db4;
   margin-top: 10vh;
   width: 100vw;
-  
 }
-footer p{
+footer p {
   font-family: "Nunito", sans-serif;
   font-weight: 600;
   color: white;
 }
 /* # EDIT-PROFIL # */
 
-.edit-profil h5{
+.edit-profil h5 {
   font-weight: bolder;
   color: #97ccef;
 }
 
-.edit-profil textarea{
+.edit-profil textarea {
   height: 40vh;
 }
-.edit-profil .plusButton{
+.edit-profil .plusButton {
   height: 18px;
   width: 18px;
 }
@@ -437,3 +436,78 @@ footer p{
     padding: 25% 0 0;
   }
 }
+
+
+#eventIndex {
+  margin-top: 100px !important;
+}
+
+#eventIndex h1 {
+  color: #366db4;
+}
+
+#eventIndex h3 {
+  color: #366db4;
+}
+
+#eventIndex p .gras {
+  font-weight: bold;
+}
+#eventIndex .card {
+  display:inline-block;
+}
+
+/* {
+    # MAP #
+} */
+#map-display #map {
+  height: 100vh;
+}
+#map-display {
+  margin-top: 5%;
+}
+
+#map-display h1 {
+  color: #366db4;
+}
+
+/* {
+    # MATCHING CARD #
+} */
+
+.matching-card .card-title{
+  font-weight: bold;
+  color: #366db4;
+}
+
+.matching-card button{
+  background-color: #5bb572 !important;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;   
+  transform: translateX(-50%); 
+}
+
+.matching-card .card{
+  border-radius: 28px;
+}
+
+.matching-card .card-body{
+  min-height: 45vh;
+  flex: 1;
+  position: relative; 
+}
+
+#refresh-btn a{
+  font-size: 16px;
+  color: #366DB4;
+}
+#refresh-btn{
+  align-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  align-content: center;
+}
+
+
