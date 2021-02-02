@@ -241,13 +241,13 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('user_edit-profile');
         }
-        if ($user->getProfilImage() != null) {
-            $content = stream_get_contents($user->getProfilImage());
+        if ($user->getProfileImage() != null) {
+            $content = stream_get_contents($user->getProfileImage());
         } else {
             $content = null;
         }
 
-        return $this->render('user/edit-profil.html.twig', [
+        return $this->render('user/edit-profile.html.twig', [
             'formEditProfil' => $form->createView(),
             'profilImage' => $content
         ]);
