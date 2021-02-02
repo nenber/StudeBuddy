@@ -4,18 +4,19 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Symfony\Mailgun;
+use App\Form\EditUserType;
 use Symfony\Component\Mime\Email;
+use App\Form\CustomUserAccountType;
 use Symfony\Core\Component\Security\Util;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use App\Form\CustomUserAccountType;
-use App\Form\EditUserType;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 
 
@@ -77,11 +78,15 @@ class UserController extends AbstractController
                     ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" . "http://0.0.0.0:8082" . $url);
 
                 $mailer->send($email);
+                return $this->render('user/forgot-password.html.twig', [
+            'controller_name' => 'UserController',"message_success" =>"Email envoyé !","email"=>$request->request->get("email")
+        ]);
             }
         }
         return $this->render('user/forgot-password.html.twig', [
-            'controller_name' => 'UserController',
+            'controller_name' => 'UserController'
         ]);
+        
     }
 
     /**
@@ -121,11 +126,13 @@ class UserController extends AbstractController
                 );
                 $em->persist($result);
                 $em->flush();
+                return $this->redirectToRoute("default_index");
             } else {
-                $this->redirectToRoute('user_reset_password', ['token' => $token]);
+                return $this->redirectToRoute('user_reset_password', ['token' => $token]);
             }
         }
-        return $this->redirectToRoute("default_index");
+        dump($email);
+        // return $this->redirectToRoute("default_index");
     }
 
     /**
@@ -171,6 +178,28 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
+
+    /**
+     * @Route("/uploadProfilImage", name="uploadProfilImage")
+     */
+    public function uploadProfileImage(Request $request)
+    {
+        dump($request);
+        $em = $this->getDoctrine()->getManager();
+        $result = $em->getRepository(User::class)->findOneBy(['email' => $request->request->get("email")]);
+        if($result != null)
+        {
+            $result->setProfilImage($request->request->get("image"));
+            $em->persist($result);
+            $em->flush();
+        }
+        else
+        {
+            dump("false");
+        }
+
+        return new JsonResponse();
+    }
     /**
      * @Route("/edit-profil", name="edit-profil")
      */
@@ -179,13 +208,61 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(CustomUserAccountType::class, $user);
         $form->handleRequest($request);
+                // dump($request);die(0);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
+            $parameters = $request->request->get("custom_user_account");
+            $user->setSpokenLanguage($parameters["spokenLanguage"]);
+            $user->setLanguageToLearn($parameters["languageToLearn"]);
+            $user->setDescription($parameters["description"]);
+            if(array_key_exists('isGodson', $parameters))
+            {
+                if($parameters["isGodson"] == "1")
+                {
+                    $user->setIsGodson(true);
+                }
+                else
+                {
+                    $user->setIsGodson(false);
+                }
+            }
+            else
+            {
+                $user->setIsGodson(false);
+            }
+            if(array_key_exists('isGodparent', $parameters))
+            {
+                if($parameters["isGodparent"] == "1")
+                {
+                    $user->setIsGodparent(true);
+                }
+                else
+                {
+                    $user->setIsGodparent(false);
+                }
+            }
+            else
+            {
+                $user->setIsGodparent(false);
+            }
+            $em->persist($user);
             $em->flush();
             return $this->redirectToRoute('user_edit-profil');
         }
+        if($user->getProfilImage() != null)
+        {
+            $content = stream_get_contents($user->getProfilImage());
+        }
+        else
+        {
+            $content = null;
+        }
+        
         return $this->render('user/edit-profil.html.twig', [
             'formEditProfil' => $form->createView(),
+            'profilImage' => $content
         ]);
     }
 
