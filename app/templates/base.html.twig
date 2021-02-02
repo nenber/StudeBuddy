@@ -18,19 +18,20 @@
 			<a class="navbar-brand" href="{{ path('default_index') }}">
 				<img src="{{ asset('/img/logo.png') }}" alt="logo studandbuddy" width="180px"/>
 			</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-
 
 			<div class="collapse navbar-collapse" [ngClass]="{ show: navbarOpen }" id="navbarSupportedContent">
 				<ul class="navbar-nav ml-auto">
 					{% if is_granted('ROLE_USER') %}
 						<li class="nav-item">
-							<a class="nav-link" href="#matching">Matching</a>
+							<a class="nav-link" href="{{path('user_matching')}}">Matching</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#events">Mes évènements</a>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" id="navbarDropdownn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mes évènements</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdownn">
+								<a class="dropdown-item" href="{{ path('event_map') }}">Rejoindre un évènement</a>
+								<a class="dropdown-item" href="{{ path('event_index') }}">Mes évènements</a>
+								<a class="dropdown-item" href="{{ path('event_new') }}">Créer un évènement</a>
+							</div>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#messagerie">Messagerie</a>
@@ -40,8 +41,8 @@
 								<img src="{{ asset('/img/profil.png') }}" alt="profil" width="35px"/>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="{{ path('user_edit-profil') }}">Voir mon profil</a>
-								<a class="dropdown-item" href="{{ path('user_account') }}">Mon compte</a>
+								<a class="dropdown-item" href="{{ path('user_edit-profile') }}">Voir mon profil</a>
+								<a class="dropdown-item" href="{{ path('user_account') }}">Mes paramètres</a>
 								<a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a>
 							</div>
 						</li>
@@ -70,7 +71,6 @@
 				</ul>
 			</div>
 		</nav>
-
 
 		<div class="container-fluid"> {% block body %}{% endblock %}
 			</div>

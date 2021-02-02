@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Repository\UserRepository;
+
 
 
 
@@ -79,14 +81,13 @@ class UserController extends AbstractController
 
                 $mailer->send($email);
                 return $this->render('user/forgot-password.html.twig', [
-            'controller_name' => 'UserController',"message_success" =>"Email envoyé !","email"=>$request->request->get("email")
-        ]);
+                    'controller_name' => 'UserController', "message_success" => "Email envoyé !", "email" => $request->request->get("email")
+                ]);
             }
         }
         return $this->render('user/forgot-password.html.twig', [
             'controller_name' => 'UserController'
         ]);
-        
     }
 
     /**
@@ -124,6 +125,7 @@ class UserController extends AbstractController
                         $newMdp
                     )
                 );
+                $result->setToken(null);
                 $em->persist($result);
                 $em->flush();
                 return $this->redirectToRoute("default_index");
@@ -187,28 +189,25 @@ class UserController extends AbstractController
         dump($request);
         $em = $this->getDoctrine()->getManager();
         $result = $em->getRepository(User::class)->findOneBy(['email' => $request->request->get("email")]);
-        if($result != null)
-        {
+        if ($result != null) {
             $result->setProfilImage($request->request->get("image"));
             $em->persist($result);
             $em->flush();
-        }
-        else
-        {
+        } else {
             dump("false");
         }
 
         return new JsonResponse();
     }
     /**
-     * @Route("/edit-profil", name="edit-profil")
+     * @Route("/edit-profile", name="edit-profile")
      */
     public function editProfil(Request $request)
     {
         $user = $this->getUser();
         $form = $this->createForm(CustomUserAccountType::class, $user);
         $form->handleRequest($request);
-                // dump($request);die(0);
+        // dump($request);die(0);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -217,50 +216,38 @@ class UserController extends AbstractController
             $user->setSpokenLanguage($parameters["spokenLanguage"]);
             $user->setLanguageToLearn($parameters["languageToLearn"]);
             $user->setDescription($parameters["description"]);
-            if(array_key_exists('isGodson', $parameters))
-            {
-                if($parameters["isGodson"] == "1")
-                {
+            if (array_key_exists('isGodson', $parameters)) {
+                if ($parameters["isGodson"] == "1") {
                     $user->setIsGodson(true);
-                }
-                else
-                {
+                } else {
                     $user->setIsGodson(false);
                 }
-            }
-            else
-            {
+            } else {
                 $user->setIsGodson(false);
             }
-            if(array_key_exists('isGodparent', $parameters))
-            {
-                if($parameters["isGodparent"] == "1")
-                {
+            if (array_key_exists('isGodparent', $parameters)) {
+                if ($parameters["isGodparent"] == "1") {
                     $user->setIsGodparent(true);
-                }
-                else
-                {
+                } else {
                     $user->setIsGodparent(false);
                 }
-            }
-            else
-            {
+            } else {
                 $user->setIsGodparent(false);
             }
             $em->persist($user);
             $em->flush();
-            return $this->redirectToRoute('user_edit-profil');
+
+            $this->addFlash('message', 'Profil mis à jour');
+
+            return $this->redirectToRoute('user_edit-profile');
         }
-        if($user->getProfilImage() != null)
-        {
-            $content = stream_get_contents($user->getProfilImage());
-        }
-        else
-        {
+        if ($user->getProfileImage() != null) {
+            $content = stream_get_contents($user->getProfileImage());
+        } else {
             $content = null;
         }
-        
-        return $this->render('user/edit-profil.html.twig', [
+
+        return $this->render('user/edit-profile.html.twig', [
             'formEditProfil' => $form->createView(),
             'profilImage' => $content
         ]);
@@ -320,6 +307,86 @@ class UserController extends AbstractController
 
         return $this->render('user/delete-account.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/matching", name="matching")
+     */
+
+    public function findBuddy(UserRepository $repository)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $this->getUser();
+        $userMatchingLanguage = $subscribers = $buddies = array();
+        $warning = $sorry = false;
+
+        //si user is GP and GS => find all willing participant
+        // match user SL and LTL with sub SL and LTL
+        if (($user->getIsGodparent()) && ($user->getIsGodson())) {
+            $subscribers = $repository->findByBuddies(true);
+        }
+
+        //si user is GP and not GS => find all GS
+        // match user SL with GS LTL
+        if (($user->getIsGodparent()) && ($user->getIsGodson() == false)) {
+            $subscribers = $repository->findGodson(true);
+            $userMatchingLanguage = $user->getSpokenLanguage();
+        }
+        //if user is GS and not GP => find all GP
+        // match user LTL with GP SL
+        if (($user->getIsGodson()) && ($user->getIsGodparent() == false)) {
+            $subscribers = $repository->findGodparent(true);
+            $userMatchingLanguage = $user->getLanguageToLearn();
+        }
+
+        //if user not GS and not GP => warning
+        if (($user->getIsGodparent() == false) && ($user->getIsGodson() == false)) {
+            $warning = true;
+        }
+
+        foreach ($subscribers as $person) {
+            if ($person != $user) {
+                // user is GS and !GP => match user LTL with GP SL
+                if (($user->getIsGodson()) && ($user->getIsGodparent() == false)) {
+                    $subscriberMatchingLanguage = $person->getSpokenLanguage();
+                    if (!empty(array_intersect($subscriberMatchingLanguage, $userMatchingLanguage))) {
+                        array_push($buddies, $person);
+                    }
+                }
+                // user !GS and GP => match user LTL with GP SL
+                if (($user->getIsGodson() == false) && ($user->getIsGodparent())) {
+                    $subscriberMatchingLanguage = $person->getLanguageToLearn();
+                    if (!empty(array_intersect($subscriberMatchingLanguage, $userMatchingLanguage))) {
+                        array_push($buddies, $person);
+                    }
+                }
+                // user GS GP => match subscriber SL w/ user LTL and subLTL w/userSL
+                if (($user->getIsGodson()) && ($user->getIsGodparent())) {
+                    $userSpokenLanguage = $user->getSpokenLanguage();
+                    $userLanguageToLearn = $user->getLanguageToLearn();
+                    $subscriberSpokenLanguage = $person->getSpokenLanguage();
+                    $subscriberLanguageToLearn = $person->getLanguageToLearn();
+
+                    if ((!empty(array_intersect($userSpokenLanguage, $subscriberLanguageToLearn)))
+                        || (!empty(array_intersect($userLanguageToLearn, $subscriberSpokenLanguage)))
+                    ) {
+                        array_push($buddies, $person);
+                    }
+                }
+            }
+        }
+        //if no buddies -> warning
+        if (empty($buddies)) {
+            $sorry = true;
+        }
+
+        return $this->render('user/matching.html.twig', [
+            'buddies' => $buddies,
+            'controller_name' => 'UserController',
+            'warning' => $warning,
+            'sorry' => $sorry,
         ]);
     }
 }
