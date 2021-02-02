@@ -190,7 +190,7 @@ class UserController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $result = $em->getRepository(User::class)->findOneBy(['email' => $request->request->get("email")]);
         if ($result != null) {
-            $result->setProfilImage($request->request->get("image"));
+            $result->setProfileImage($request->request->get("image"));
             $em->persist($result);
             $em->flush();
         } else {
@@ -216,6 +216,7 @@ class UserController extends AbstractController
             $user->setSpokenLanguage($parameters["spokenLanguage"]);
             $user->setLanguageToLearn($parameters["languageToLearn"]);
             $user->setDescription($parameters["description"]);
+            
             if (array_key_exists('isGodson', $parameters)) {
                 if ($parameters["isGodson"] == "1") {
                     $user->setIsGodson(true);

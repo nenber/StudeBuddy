@@ -69,7 +69,7 @@
 					<div class="col edit-profil">
 						<h5>Tes langues parlées :
 						</h5>
-						{{ form_label(formEditProfil.spokenLanguage, "Langue :")}}
+						{# {{ form_label(formEditProfil.spokenLanguage, )}} #}
 						{{ form_widget(formEditProfil.spokenLanguage, {
 										'attr': {
 											'class' : 'form-control multiselect-select2',
@@ -85,7 +85,7 @@
 					<div class="col edit-profil">
 						<h5>Tes langues en apprentissage :
 						</h5>
-						{{ form_label(formEditProfil.languageToLearn, "Langue :")}}
+						{# {{ form_label(formEditProfil.languageToLearn, )}} #}
 						{{ form_widget(formEditProfil.languageToLearn, {
 										'attr': {
 											'class' : 'form-control multiselect-select2',
@@ -104,7 +104,8 @@
 							{{ form_widget(formEditProfil.description, {
 											'attr': {
 												'placeholder': "Présente-toi et parles-nous de tes hobbies !",
-												'class' : 'form-control'
+												'class' : 'form-control',
+												'style':'padding:20px;'
 												}
 										})
 									}}
@@ -128,9 +129,9 @@
 		</div>
 	</div>
 </div></div>{{ form_end(formEditProfil) }}{# <p>
-																															</p> #}<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script><script type="text/javascript">
+																																				</p> #}<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script><script type="text/javascript">
 $(document).ready(function () {
-$('.multiselect-select2').select2();
+$('.multiselect-select2').select2({maximumSelectionLength: 3});
 
 $("#uploadImageButton").change(function () {
 $("#message").empty(); // To remove the previous error message
@@ -185,5 +186,5 @@ console.log(response);
 
 
 });</script>{% endblock %}{# {% block javascripts %}
-																																										{# <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-																																															<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> {% endblock %}#}
+																																															{# <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+																																																				<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> {% endblock %}#}
