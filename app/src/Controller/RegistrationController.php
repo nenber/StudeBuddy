@@ -49,7 +49,9 @@ class RegistrationController extends AbstractController
                 */
                 $errorsString = (string) $errors;
 
-                return new Response($errorsString);
+                return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),"new" => $request->query->get("new")
+        ]);
             }
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -62,7 +64,7 @@ class RegistrationController extends AbstractController
                 $formAuthenticator,
                 'main'
             );
-            return $this->redirectToRoute('user_edit-profile');
+            return $this->redirectToRoute('user_edit-profile',["new" => true]);
         }
 
         return $this->render('registration/register.html.twig', [
