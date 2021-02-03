@@ -482,10 +482,6 @@ footer p {
 
 .matching-card button{
   background-color: #5bb572 !important;
-  position: absolute;
-  bottom: 10px;
-  left: 50%;   
-  transform: translateX(-50%); 
 }
 
 .matching-card .card{
@@ -495,7 +491,7 @@ footer p {
 .matching-card .card-body{
   min-height: 45vh;
   flex: 1;
-  position: relative; 
+  
 }
 
 #refresh-btn a{
