@@ -113,10 +113,21 @@ url: "{{ path('user_get_profile_image') }}",
 data: {},
 dataType: "json",
 success: function (response) {
-if (response != null || response != "") {
+if (response != null || response != "" || !jQuery.isEmptyObject(response);) {
+
 $('#pi').attr('src', response);
 
+} else {
+$('#pi').attr('src', "{{ asset('/img/profil.png') }}");
+
+
 }
+},
+error: function (error) {
+console.log(error)
+$('#pi').attr('src', "{{ asset('/img/profil.png') }}");
+
+
 }
 });
 });
