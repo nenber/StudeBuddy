@@ -35,6 +35,7 @@
 						<div class="row">
 							<div class="col">
 								{% if profilImage == false %}
+
 									<div class="row profil-image">
 										<img
 										name="profilImage" id="previewimg" src="{{ asset('/img/profil.png') }}" style="max-height:320px;max-width:320px;"/>
@@ -45,6 +46,7 @@
 									</div>
 								{% else %}
 									<img name="profilImage" id="previewimg" src="{{ profilImage }}" style="max-height:320px;max-width:320px;"/>
+
 
 								{% endif %}
 								<div class="row">
@@ -117,6 +119,19 @@
 												}
 										})
 									}}
+
+								</div>
+								<div class="row float-right">
+									<p>
+										<small>
+											{{ app.user.description|length }}
+											/ 600</small>
+									</p>
+								</div>
+
+								{#a faire un count pour text taper dans textarea-->#}
+
+							</div>
 						</div>
 						<div class="row float-right">
 							<p>
