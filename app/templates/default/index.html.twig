@@ -20,9 +20,11 @@
 									<br/>
 									ou d'ailleurs !
 								</p>
-								<button type="button" class="btn-lg">
-									<a href="{{ path('app_register') }}">S'inscrire</a>
-								</button>
+								{% if not app.user %}
+									<button type="button" class="btn-lg">
+										<a href="{{ path('app_register') }}">S'inscrire</a>
+									</button>
+								{% endif %}
 							</div>
 						</div>
 					</div>

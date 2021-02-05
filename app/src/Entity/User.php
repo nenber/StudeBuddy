@@ -31,7 +31,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email(
-     *     message = "Cet email {{ value }} n'est pas valide."
+     *     message = "'{{ value }}' n'est pas une adresse mail valide."
      * )
      */
     private $email;
@@ -44,26 +44,31 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Regex("/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})^/")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $first_name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $last_name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex("^(0|(\\+33)|(0033))[1-9][0-9]{8}^", message="Numéro de telephone invalide")
      */
     private $phone_number;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $school;
 

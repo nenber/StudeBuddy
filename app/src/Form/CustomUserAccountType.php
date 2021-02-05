@@ -24,45 +24,47 @@ class CustomUserAccountType extends AbstractType
             //     'required' => true,
             // ])
             ->add('isGodson', CheckboxType::class, [
-                'required' => false,
+                'required' => true,
             ])
             ->add('isGodparent', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('spokenLanguage', LanguageType::class, [
                 'required' => true,
+                'multiple' => true
+                // 'mapped'=>false,
             ])
             ->add('languageToLearn', LanguageType::class, [
                 'required' => true,
-
+                'multiple' => true
             ])
             ->add('description', TextareaType::class, [
                 'required' => true,
             ]);
 
-        $builder->get('spokenLanguage')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($tagsAsArray) {
-                    // transform the array to a string
-                    return implode(', ', $tagsAsArray);
-                },
-                function ($tagsAsString) {
-                    // transform the string back to an array
-                    return explode(', ', $tagsAsString);
-                }
-            ));
+        // $builder->get('spokenLanguage')
+        //     ->addModelTransformer(new CallbackTransformer(
+        //         function ($tagsAsArray) {
+        //             // transform the array to a string
+        //             return implode(', ', $tagsAsArray);
+        //         },
+        //         function ($tagsAsString) {
+        //             // transform the string back to an array
+        //             return explode(', ', $tagsAsString);
+        //         }
+        //     ));
 
-        $builder->get('languageToLearn')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($tagsAsArray) {
-                    // transform the array to a string
-                    return implode(', ', $tagsAsArray);
-                },
-                function ($tagsAsString) {
-                    // transform the string back to an array
-                    return explode(', ', $tagsAsString);
-                }
-            ));
+        // $builder->get('languageToLearn')
+        //     ->addModelTransformer(new CallbackTransformer(
+        //         function ($tagsAsArray) {
+        //             // transform the array to a string
+        //             return implode(', ', $tagsAsArray);
+        //         },
+        //         function ($tagsAsString) {
+        //             // transform the string back to an array
+        //             return explode(', ', $tagsAsString);
+        //         }
+        //     ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

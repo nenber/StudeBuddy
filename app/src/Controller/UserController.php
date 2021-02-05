@@ -6,19 +6,21 @@ use App\Entity\User;
 use App\Entity\ChangePassword;
 use App\Form\ChangePasswordType;
 use Symfony\Mailgun;
+use App\Form\EditUserType;
 use Symfony\Component\Mime\Email;
+use App\Form\CustomUserAccountType;
 use Symfony\Core\Component\Security\Util;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use App\Form\CustomUserAccountType;
-use App\Form\EditUserType;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Session\Session;
+
 
 
 
@@ -54,9 +56,10 @@ class UserController extends AbstractController
             $em = $this->getDoctrine()->getManager();
 
 
-            if ($result == null) {
-                return $this->render('user/forget-password.html.twig', [
+            if ($result == null || empty($request->request->get("email")) || $request->request->get("email") == null) {
+                return $this->render('user/forgot-password.html.twig', [
                     'controller_name' => 'UserController',
+                    'message_error' => "L'email \"".$request->request->get("email")."\" n'est liée à aucun compte existant."
                 ]);
             } else {
                 $uni = $result->getEmail();
@@ -80,25 +83,35 @@ class UserController extends AbstractController
                     ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" . "http://0.0.0.0:8082" . $url);
 
                 $mailer->send($email);
+                return $this->render('user/forgot-password.html.twig', [
+                    'controller_name' => 'UserController', "message_success" => "Email envoyé !", "email" => $request->request->get("email")
+                ]);
             }
         }
         return $this->render('user/forgot-password.html.twig', [
-            'controller_name' => 'UserController',
+            'controller_name' => 'UserController'
         ]);
     }
 
     /**
      * @Route("/reset_password/{token}", name="reset_password")
      */
-    public function resetPassword($token)
+    public function resetPassword($token, $message ="",Request $request)
     {
+        dump($request);
+        $message = "";
+        if($request->query->get("message") != null)
+        {
+            $message = $request->query->get("message");
+        }
         $em = $this->getDoctrine()->getManager();
         $result = $em->getRepository(User::class)->findOneBy(['token' => strval($token)]);
         if ($result != null) {
             return $this->render('user/reset-password.html.twig', [
                 'controller_name' => 'UserController',
                 "email" => $result->getEmail(),
-                'token' => $result->getToken()
+                'token' => $result->getToken(),
+                'message' => $message
             ]);
         } else {
             return $this->redirectToRoute("default_index");
@@ -117,21 +130,32 @@ class UserController extends AbstractController
         $result = $em->getRepository(User::class)->findOneBy(['email' => $email]);
         if ($result != null) {
             $newMdp  = $request->request->get("inputMdp");
+            $confirmNewMdp = $request->request->get("inputConfirmMdp");
             if (preg_match_all("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})^", $newMdp) > 0) {
-                $result->setPassword(
-                    $passwordEncoder->encodePassword(
-                        $result,
-                        $newMdp
-                    )
-                );
-                $result->setToken(null);
-                $em->persist($result);
-                $em->flush();
+                if($request->request->get("inputConfirmMdp") == $newMdp)
+                {
+                    $result->setPassword(
+                        $passwordEncoder->encodePassword(
+                            $result,
+                            $newMdp
+                        )
+                    );
+                    $result->setToken(null);
+                    $em->persist($result);
+                    $em->flush();
+                    return $this->redirectToRoute("default_index");
+                }
+                else
+                {
+                    return $this->redirectToRoute('user_reset_password', ['token' => $token, 'message' => "Les deux mots de passe ne correspondent pas"]);
+                }
+
             } else {
-                $this->redirectToRoute('user_reset_password', ['token' => $token]);
+                return $this->redirectToRoute('user_reset_password', ['token' => $token, 'message' => "Le mot de passe ne correspond pas au format requis"]);
             }
         }
-        return $this->redirectToRoute("default_index");
+        dump($email);
+        // return $this->redirectToRoute("default_index");
     }
 
     /**
@@ -183,6 +207,43 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
+
+    /**
+     * @Route("/uploadProfilImage", name="uploadProfilImage")
+     */
+    public function uploadProfileImage(Request $request)
+    {
+        dump($request);
+        $em = $this->getDoctrine()->getManager();
+        $result = $em->getRepository(User::class)->findOneBy(['email' => $request->request->get("email")]);
+        if ($result != null) {
+            $result->setProfileImage($request->request->get("image"));
+            $em->persist($result);
+            $em->flush();
+        } else {
+            dump("false");
+        }
+
+        return new JsonResponse();
+    }
+
+    /**
+     * @Route("/get_profile_image", name="get_profile_image")
+     */
+    public function getProfileImage(Request $request)
+    {
+        if($this->getUser() != null)
+        {
+            $user = $this->getUser();
+            if ($user->getProfileImage() != null) {
+            $content = stream_get_contents($user->getProfileImage());
+            } else {
+                $content = null;
+            }
+        }
+        return new JsonResponse($content);
+    }
+
     /**
      * @Route("/edit-profile", name="edit-profile")
      */
@@ -193,17 +254,58 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(CustomUserAccountType::class, $user);
         $form->handleRequest($request);
+        // dump($request);die(0);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
+            $parameters = $request->request->get("custom_user_account");
+            $user->setSpokenLanguage($parameters["spokenLanguage"]);
+            $user->setLanguageToLearn($parameters["languageToLearn"]);
+            $user->setDescription($parameters["description"]);
+            
+            if (array_key_exists('isGodson', $parameters)) {
+                if ($parameters["isGodson"] == "1") {
+                    $user->setIsGodson(true);
+                } else {
+                    $user->setIsGodson(false);
+                }
+            } else {
+                $user->setIsGodson(false);
+            }
+            if (array_key_exists('isGodparent', $parameters)) {
+                if ($parameters["isGodparent"] == "1") {
+                    $user->setIsGodparent(true);
+                } else {
+                    $user->setIsGodparent(false);
+                }
+            } else {
+                $user->setIsGodparent(false);
+            }
+            $em->persist($user);
             $em->flush();
 
             $this->addFlash('message', 'Profil mis à jour');
 
             return $this->redirectToRoute('user_edit-profile');
         }
+        if ($user->getProfileImage() != null) {
+            $content = stream_get_contents($user->getProfileImage());
+        } else {
+            $content = null;
+        }
+        dump($request);
+        if($request->query->get("new") != null)
+        {
+            $new = true;
+        }
+        else{
+            $new = false;
+        }
         return $this->render('user/edit-profile.html.twig', [
             'formEditProfil' => $form->createView(),
+            'profilImage' => $content,
+            'new' => $new
         ]);
     }
 
@@ -356,5 +458,6 @@ class UserController extends AbstractController
             'sorry' => $sorry,
         ]);
     }
+
 
 }
