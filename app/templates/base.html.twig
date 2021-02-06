@@ -16,7 +16,7 @@
 	<body>
 
 		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-			<a class="navbar-brand" href="{{ path('default_index') }}">
+			<a class="navbar-brand" href="{{ path('app_index') }}">
 				<img src="{{ asset('/img/logo.png') }}" alt="logo studandbuddy" width="180px"/>
 			</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,7 +109,7 @@
 					$(document).ready(function () {
 $.ajax({
 type: "POST",
-url: "{{ path('user_get_profile_image') }}",
+url: "{{ path('user_get-profile-image') }}",
 data: {},
 dataType: "json",
 success: function (response) {
