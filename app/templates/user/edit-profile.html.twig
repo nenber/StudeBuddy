@@ -12,6 +12,11 @@
 	{{ form_start(formEditProfil) }}
 	<div id="register">
 		<div class="row register mt-sm-5">
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success" role="alert">
+					{{message}}
+				</div>
+			{% endfor %}
 			<div class="col-lg-12 col-sm-12" data-aos="fade-right">
 				<div class="row">
 					<div class="col">
@@ -121,26 +126,18 @@
 									}}
 
 								</div>
-								<div class="row float-right">
+								{# <div class="row float-right">
 									<p>
 										<small>
 											{{ app.user.description|length }}
 											/ 600</small>
 									</p>
-								</div>
+								</div> #}
 
 								{#a faire un count pour text taper dans textarea-->#}
 
 							</div>
 						</div>
-						<div class="row float-right">
-							<p>
-								<small>
-									{{ app.user.description|length }}
-									/ 600</small>
-							</p>
-						</div>
-						{#a faire un count pour text taper dans textarea-->#}
 					</div>
 				</div>
 				{% if new == false %}
@@ -216,7 +213,7 @@ $('#pi').attr('src', e.target.result);
 let userEmail = '{{ app.user.email }}'
 $.ajax({
 type: "POST",
-url: "{{ path('user_uploadProfilImage') }}",
+url: "{{ path('user_upload-profile-image') }}",
 
 
 data: {
