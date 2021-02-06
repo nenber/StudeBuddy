@@ -1,11 +1,13 @@
 import './styles/app.scss';
 import './styles/styles.css';
-import 'aos/dist/aos';
+// import 'aos/dist/aos';
 import "jquery/dist/jquery";
 import  'popper.js/dist/popper';
-import  'select2';
+import 'select2';
+import 'bootstrap';
+import 'bootstrap/js/dist/dropdown';
 
-AOS.init();
+// AOS.init();
 
 function refreshPage() {
     window.location.reload();
@@ -36,6 +38,9 @@ $(document).ready(function () {
         }
     });
 });
+
+
+
 
 import titleImage1Path from './img/6461.png';
 import hikerPath from './img/8576.png';
