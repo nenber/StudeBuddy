@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-
+	{{ parent() }}
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
 
 {% endblock %}
@@ -38,7 +38,7 @@
 
 									<div class="row profil-image">
 										<img
-										name="profilImage" id="previewimg" src="{{ asset('/img/profil.png') }}" style="max-height:320px;max-width:320px;"/>
+										name="profilImage" id="previewimg" src="{{ asset('build/images/profil.png') }}" style="max-height:320px;max-width:320px;"/>
 
 									{# <img src="data:image/png;base64,{{ entity.photo | base64 }}"> #}
 
@@ -187,7 +187,7 @@ var match = ["image/jpeg", "image/png", "image/jpg"];
 
 if (!((imagefile == match[0]) || (imagefile == match[1]) || (imagefile == match[2]))) {
 $("#file").css("color", "red");
-$('#previewimg').attr('src', '{{ asset('/img/profil.png') }}');
+$('#previewimg').attr('src', '{{ asset('build/images/profil.png') }}');
 
 $("#message").html("<p class='error'>Please select a valid image file, Only jpeg, jpg and png Images type allowed</p>");
 return false;

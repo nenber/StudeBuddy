@@ -19,7 +19,7 @@
 					{% if  ((warning == false) and (sorry == false)) %}
 						<div class="row refresh">
 							<div id="refresh-btn" class="col-lg-4 d-none d-lg-block align-right">
-								<a class="right" type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
+								<a class="right" type="submit" onclick="refreshPage()"><img src="{{ asset('build/images/refresh.png') }}" alt="refresh">
 									Actualiser</a>
 							</div>
 						</div>
@@ -73,7 +73,7 @@
 								<div class="card text-center col-lg-3 col-sm-12 mx-4 my-4">
 									{% if app.user.profileImage == false %}
 										<div class="row profil-image mx-auto">
-											<img src="{{ asset('/img/profil.png') }}"/>
+											<img src="{{ asset('build/images/profil.png') }}"/>
 										</div>
 									{% else %}
 										{{app.user.profileImage}}
@@ -126,7 +126,7 @@
 
 						{% if  ((warning == false) and (sorry == false)) %}
 							<div id="refresh-btn" class="row d-xl-none d-lg-block">
-								<a type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
+								<a type="submit" onclick="refreshPage()"><img src="{{ asset('build/images/refresh.png') }}" alt="refresh">
 									Actualiser</a>
 							</div>
 						{% endif %}
