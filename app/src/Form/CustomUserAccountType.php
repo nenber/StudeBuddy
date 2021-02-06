@@ -24,7 +24,7 @@ class CustomUserAccountType extends AbstractType
             //     'required' => true,
             // ])
             ->add('isGodson', CheckboxType::class, [
-                'required' => true,
+                'required' => false,
             ])
             ->add('isGodparent', CheckboxType::class, [
                 'required' => false,
