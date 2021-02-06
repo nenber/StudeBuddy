@@ -116,30 +116,38 @@ class User implements UserInterface
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
+     * @var File|null
+     * 
      * @Vich\UploadableField(mapping="profileImage", fileNameProperty="imageName", size="imageSize")
      * 
-     * @var File|null
      */
     private $imageFile;
 
     /**
+     * 
+     * @var string|null
+     * 
      * @ORM\Column(type="string")
      *
-     * @var string|null
      */
     private $imageName;
 
     /**
-     * @ORM\Column(type="integer")
-     *
+
      * @var int|null
+     * 
+     * @ORM\Column(type="integer")
+     * 
      */
     private $imageSize;
 
     /**
+     * 
+     * @var \DateTimeInterface|null
+     * 
      * @ORM\Column(type="datetime")
      *
-     * @var \DateTimeInterface|null
+     * 
      */
     private $updatedAt;
 
