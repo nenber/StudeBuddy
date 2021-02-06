@@ -45,6 +45,10 @@ class EventController extends AbstractController
      */
     public function new(Request $request): Response
     {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
@@ -68,6 +72,10 @@ class EventController extends AbstractController
      */
     public function show(Event $event): Response
     {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+
         return $this->render('event/show.html.twig', [
             'event' => $event,
         ]);
@@ -78,6 +86,9 @@ class EventController extends AbstractController
      */
     public function edit(Request $request, Event $event): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
@@ -98,6 +109,8 @@ class EventController extends AbstractController
      */
     public function delete(Request $request, Event $event): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($event);

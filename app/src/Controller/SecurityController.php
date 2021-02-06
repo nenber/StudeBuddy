@@ -19,7 +19,7 @@ class SecurityController extends AbstractController
         // }
         if($this->getUser() != null)
         {
-            return $this->redirectToRoute('default_index');
+            return $this->redirectToRoute('app_index');
         }
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

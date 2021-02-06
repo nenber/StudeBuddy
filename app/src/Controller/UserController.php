@@ -114,7 +114,7 @@ class UserController extends AbstractController
                 'message' => $message
             ]);
         } else {
-            return $this->redirectToRoute("default_index");
+            return $this->redirectToRoute("app_index");
         }
     }
 
@@ -143,7 +143,7 @@ class UserController extends AbstractController
                     $result->setToken(null);
                     $em->persist($result);
                     $em->flush();
-                    return $this->redirectToRoute("default_index");
+                    return $this->redirectToRoute("app_index");
                 }
                 else
                 {
@@ -154,18 +154,8 @@ class UserController extends AbstractController
                 return $this->redirectToRoute('user_reset_password', ['token' => $token, 'message' => "Le mot de passe ne correspond pas au format requis"]);
             }
         }
-        dump($email);
-        // return $this->redirectToRoute("default_index");
-    }
-
-    /**
-     * @Route("/register", name="register")
-     */
-    public function register()
-    {
-        return $this->render('user/register.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
+        // dump($email);
+        // return $this->redirectToRoute("app_index");
     }
 
     /**
@@ -209,7 +199,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/uploadProfilImage", name="uploadProfilImage")
+     * @Route("/upload-profile-image", name="upload-profile-image")
      */
     public function uploadProfileImage(Request $request)
     {
@@ -228,7 +218,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/get_profile_image", name="get_profile_image")
+     * @Route("/get-profile-image", name="get-profile-image")
      */
     public function getProfileImage(Request $request)
     {
@@ -247,7 +237,7 @@ class UserController extends AbstractController
     /**
      * @Route("/edit-profile", name="edit-profile")
      */
-    public function editProfil(Request $request)
+    public function editProfile(Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -287,7 +277,7 @@ class UserController extends AbstractController
 
             $this->addFlash('message', 'Profil mis à jour');
 
-            return $this->redirectToRoute('user_edit-profile');
+            // return $this->redirectToRoute('user_edit-profile');
         }
         if ($user->getProfileImage() != null) {
             $content = stream_get_contents($user->getProfileImage());
@@ -374,7 +364,7 @@ class UserController extends AbstractController
 
 //        $request->getSession()->getFlashBag()->add('message', "Votre compte a bien été supprimé.");
 
-        return $this->redirectToRoute('default_index');
+        return $this->redirectToRoute('app_index');
 
     }
 
