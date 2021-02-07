@@ -53,6 +53,7 @@ import profilPath from './img/profil.png';
 import refreshPath from './img/refresh.png';
 import talkPath from './img/talk.png';
 import logoPath from './img/logo.png';
+import faviconPath from './img/favicon.png';
 
 let titleImage = `<img src="${titleImage1Path}" >`;
 let hiker = `<img src="${hikerPath}" >`;
@@ -65,3 +66,4 @@ let refresh = `<img src="${refreshPath}" alt="ACME logo">`;
 let profil = `<img src="${profilPath}" alt="ACME logo">`;
 let logowhite = `<img src="${logowhitePath}" alt="ACME logo">`;
 let logo = `<img src="${logoPath}" alt="ACME logo">`;
+let favicon = `<img src="${faviconPath}" alt="ACME logo">`;
