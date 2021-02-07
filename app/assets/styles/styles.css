@@ -185,6 +185,11 @@ hr {
   height: 56px;
 }
 
+
+@media (min-width: 1200px) {
+  
+}
+
 #description h1 {
   color: #366db4;
   color: #366db4;
@@ -228,7 +233,7 @@ hr {
 }
 
 #gallery h1 {
-  color: #5bb572;
+  color: #FFFFFF !important;
 }
 #gallery .bloc {
   height: 250px;

@@ -1,11 +1,13 @@
 import './styles/app.scss';
 import './styles/styles.css';
 // import 'aos/dist/aos';
-import "jquery/dist/jquery";
-import  'popper.js/dist/popper';
+import 'bootstrap/dist/js/bootstrap.bundle';
+import 'jquery/dist/jquery';
+import 'popper.js/dist/popper';
 import 'select2';
 import 'bootstrap';
 import 'bootstrap/js/dist/dropdown';
+import 'bootstrap/js/dist/util';
 
 // AOS.init();
 
