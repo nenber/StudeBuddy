@@ -24,7 +24,7 @@ class RegistrationController extends AbstractController
     {
         if($this->getUser() != null)
         {
-            return $this->redirectToRoute('default_index');
+            return $this->redirectToRoute('app_index');
         }
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
