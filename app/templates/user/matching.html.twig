@@ -71,7 +71,7 @@
 							class="row">
 							{# a faire un sorte de while #}
 							{% for item in buddies|shuffle %}
-								<div class="card text-center ">
+								<div class="card text-center mx-auto">
 									{% if item.profileImage == false %}
 										<div class="row profil-image mx-auto">
 											<img src="{{ asset('build/images/profil.png') }}"/>
