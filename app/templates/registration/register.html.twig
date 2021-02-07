@@ -12,13 +12,12 @@
 				<h1>Inscription
 					<hr></h1>
 
-
 				<div class="form-group row mt-5">
 					<div class="col">
 						{{ form_label(registrationForm.lastName, "Nom :") }}
 						{{ form_widget(registrationForm.lastName, {
                                 'attr': {'placeholder': "Nom", 'class' : 'form-control'}
-                            }) }}port
+                            }) }}
 					</div>
 				</div>
 				<div class="form-group row mt-5">
@@ -37,11 +36,6 @@
                             }) }}
 
 						{{ form_errors(registrationForm.email)}}
-
-
-						<p class="p-email">
-							* Email incorrecte.
-						</p>
 					</div>
 				</div>
 				<div class="form-group row mt-5">
@@ -70,6 +64,9 @@
 							{{ form_widget(registrationForm.school, {
                                 'attr': {'placeholder': "Ecole", 'class' : 'form-control'}
                             }) }}
+							{{ form_errors(registrationForm.school) }}
+
+
 						</div>
 					</div>
 					<div class="form-group row mt-5">

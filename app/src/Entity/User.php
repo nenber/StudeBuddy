@@ -30,6 +30,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email(
+     *     message = "'{{ value }}' n'est pas une adresse mail valide."
+     * )
      */
     private $email;
 
@@ -41,26 +44,31 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Regex("/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})^/")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $first_name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $last_name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex("^(0|(\\+33)|(0033))[1-9][0-9]{8}^", message="Numéro de téléphone invalide")
      */
     private $phone_number;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $school;
 
@@ -75,19 +83,19 @@ class User implements UserInterface
     private $created_at;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean")
      */
-    private $is_godparent;
+    private $is_godparent = false;
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $spoken_language = [];
+    private $spoken_language = ['fr'];
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $language_to_learn = [];
+    private $language_to_learn = ['fr'];
 
     /**
      * @ORM\OneToMany(targetEntity=ThreadUser::class, mappedBy="user_id")
@@ -102,21 +110,33 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="blob", nullable=true)
      */
-    private $profil_image;
+    private $profile_image;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean")
      */
-    private $is_godson;
+    private $is_godson = false;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $token;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Event::class, mappedBy="organizer_id")
+     */
+    private $organized_events;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="participant_id")
+     */
+    private $participated_events;
+
     public function __construct()
     {
         $this->thread_user_id = new ArrayCollection();
+        $this->organized_events = new ArrayCollection();
+        $this->participated_events = new ArrayCollection();
     }
 
 
@@ -349,14 +369,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getProfilImage()
+    public function getProfileImage()
     {
-        return $this->profil_image;
+        return $this->profile_image;
     }
 
-    public function setProfilImage($profil_image): self
+    public function setProfileImage($profile_image): self
     {
-        $this->profil_image = $profil_image;
+        $this->profile_image = $profile_image;
 
         return $this;
     }
@@ -381,6 +401,65 @@ class User implements UserInterface
     public function setToken(?string $token): self
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getOrganizedEvents(): Collection
+    {
+        return $this->organized_events;
+    }
+
+    public function addOrganizedEvent(Event $organizedEvent): self
+    {
+        if (!$this->organized_events->contains($organizedEvent)) {
+            $this->organized_events[] = $organizedEvent;
+            $organizedEvent->setOrganizerId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganizedEvent(Event $organizedEvent): self
+    {
+        if ($this->organized_events->contains($organizedEvent)) {
+            $this->organized_events->removeElement($organizedEvent);
+            // set the owning side to null (unless already changed)
+            if ($organizedEvent->getOrganizerId() === $this) {
+                $organizedEvent->setOrganizerId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getParticipatedEvents(): Collection
+    {
+        return $this->participated_events;
+    }
+
+    public function addParticipatedEvent(Event $participatedEvent): self
+    {
+        if (!$this->participated_events->contains($participatedEvent)) {
+            $this->participated_events[] = $participatedEvent;
+            $participatedEvent->addParticipantId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipatedEvent(Event $participatedEvent): self
+    {
+        if ($this->participated_events->contains($participatedEvent)) {
+            $this->participated_events->removeElement($participatedEvent);
+            $participatedEvent->removeParticipantId($this);
+        }
 
         return $this;
     }

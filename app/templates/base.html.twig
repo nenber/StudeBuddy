@@ -7,41 +7,48 @@
 			{% endblock %}
 		</title>
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous"> {% block stylesheets %}{% endblock %}
+		 {% block stylesheets %}
+		 {{ encore_entry_link_tags('app') }}
+		 {% endblock %}
 		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-		<link rel="stylesheet" href="{{ asset('/css/styles.css') }}">
+		<link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
+{#		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">#}
+
 	</head>
 	<body>
+
 		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-			<a class="navbar-brand" href="{{ path('default_index') }}">
-				<img src="{{ asset('/img/logo.png') }}" alt="logo studandbuddy" width="180px"/>
+			<a class="navbar-brand" href="{{ path('app_index') }}">
+				<img src="{{ asset('build/images/logo.png') }}" alt="logo studandbuddy" width="180px"/>
 			</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-
-
 			<div class="collapse navbar-collapse" [ngClass]="{ show: navbarOpen }" id="navbarSupportedContent">
 				<ul class="navbar-nav ml-auto">
 					{% if is_granted('ROLE_USER') %}
 						<li class="nav-item">
-							<a class="nav-link" href="#matching">Matching</a>
+							<a class="nav-link" href="{{path('user_matching')}}">Matching</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#events">Mes évènements</a>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" id="navbarDropdownn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mes évènements</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdownn">
+								<a class="dropdown-item" href="{{ path('event_map') }}">Rejoindre un évènement</a>
+								<a class="dropdown-item" href="{{ path('event_index') }}">Mes évènements</a>
+								<a class="dropdown-item" href="{{ path('event_new') }}">Créer un évènement</a>
+							</div>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#messagerie">Messagerie</a>
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<img src="{{ asset('/img/profil.png') }}" alt="profil" width="35px"/>
+								<img id="pi" src="{{ asset('build/images/profil.png') }}" alt="profil" width="35px" height="35px"/>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="{{ path('user_edit-profil') }}">Voir mon profil</a>
-								<a class="dropdown-item" href="{{ path('user_account') }}">Mon compte</a>
+								<a class="dropdown-item" href="{{ path('user_edit-profile') }}">Voir mon profil</a>
+								<a class="dropdown-item" href="{{ path('user_account') }}">Mes paramètres</a>
 								<a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a>
 							</div>
 						</li>
@@ -71,14 +78,13 @@
 			</div>
 		</nav>
 
-
 		<div class="container-fluid"> {% block body %}{% endblock %}
 			</div>
 			<footer class="row mt-5">
 				<div class="col my-4 mx-5">
 					<div class="row py-3">
 						<a href="#">
-							<img src="{{ asset('/img/logo_white.png') }}">
+							<img src="{{ asset('build/images/logo_white.png') }}">
 						</a>
 					</div>
 					<div class="row pt-3 ml-3">
@@ -95,12 +101,8 @@
 			</footer>
 
 			{% block javascripts %}
-				<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-				<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-				<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-				<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+					{{ encore_entry_script_tags('app') }}
 			{% endblock %}
-			<script src="{{ asset('/js/scripts.js') }}"></script>
 
 		</body>
 	</html>

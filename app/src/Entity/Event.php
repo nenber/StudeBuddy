@@ -18,17 +18,16 @@ class Event
      * @ORM\Column(type="integer")
      */
     private $id;
-
+  
+     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $event_name;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $event_id;
+    private $address;
 
     /**
      * @ORM\ManyToOne(targetEntity=Marker::class, inversedBy="events")
@@ -36,45 +35,57 @@ class Event
     private $marker_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Godparent::class, inversedBy="events")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="organized_events")
      */
     private $organizer_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Godson::class, inversedBy="events")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="participated_events")
      */
     private $participant_id;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $date;
+
 
     public function __construct()
     {
         $this->participant_id = new ArrayCollection();
     }
 
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEventName(): ?string
+    public function getName(): ?string
     {
-        return $this->event_name;
+        return $this->name;
     }
 
-    public function setEventName(?string $event_name): self
+    public function setName(?string $name): self
     {
-        $this->event_name = $event_name;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getEventId(): ?int
+    public function getAddress(): ?string
     {
-        return $this->event_id;
+        return $this->address;
     }
 
-    public function setEventId(?int $event_id): self
+    public function setAddress(?string $address): self
     {
-        $this->event_id = $event_id;
+        $this->address = $address;
 
         return $this;
     }
@@ -91,12 +102,12 @@ class Event
         return $this;
     }
 
-    public function getOrganizerId(): ?Godparent
+    public function getOrganizerId(): ?User
     {
         return $this->organizer_id;
     }
 
-    public function setOrganizerId(?Godparent $organizer_id): self
+    public function setOrganizerId(?User $organizer_id): self
     {
         $this->organizer_id = $organizer_id;
 
@@ -104,14 +115,14 @@ class Event
     }
 
     /**
-     * @return Collection|Godson[]
+     * @return Collection|User[]
      */
     public function getParticipantId(): Collection
     {
         return $this->participant_id;
     }
 
-    public function addParticipantId(Godson $participantId): self
+    public function addParticipantId(User $participantId): self
     {
         if (!$this->participant_id->contains($participantId)) {
             $this->participant_id[] = $participantId;
@@ -120,11 +131,35 @@ class Event
         return $this;
     }
 
-    public function removeParticipantId(Godson $participantId): self
+    public function removeParticipantId(User $participantId): self
     {
         if ($this->participant_id->contains($participantId)) {
             $this->participant_id->removeElement($participantId);
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }
