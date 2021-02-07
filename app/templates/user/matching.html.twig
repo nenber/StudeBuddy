@@ -16,12 +16,13 @@
 							<hr></h1>
 					</div>
 					<div class="offset-xl-2 col-xl-2">
-						{% if  ((warning == false) and (sorry == false)) %}
-							<div class="row refresh">
-								<div id="refresh-btn" class="col-lg-4 d-none d-lg-block align-right">
-									<a class="right" type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
-										Actualiser</a>
-								</div>
+
+					{% if  ((warning == false) and (sorry == false)) %}
+						<div class="row refresh">
+							<div id="refresh-btn" class="col-lg-4 d-none d-lg-block align-right">
+								<a class="right" type="submit" onclick="refreshPage()"><img src="{{ asset('build/images/refresh.png') }}" alt="refresh">
+									Actualiser</a>
+
 							</div>
 						{% endif %}
 					</div>
@@ -73,7 +74,7 @@
 								<div class="card text-center col-lg-3 col-sm-12 mx-4 my-4">
 									{% if item.profileImage == false %}
 										<div class="row profil-image mx-auto">
-											<img src="{{ asset('/img/profil.png') }}"/>
+											<img src="{{ asset('build/images/profil.png') }}"/>
 										</div>
 									{% else %}
 										<img
@@ -128,7 +129,7 @@
 
 						{% if  ((warning == false) and (sorry == false)) %}
 							<div id="refresh-btn" class="row d-xl-none d-lg-block">
-								<a type="submit" onclick="refreshPage()"><img src="{{ asset('/img/refresh.png') }}" alt="refresh">
+								<a type="submit" onclick="refreshPage()"><img src="{{ asset('build/images/refresh.png') }}" alt="refresh">
 									Actualiser</a>
 							</div>
 						{% endif %}
