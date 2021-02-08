@@ -47,6 +47,8 @@ class UserController extends AbstractController
      */
     public function forgotPassword(Request $request, MailerInterface $mailer)
     {
+        $this->denyAccessUnlessGranted('IS_ANONYMOUS');
+
         if ($request->request->get("email") != null) {
             $result = $this->getDoctrine()
                 ->getRepository(User::class)
@@ -87,6 +89,8 @@ class UserController extends AbstractController
      */
     public function resetPassword($token, $message ="",Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_ANONYMOUS');
+
         $em = $this->getDoctrine()->getManager();
         $result = $em->getRepository(User::class)->findOneBy(['token' => strval($token)]);
         if ($result != null) {
@@ -264,7 +268,8 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_edit-profile');
         }
         if ($user->getProfileImage() != null) {
-            $content = stream_get_contents($user->getProfileImage());
+            // $content = stream_get_contents($user->getProfileImage());
+            $content = $user->getProfileImage();
         } else {
             $content = null;
         }

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Choisi ton Buddy
+{% block title %}Choisis ton Buddy
 {% endblock %}
 
 {% block body %}
@@ -78,7 +78,7 @@
 										</div>
 									{% else %}
 										<img
-										name="profilImage" id="previewimg" src="{{ item.getProfileImage() }}" style="max-height:320px;max-width:320px;"/>
+										name="profilImage" id="previewimg" src="{{ item.profileImage() }}" style="max-height:320px;max-width:320px;"/>
 									{# {{item.getProfileImage()}} #}
 									{% endif %}
 

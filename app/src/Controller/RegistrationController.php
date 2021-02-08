@@ -37,7 +37,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            // $user->set
+            $user->setProfileImage('https://randomuser.me/portraits/thumb/' . rand(0,99) . '.jpg');
             $user->setCreatedAt(new \DateTime('now'));
             $user->setLanguageToLearn(["Francais"]);
 
