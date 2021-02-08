@@ -10,16 +10,24 @@ import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/util';
 
 // AOS.init();
+const $ = require('jquery');
 
+global.$ = global.jQuery = $
+
+$(document).ready(
 function refreshPage() {
     window.location.reload();
-}
+})
 
-function charcountupdate(str) {
-    var lng=document.getElementById("custom_user_account_description").value.lenght;
+
+global.countUpdate = function(str){
+    var lng=document.getElementById("custom_user_account_description").value.length;
     var lng = str.length;
     document.getElementById("charcount").innerHTML = lng + ' ';
 }
+
+
+
 $(document).ready(function () {
     $.ajax({
         type: "POST",
