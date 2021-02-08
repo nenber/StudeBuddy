@@ -2,15 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints\EmailValidator;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\EmailValidator;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
 
@@ -18,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email") 
+ * @Vich\Uploadable
  */
 class User implements UserInterface
 {
@@ -108,11 +111,6 @@ class User implements UserInterface
     private $description;
 
     /**
-     * @ORM\Column(type="blob", nullable=true)
-     */
-    private $profile_image;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $is_godson = false;
@@ -132,6 +130,24 @@ class User implements UserInterface
      */
     private $participated_events;
 
+     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $image;
+
+    /**
+     * @Vich\UploadableField(mapping="profile_image", fileNameProperty="image")
+     * @var File
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="datetime",nullable=true)
+     * @var \DateTime
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         $this->thread_user_id = new ArrayCollection();
@@ -144,6 +160,7 @@ class User implements UserInterface
     {
         return $this->id;
     }
+
 
     public function getEmail(): ?string
     {
@@ -369,17 +386,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getProfileImage()
-    {
-        return $this->profile_image;
-    }
-
-    public function setProfileImage($profile_image): self
-    {
-        $this->profile_image = $profile_image;
-
-        return $this;
-    }
 
     public function getIsGodson(): ?bool
     {
@@ -411,6 +417,34 @@ class User implements UserInterface
     public function getOrganizedEvents(): Collection
     {
         return $this->organized_events;
+    }
+
+     public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
     }
 
     public function addOrganizedEvent(Event $organizedEvent): self
@@ -463,4 +497,6 @@ class User implements UserInterface
 
         return $this;
     }
+
+
 }

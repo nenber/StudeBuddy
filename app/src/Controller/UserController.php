@@ -123,7 +123,7 @@ class UserController extends AbstractController
      */
     public function changePassword(Request $request, $email, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $em = $this->getDoctrine()->getManager();
         $token = $request->query->get('token');
@@ -132,7 +132,7 @@ class UserController extends AbstractController
             $newMdp  = $request->request->get("inputMdp");
             $confirmNewMdp = $request->request->get("inputConfirmMdp");
             if (preg_match_all("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})^", $newMdp) > 0) {
-                if($request->request->get("inputConfirmMdp") == $newMdp)
+                if($confirmNewMdp == $newMdp)
                 {
                     $result->setPassword(
                         $passwordEncoder->encodePassword(
@@ -198,41 +198,9 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/upload-profile-image", name="upload-profile-image")
-     */
-    public function uploadProfileImage(Request $request)
-    {
-        dump($request);
-        $em = $this->getDoctrine()->getManager();
-        $result = $em->getRepository(User::class)->findOneBy(['email' => $request->request->get("email")]);
-        if ($result != null) {
-            $result->setProfileImage($request->request->get("image"));
-            $em->persist($result);
-            $em->flush();
-        } else {
-            dump("false");
-        }
 
-        return new JsonResponse();
-    }
 
-    /**
-     * @Route("/get-profile-image", name="get-profile-image")
-     */
-    public function getProfileImage(Request $request)
-    {
-        if($this->getUser() != null)
-        {
-            $user = $this->getUser();
-            if ($user->getProfileImage() != null) {
-            $content = stream_get_contents($user->getProfileImage());
-            } else {
-                $content = null;
-            }
-        }
-        return new JsonResponse($content);
-    }
+
 
     /**
      * @Route("/edit-profile", name="edit-profile")
@@ -272,29 +240,18 @@ class UserController extends AbstractController
             } else {
                 $user->setIsGodparent(false);
             }
+            // dump($user);die(0);
             $em->persist($user);
             $em->flush();
 
             $this->addFlash('message', 'Profil mis à jour');
 
-            // return $this->redirectToRoute('user_edit-profile');
+            return $this->redirectToRoute('user_edit-profile');
         }
-        if ($user->getProfileImage() != null) {
-            $content = stream_get_contents($user->getProfileImage());
-        } else {
-            $content = null;
-        }
-        dump($request);
-        if($request->query->get("new") != null)
-        {
-            $new = true;
-        }
-        else{
-            $new = false;
-        }
+        $request->query->get("new") == null ? $new = false : $new = true;
+
         return $this->render('user/edit-profile.html.twig', [
             'formEditProfil' => $form->createView(),
-            'profilImage' => $content,
             'new' => $new
         ]);
     }

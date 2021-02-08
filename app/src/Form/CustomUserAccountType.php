@@ -11,8 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
-
-
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 
 class CustomUserAccountType extends AbstractType
@@ -20,27 +19,34 @@ class CustomUserAccountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            // ->add('profileImage', null, [
-            //     'required' => true,
-            // ])
-            ->add('isGodson', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('isGodparent', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('spokenLanguage', LanguageType::class, [
-                'required' => true,
-                'multiple' => true
-                // 'mapped'=>false,
-            ])
-            ->add('languageToLearn', LanguageType::class, [
-                'required' => true,
-                'multiple' => true
-            ])
-            ->add('description', TextareaType::class, [
-                'required' => true,
-            ]);
+        ->add('imageFile', VichImageType::class, [
+            'required' => false,
+            'allow_delete' => true,
+            // 'delete_label' => 'exemple',
+            // 'download_label' => 'exemple',
+            'download_uri' => true,
+            'image_uri' => true,
+            // 'imagine_pattern' => "product_photo_320x240",
+            'asset_helper' => true,
+        ])
+        ->add('isGodson', CheckboxType::class, [
+            'required' => false,
+        ])
+        ->add('isGodparent', CheckboxType::class, [
+            'required' => false,
+        ])
+        ->add('spokenLanguage', LanguageType::class, [
+            'required' => true,
+            'multiple' => true
+            // 'mapped'=>false,
+        ])
+        ->add('languageToLearn', LanguageType::class, [
+            'required' => true,
+            'multiple' => true
+        ])
+        ->add('description', TextareaType::class, [
+            'required' => true,
+        ]);
 
         // $builder->get('spokenLanguage')
         //     ->addModelTransformer(new CallbackTransformer(

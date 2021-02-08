@@ -39,6 +39,7 @@ class RegistrationController extends AbstractController
             );
             $user->setCreatedAt(new \DateTime('now'));
             $user->setLanguageToLearn(["Francais"]);
+            $user->setImage(null);
 
             $errors = $validator->validate($user);
             if (count($errors) > 0) {

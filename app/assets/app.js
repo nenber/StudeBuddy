@@ -16,35 +16,11 @@ function refreshPage() {
 }
 
 function charcountupdate(str) {
-    var lng=document.getElementById("custom_user_account_description").value.lenght;
+    var lng = document.getElementById("custom_user_account_description").value.lenght;
     var lng = str.length;
     document.getElementById("charcount").innerHTML = lng + ' ';
 }
-$(document).ready(function () {
-    $.ajax({
-        type: "POST",
-        url: "{{ path('user_get_profile_image') }}",
-        data: {},
-        dataType: "json",
-        success: function (response) {
-            if (response != null || response != "" || !jQuery.isEmptyObject(response)) {
 
-                $('#pi').attr('src', response);
-
-            } else {
-                $('#pi').attr('src', "{{ asset('build/images/profil.png') }}");
-
-
-            }
-        },
-        error: function (error) {
-            console.log(error)
-            $('#pi').attr('src', "{{ asset('build/images/profil.png') }}");
-
-
-        }
-    });
-});
 
 
 
