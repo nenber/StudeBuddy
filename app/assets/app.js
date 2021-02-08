@@ -1,6 +1,6 @@
 import './styles/app.scss';
 import './styles/styles.css';
-// import 'aos/dist/aos';
+import AOS from 'aos';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import 'jquery/dist/jquery';
 import 'popper.js/dist/popper';
@@ -9,7 +9,7 @@ import 'bootstrap';
 import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/util';
 
-// AOS.init();
+AOS.init();
 const $ = require('jquery');
 
 global.$ = global.jQuery = $
