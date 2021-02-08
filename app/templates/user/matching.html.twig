@@ -35,9 +35,9 @@
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<strong>Stop ! Contrôle d'identité !</strong>
 							<p>
-								Fillieul ?
+								Es-tu filleul ?
 								<small>Non...</small>
-								Parrain ?
+								Es-tu parrain ?
 								<small>Non plus...</small>
 								<br>
 								Donc on ne peut pas te mettre en lien avec des Buddies.<br>
@@ -49,7 +49,7 @@
 						</div>
 					{% endif %}
 
-					{% if sorry == true %}
+					{% if sorry == true and warning == false %}
 						<div class="alert alert-warning alert-dismissible">
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<strong>Oops...</strong>
