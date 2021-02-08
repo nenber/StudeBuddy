@@ -14,11 +14,10 @@ const $ = require('jquery');
 
 global.$ = global.jQuery = $
 
-$(document).ready(
-function refreshPage() {
-    window.location.reload();
-})
+    global.refreshPage = function refreshPage() {
+        window.location.reload();
 
+    }
 
 global.countUpdate = function(str){
     var lng=document.getElementById("custom_user_account_description").value.length;
