@@ -1,6 +1,6 @@
 import './styles/app.scss';
 import './styles/styles.css';
-// import 'aos/dist/aos';
+import AOS from 'aos';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import 'jquery/dist/jquery';
 import 'popper.js/dist/popper';
@@ -9,17 +9,24 @@ import 'bootstrap';
 import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/util';
 
-// AOS.init();
+AOS.init();
+const $ = require('jquery');
 
-function refreshPage() {
-    window.location.reload();
-}
+global.$ = global.jQuery = $
 
-function charcountupdate(str) {
-    var lng=document.getElementById("custom_user_account_description").value.lenght;
+    global.refreshPage = function refreshPage() {
+        window.location.reload();
+
+    }
+
+global.countUpdate = function(str){
+    var lng=document.getElementById("custom_user_account_description").value.length;
     var lng = str.length;
     document.getElementById("charcount").innerHTML = lng + ' ';
 }
+
+
+
 $(document).ready(function () {
     $.ajax({
         type: "POST",
