@@ -495,9 +495,7 @@ footer p {
 }
 
 .matching-card .card-body{
-  min-height: 45vh;
   flex: 1;
-  
 }
 
 #refresh-btn a{

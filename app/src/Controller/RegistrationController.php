@@ -37,6 +37,8 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $rand = range(0,99);
+            $user->setProfileImage('https://picsum.photos/id/' . shuffle($rand) . '/');
             $user->setCreatedAt(new \DateTime('now'));
             $user->setLanguageToLearn(["Francais"]);
 
@@ -50,8 +52,8 @@ class RegistrationController extends AbstractController
                 $errorsString = (string) $errors;
 
                 return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),"new" => $request->query->get("new")
-        ]);
+                    'registrationForm' => $form->createView(),"new" => $request->query->get("new")
+                ]);
             }
 
             $entityManager = $this->getDoctrine()->getManager();

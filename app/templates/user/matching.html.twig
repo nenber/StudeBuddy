@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Choisi ton Buddy
+{% block title %}Choisis ton Buddy
 {% endblock %}
 
 {% block body %}
@@ -35,9 +35,9 @@
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<strong>Stop ! Contrôle d'identité !</strong>
 							<p>
-								Fillieul ?
+								Es-tu filleul ?
 								<small>Non...</small>
-								Parrain ?
+								Es-tu parrain ?
 								<small>Non plus...</small>
 								<br>
 								Donc on ne peut pas te mettre en lien avec des Buddies.<br>
@@ -49,7 +49,7 @@
 						</div>
 					{% endif %}
 
-					{% if sorry == true %}
+					{% if sorry == true and warning == false %}
 						<div class="alert alert-warning alert-dismissible">
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<strong>Oops...</strong>
@@ -78,8 +78,7 @@
 										</div>
 									{% else %}
 										<img
-										name="profilImage" id="previewimg" src="{{ item.getProfileImage() }}" style="max-height:320px;max-width:320px;"/>
-									{# {{item.getProfileImage()}} #}
+										name="profilImage" id="previewimg" src="{{ item.profileImage }}300" style="max-height:320px;max-width:320px;"/>
 									{% endif %}
 
 									<div class="card-body">
@@ -96,25 +95,8 @@
 												<p>{{ item.description}}</p>
 											{% endif %}
 
-											<div class="text-left mt-1">
-												<p>Je parle :</p>
-												<ul>
-													{% for language in item.spokenLanguage %}
-														<li>{{language}}</li>
-													{% endfor %}
-												</ul>
-
-												<p>J'apprends :</p>
-												<ul>
-													{% for language in item.languageToLearn %}
-														<li>{{language}}</li>
-													{% endfor %}
-												</ul>
-
-											</div>
 										</div>
 
-										{# a mettre les langues parlés et les langues en apprentissage #}
 										<div class="center-btn">
 											<button>
 												Envoyer un message

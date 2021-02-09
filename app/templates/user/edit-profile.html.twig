@@ -47,7 +47,7 @@
 
 									</div>
 								{% else %}
-									<img name="profilImage" id="previewimg" src="{{ profilImage }}" style="max-height:320px;max-width:320px;"/>
+									<img name="profilImage" id="previewimg" src="{{ profilImage }}/200" style="max-height:320px;max-width:320px;"/>
 
 
 								{% endif %}
@@ -55,7 +55,6 @@
 									<p>
 										<input id="uploadImageButton" type="file"></p>
 								</a>
-								<!--faire un truc avec fileType pour changer les photos de profil à peaufiner-->
 							</p>
 						</div>
 					</div>
@@ -71,7 +70,7 @@
 				<div class="row form-group">
 					<div class="col">
 						{{ form_widget(formEditProfil.isGodson) }}
-						{{ form_label(formEditProfil.isGodson, "Je veux être fillieul") }}
+						{{ form_label(formEditProfil.isGodson, "Je veux être filleul") }}
 					</div>
 				</div>
 			</div>

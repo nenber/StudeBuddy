@@ -25,33 +25,33 @@ global.countUpdate = function(str){
     document.getElementById("charcount").innerHTML = lng + ' ';
 }
 
+// $(document).ready(function () {
+//     $.ajax({
+//         type: "POST",
+//         url: "{{ path('user_get_profile_image') }}",
+//         data: {},
+//         dataType: "json",
+//         success: function (response) {
+//             if (response != null || response != "" || !jQuery.isEmptyObject(response)) {
 
 
-$(document).ready(function () {
-    $.ajax({
-        type: "POST",
-        url: "{{ path('user_get_profile_image') }}",
-        data: {},
-        dataType: "json",
-        success: function (response) {
-            if (response != null || response != "" || !jQuery.isEmptyObject(response)) {
 
-                $('#pi').attr('src', response);
+//                 $('#pi').attr('src', response);
 
-            } else {
-                $('#pi').attr('src', "{{ asset('build/images/profil.png') }}");
+//             } else {
+//                 $('#pi').attr('src', "{{ asset('build/images/profil.png') }}");
 
 
-            }
-        },
-        error: function (error) {
-            console.log(error)
-            $('#pi').attr('src', "{{ asset('build/images/profil.png') }}");
+//             }
+//         },
+//         error: function (error) {
+//             console.log(error)
+//             $('#pi').attr('src', "{{ asset('build/images/profil.png') }}");
 
 
-        }
-    });
-});
+//         }
+//     });
+// });
 
 
 
