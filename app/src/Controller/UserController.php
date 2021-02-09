@@ -43,12 +43,12 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/forget-password", name="forget-password")
+     * @Route("/forgot-password", name="forgot-password")
      */
-    public function forgetPassword(Request $request, MailerInterface $mailer)
+    public function forgotPassword(Request $request, MailerInterface $mailer)
     {
+        $this->denyAccessUnlessGranted('IS_ANONYMOUS');
 
-        // $mailer->send($email);
         if ($request->request->get("email") != null) {
             $result = $this->getDoctrine()
                 ->getRepository(User::class)
@@ -57,35 +57,26 @@ class UserController extends AbstractController
 
 
             if ($result == null || empty($request->request->get("email")) || $request->request->get("email") == null) {
-                return $this->render('user/forgot-password.html.twig', [
-                    'controller_name' => 'UserController',
-                    'message_error' => "L'email \"".$request->request->get("email")."\" n'est liée à aucun compte existant."
-                ]);
+                $this->addFlash("error", "L'email \"".$request->request->get("email")."\" n'est liée à aucun compte existant.");
+                return $this->redirectToRoute('user_forgot-password');
             } else {
                 $uni = $result->getEmail();
                 $token = sha1(random_bytes(strlen($uni)));
                 $result->setToken($token);
                 $em->persist($result);
                 $em->flush();
-                dump($result);
                 $url = $this->generateUrl('user_reset_password', ["token" => $result->getToken()]);
-
-                // $restPasswordPage = $this->generateUrl('reset_password',array("token"=>$token));
 
                 $email = (new Email())
                     ->from('noreply@studebuddy.com')
                     ->to($request->request->get("email"))
-                    //->cc('cc@example.com')
-                    //->bcc('bcc@example.com')
-                    //->replyTo('fabien@example.com')
-                    //->priority(Email::PRIORITY_HIGH)
                     ->subject('Changement de mot de passe')
                     ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" . "http://0.0.0.0:8082" . $url);
 
                 $mailer->send($email);
-                return $this->render('user/forgot-password.html.twig', [
-                    'controller_name' => 'UserController', "message_success" => "Email envoyé !", "email" => $request->request->get("email")
-                ]);
+
+                $this->addFlash("success", "Email envoyé à l'adresse \"".$request->request->get("email")."\" !");
+                return $this->redirectToRoute('user_forgot-password');
             }
         }
         return $this->render('user/forgot-password.html.twig', [
@@ -98,12 +89,8 @@ class UserController extends AbstractController
      */
     public function resetPassword($token, $message ="",Request $request)
     {
-        dump($request);
-        $message = "";
-        if($request->query->get("message") != null)
-        {
-            $message = $request->query->get("message");
-        }
+        $this->denyAccessUnlessGranted('IS_ANONYMOUS');
+
         $em = $this->getDoctrine()->getManager();
         $result = $em->getRepository(User::class)->findOneBy(['token' => strval($token)]);
         if ($result != null) {
@@ -111,7 +98,6 @@ class UserController extends AbstractController
                 'controller_name' => 'UserController',
                 "email" => $result->getEmail(),
                 'token' => $result->getToken(),
-                'message' => $message
             ]);
         } else {
             return $this->redirectToRoute("app_index");
@@ -123,7 +109,6 @@ class UserController extends AbstractController
      */
     public function changePassword(Request $request, $email, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $em = $this->getDoctrine()->getManager();
         $token = $request->query->get('token');
@@ -143,19 +128,24 @@ class UserController extends AbstractController
                     $result->setToken(null);
                     $em->persist($result);
                     $em->flush();
-                    return $this->redirectToRoute("app_index");
+                    $this->addFlash('passwordUpdated', 'Votre mot de passe a été modifié.');
+                    return $this->redirectToRoute("app_login");
                 }
                 else
                 {
-                    return $this->redirectToRoute('user_reset_password', ['token' => $token, 'message' => "Les deux mots de passe ne correspondent pas"]);
+                    $this->addFlash('error', 'Les deux mots de passe ne sont pas identiques.');
+                    return $this->redirectToRoute('user_reset_password', [
+                        'token' => $token, 
+                    ]);
                 }
 
             } else {
-                return $this->redirectToRoute('user_reset_password', ['token' => $token, 'message' => "Le mot de passe ne correspond pas au format requis"]);
+                $this->addFlash('error', 'Le mot de passe ne correspond pas au format requis.');
+                return $this->redirectToRoute('user_reset_password', [
+                    'token' => $token,
+                ]);
             }
         }
-        // dump($email);
-        // return $this->redirectToRoute("app_index");
     }
 
     /**
@@ -203,7 +193,6 @@ class UserController extends AbstractController
      */
     public function uploadProfileImage(Request $request)
     {
-        dump($request);
         $em = $this->getDoctrine()->getManager();
         $result = $em->getRepository(User::class)->findOneBy(['email' => $request->request->get("email")]);
         if ($result != null) {
@@ -244,7 +233,6 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(CustomUserAccountType::class, $user);
         $form->handleRequest($request);
-        // dump($request);die(0);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -277,21 +265,17 @@ class UserController extends AbstractController
 
             $this->addFlash('message', 'Profil mis à jour');
 
-            // return $this->redirectToRoute('user_edit-profile');
+            return $this->redirectToRoute('user_edit-profile');
         }
         if ($user->getProfileImage() != null) {
-            $content = stream_get_contents($user->getProfileImage());
+            // $content = stream_get_contents($user->getProfileImage());
+            $content = $user->getProfileImage();
         } else {
             $content = null;
         }
-        dump($request);
-        if($request->query->get("new") != null)
-        {
-            $new = true;
-        }
-        else{
-            $new = false;
-        }
+        
+        $request->query->get("new") == null ? $new = false : $new = true;
+
         return $this->render('user/edit-profile.html.twig', [
             'formEditProfil' => $form->createView(),
             'profilImage' => $content,

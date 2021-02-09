@@ -108,7 +108,7 @@ class User implements UserInterface
     private $description;
 
     /**
-     * @ORM\Column(type="blob", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $profile_image;
 

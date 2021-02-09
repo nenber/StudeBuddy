@@ -13,7 +13,6 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 		<link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
-{#		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">#}
 
 	</head>
 	<body>
@@ -44,7 +43,7 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<img id="pi" src="{{ asset('build/images/profil.png') }}" alt="profil" width="35px" height="35px"/>
+								<img id="pi" src="{{ app.user.profileImage }}/100" alt="Photo de profil" width="35px" height="35px"/>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="{{ path('user_edit-profile') }}">Voir mon profil</a>

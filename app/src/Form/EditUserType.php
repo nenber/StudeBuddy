@@ -23,17 +23,7 @@ class EditUserType extends AbstractType
             ->add('email', EmailType::class)
             ->add('first_name', TextType::class)
             ->add('last_name', TextType::class)
-            ->add('phone_number', TelType::class, [
-                'constraints' => [
-                    new Regex(
-                        array(
-                            'pattern' => '^(0|(\\+33)|(0033))[1-9][0-9]{8}^',
-                            'message' => 'Numéro de téléphone incorrect'
-                        )
-                    )
-                ]
-
-            ])
+            ->add('phone_number', TelType::class)
             ->add('school', TextType::class);
 
     }
