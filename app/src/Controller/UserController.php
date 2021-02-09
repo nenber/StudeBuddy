@@ -273,13 +273,9 @@ class UserController extends AbstractController
         } else {
             $content = null;
         }
-        if($request->query->get("new") != null)
-        {
-            $new = true;
-        }
-        else{
-            $new = false;
-        }
+        
+        $request->query->get("new") == null ? $new = false : $new = true;
+
         return $this->render('user/edit-profile.html.twig', [
             'formEditProfil' => $form->createView(),
             'profilImage' => $content,

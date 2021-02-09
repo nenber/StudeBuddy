@@ -78,8 +78,7 @@
 										</div>
 									{% else %}
 										<img
-										name="profilImage" id="previewimg" src="{{ item.profileImage() }}" style="max-height:320px;max-width:320px;"/>
-									{# {{item.getProfileImage()}} #}
+										name="profilImage" id="previewimg" src="{{ item.profileImage }}300" style="max-height:320px;max-width:320px;"/>
 									{% endif %}
 
 									<div class="card-body">
@@ -96,25 +95,8 @@
 												<p>{{ item.description}}</p>
 											{% endif %}
 
-											<div class="text-left mt-1">
-												<p>Je parle :</p>
-												<ul>
-													{% for language in item.spokenLanguage %}
-														<li>{{language}}</li>
-													{% endfor %}
-												</ul>
-
-												<p>J'apprends :</p>
-												<ul>
-													{% for language in item.languageToLearn %}
-														<li>{{language}}</li>
-													{% endfor %}
-												</ul>
-
-											</div>
 										</div>
 
-										{# a mettre les langues parlés et les langues en apprentissage #}
 										<div class="center-btn">
 											<button>
 												Envoyer un message
