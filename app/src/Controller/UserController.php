@@ -237,29 +237,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $user = $this->getUser();
-            $parameters = $request->request->get("custom_user_account");
-            $user->setSpokenLanguage($parameters["spokenLanguage"]);
-            $user->setLanguageToLearn($parameters["languageToLearn"]);
-            $user->setDescription($parameters["description"]);
-            
-            if (array_key_exists('isGodson', $parameters)) {
-                if ($parameters["isGodson"] == "1") {
-                    $user->setIsGodson(true);
-                } else {
-                    $user->setIsGodson(false);
-                }
-            } else {
-                $user->setIsGodson(false);
-            }
-            if (array_key_exists('isGodparent', $parameters)) {
-                if ($parameters["isGodparent"] == "1") {
-                    $user->setIsGodparent(true);
-                } else {
-                    $user->setIsGodparent(false);
-                }
-            } else {
-                $user->setIsGodparent(false);
-            }
+
             $em->persist($user);
             $em->flush();
 
@@ -268,7 +246,6 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_edit-profile');
         }
         if ($user->getProfileImage() != null) {
-            // $content = stream_get_contents($user->getProfileImage());
             $content = $user->getProfileImage();
         } else {
             $content = null;
