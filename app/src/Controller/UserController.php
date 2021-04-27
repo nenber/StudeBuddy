@@ -188,40 +188,6 @@ class UserController extends AbstractController
         ]);
     }
 
-//    /**
-//     * @Route("/upload-profile-image", name="upload-profile-image")
-//     */
-//    public function uploadProfileImage(Request $request)
-//    {
-//        $em = $this->getDoctrine()->getManager();
-//        $result = $em->getRepository(User::class)->findOneBy(['email' => $request->request->get("email")]);
-//        if ($result != null) {
-//            $result->setProfileImage($request->request->get("image"));
-//            $em->persist($result);
-//            $em->flush();
-//        } else {
-//            dump("false");
-//        }
-//
-//        return new JsonResponse();
-//    }
-//
-//    /**
-//     * @Route("/get-profile-image", name="get-profile-image")
-//     */
-//    public function getProfileImage(Request $request)
-//    {
-//        if($this->getUser() != null)
-//        {
-//            $user = $this->getUser();
-//            if ($user->getProfileImage() != null) {
-//            $content = stream_get_contents($user->getProfileImage());
-//            } else {
-//                $content = null;
-//            }
-//        }
-//        return new JsonResponse($content);
-//    }
 
     /**
      * @Route("/edit-profile", name="edit-profile")
@@ -245,17 +211,12 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('user_edit-profile');
         }
-//        if ($user->getProfileImage() != null) {
-//            $content = $user->getProfileImage();
-//        } else {
-//            $content = null;
-//        }
+
         
         $request->query->get("new") == null ? $new = false : $new = true;
 
         return $this->render('user/edit-profile.html.twig', [
             'formEditProfil' => $form->createView(),
-//            'profilImage' => $content,
             'new' => $new
         ]);
     }

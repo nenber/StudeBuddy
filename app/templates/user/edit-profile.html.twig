@@ -37,17 +37,13 @@
 						<div class="row">
 							<div class="col">
 {#								{% if formEditProfil.imageFile == false %}#}
+{#									<div class="row profil-image">#}
+{#										<img#}
+{#										name="profilImage" id="previewimg" src="{{ asset('build/images/profil.png') }}" style="max-height:320px;max-width:320px;"/>#}
 
-									<div class="row profil-image">
-										<img
-										name="profilImage" id="previewimg" src="{{ asset('build/images/profil.png') }}" style="max-height:320px;max-width:320px;"/>
-
-									{# <img src="data:image/png;base64,{{ entity.photo | base64 }}"> #}
-
-
-									</div>
+{#									</div>#}
 {#								{% else %}#}
-{#									<img name="imageFile" id="previewimg" src="{{ imageFile }}/200" style="max-height:320px;max-width:320px;"/>#}
+{#									<img src="{{ vich_uploader_asset(app.user, 'imageFile') }}" alt="image" style="max-height:320px;max-width:320px;" />#}
 
 
 {#								{% endif %}#}
