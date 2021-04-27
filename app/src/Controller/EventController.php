@@ -36,7 +36,7 @@ class EventController extends AbstractController
     public function index(EventRepository $eventRepository): Response
     {
         return $this->render('event/index.html.twig', [
-            'events' => $eventRepository->findAll(),
+            'events' => $eventRepository->findAll()
         ]);
     }
 
@@ -47,13 +47,21 @@ class EventController extends AbstractController
     {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
+    
+        $user = $this->getUser();
+        if(!$user->getIsGodparent()) {
+            return $this->redirectToRoute('app_index', [], 301);
+        }
 
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
+            // set organizer id
+            $event->setOrganizerId($this->getUser());
+            
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
             $entityManager->flush();
