@@ -38,7 +38,7 @@ class RegistrationController extends AbstractController
                 )
             );
             $rand = range(0,99);
-            $user->setProfileImage('https://picsum.photos/id/' . shuffle($rand) . '/');
+//            $user->setProfileImage('https://picsum.photos/id/' . shuffle($rand) . '/');
             $user->setCreatedAt(new \DateTime('now'));
             $user->setLanguageToLearn(["Francais"]);
 
