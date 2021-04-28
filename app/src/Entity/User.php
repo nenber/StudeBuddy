@@ -6,20 +6,24 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use http\Exception;
+use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\EmailValidator;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email") 
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @Vich\Uploadable
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -108,9 +112,31 @@ class User implements UserInterface
     private $description;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     *
+     * @Vich\UploadableField(mapping="buddy_images", fileNameProperty="imageName", size="imageSize")
+     *
+     * @var File|null
      */
-    private $profile_image;
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string|null
+     */
+    private $imageName;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
+    private $imageSize;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="boolean")
@@ -369,17 +395,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getProfileImage()
-    {
-        return $this->profile_image;
-    }
-
-    public function setProfileImage($profile_image): self
-    {
-        $this->profile_image = $profile_image;
-
-        return $this;
-    }
 
     public function getIsGodson(): ?bool
     {
@@ -463,4 +478,78 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return User
+     * @throws Exception
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageSize(?int $imageSize): void
+    {
+        $this->imageSize = $imageSize;
+    }
+
+    public function getImageSize(): ?int
+    {
+        return $this->imageSize;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+
+        list(
+            $this->id,
+            $this->email,
+            $this->password,
+            ) = unserialize($serialized);
+    }
+
 }
+
