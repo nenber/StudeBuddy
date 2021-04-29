@@ -35,6 +35,9 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('edit-profile', './assets/edit-profile.js')
+    .addEntry('reset-password.', './assets/reset-password.js')
+
     .enableSassLoader()
     .autoProvidejQuery()
 
