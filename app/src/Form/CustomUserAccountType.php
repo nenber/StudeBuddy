@@ -41,6 +41,7 @@ class CustomUserAccountType extends AbstractType
                 'required' => true,
             ])
             ->add('imageFile', VichImageType::class, [
+                'required' => false,
             ]);
 
 

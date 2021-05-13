@@ -43,8 +43,11 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<img id="pi" src="{{ vich_uploader_asset(app.user, 'imageFile') }}" alt="image" width="35px" height="35px" />
-
+								{% if app.user.imageName == null %}
+									<img name="profilImage" id="previewimg" src="{{ asset('build/images/profil.png') }}" style="max-height:40px;max-width:40px;"/>
+								{% else %}
+									<img id="pi" src="{{ vich_uploader_asset(app.user, 'imageFile') }}" alt="image" width="35px" height="35px" />
+								{% endif %}
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="{{ path('user_edit-profile') }}">Voir mon profil</a>
