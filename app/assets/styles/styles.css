@@ -10,6 +10,10 @@ body {
 body {
   font-family: "Nunito", sans-serif;
 }
+.main{
+  min-height: 100vh;
+  padding-top: 10000px;
+}
 
 h1 {
   font-family: "Nunito", sans-serif;
@@ -263,14 +267,16 @@ hr {
 /* # FOOTER # */
 footer {
   background: #366db4;
-  margin-top: 10vh;
-  width: 100vw;
+  position: sticky;
+  top: 100%;
+  width: 100%;
 }
 footer p {
   font-family: "Nunito", sans-serif;
   font-weight: 600;
   color: white;
 }
+
 /* # EDIT-PROFIL # */
 
 .edit-profil h5 {
