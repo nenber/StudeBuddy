@@ -68,12 +68,13 @@ class UserController extends AbstractController
                 $url = $this->generateUrl('user_reset_password', ["token" => $result->getToken()]);
 
                 $email = (new Email())
-                    ->from('noreply@studebuddy.com')
+                    ->from('nenberpiedagnel@gmail.com')
                     ->to($request->request->get("email"))
                     ->subject('Changement de mot de passe')
-                    ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" . "http://0.0.0.0:8082" . $url);
+                    ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" . "http://127.0.0.1:8000" . $url);
 
                 $mailer->send($email);
+                
 
                 $this->addFlash("success", "Email envoyé à l'adresse \"".$request->request->get("email")."\" !");
                 return $this->redirectToRoute('user_forgot-password');
