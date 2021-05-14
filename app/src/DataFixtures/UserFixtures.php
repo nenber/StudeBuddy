@@ -27,7 +27,6 @@ class UserFixtures extends Fixture
         $user->setPassword($password);
         $user->setFirstName('Adrien');
         $user->setLastName('Pabien');
-        $user->setProfileImage('https://picsum.photos/id/0/');
         $user->setPhoneNumber('0102030405');
         $user->setSchool('ESGI');
         $user->setCreatedAt(new \DateTime());
@@ -44,7 +43,6 @@ class UserFixtures extends Fixture
         $user->setPassword($password);
         $user->setFirstName('Lola');
         $user->setLastName('Pamela');
-        $user->setProfileImage('https://picsum.photos/id/30/');
         $user->setPhoneNumber('0102030405');
         $user->setSchool('ESGI');
         $user->setCreatedAt(new \DateTime());
@@ -61,7 +59,6 @@ class UserFixtures extends Fixture
         $user->setPassword($password);
         $user->setFirstName('Ryan');
         $user->setLastName('Tryan');
-        $user->setProfileImage('https://picsum.photos/id/50/');
         $user->setPhoneNumber('0102030405');
         $user->setSchool('ESGI');
         $user->setCreatedAt(new \DateTime());
@@ -78,7 +75,6 @@ class UserFixtures extends Fixture
         $user->setPassword($password);
         $user->setFirstName('Romeo');
         $user->setLastName('Trivago');
-        $user->setProfileImage('https://picsum.photos/id/80/');
         $user->setPhoneNumber('0102030405');
         $user->setSchool('ESGI');
         $user->setCreatedAt(new \DateTime());
@@ -95,7 +91,6 @@ class UserFixtures extends Fixture
         $user->setPassword($password);
         $user->setFirstName('Lucas');
         $user->setLastName('Andrea');
-        $user->setProfileImage('https://picsum.photos/id/93/');
         $user->setPhoneNumber('0102030405');
         $user->setSchool('ESGI');
         $user->setCreatedAt(new \DateTime());
@@ -112,7 +107,6 @@ class UserFixtures extends Fixture
         $user->setPassword($password);
         $user->setFirstName('Nathalie');
         $user->setLastName('Pi');
-        $user->setProfileImage('https://picsum.photos/id/120/');
         $user->setPhoneNumber('0102030405');
         $user->setSchool('ESGI');
         $user->setCreatedAt(new \DateTime());
@@ -129,7 +123,6 @@ class UserFixtures extends Fixture
         $user->setPassword($password);
         $user->setFirstName('Buds');
         $user->setLastName('Buddy');
-        $user->setProfileImage('https://picsum.photos/id/66/');
         $user->setPhoneNumber('0102030405');
         $user->setSchool('ESGI');
         $user->setCreatedAt(new \DateTime());
