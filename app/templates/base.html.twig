@@ -35,7 +35,9 @@
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownn">
 								<a class="dropdown-item" href="{{ path('event_map') }}">Rejoindre un évènement</a>
 								<a class="dropdown-item" href="{{ path('event_index') }}">Mes évènements</a>
-								<a class="dropdown-item" href="{{ path('event_new') }}">Créer un évènement</a>
+								{% if app.user.isGodParent == true %}
+									<a class="dropdown-item" href="{{ path('event_new') }}">Créer un évènement</a>
+								{% endif %}
 							</div>
 						</li>
 						<li class="nav-item">
