@@ -35,7 +35,9 @@
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownn">
 								<a class="dropdown-item" href="{{ path('event_map') }}">Rejoindre un évènement</a>
 								<a class="dropdown-item" href="{{ path('event_index') }}">Mes évènements</a>
-								<a class="dropdown-item" href="{{ path('event_new') }}">Créer un évènement</a>
+								{% if app.user.isGodParent == true %}
+									<a class="dropdown-item" href="{{ path('event_new') }}">Créer un évènement</a>
+								{% endif %}
 							</div>
 						</li>
 						<li class="nav-item">
@@ -43,7 +45,11 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<img id="pi" src="{{ app.user.profileImage }}/100" alt="Photo de profil" width="35px" height="35px"/>
+								{% if app.user.imageName == null %}
+									<img name="profilImage" id="previewimg" src="{{ asset('build/images/profil.png') }}" style="max-height:40px;max-width:40px;"/>
+								{% else %}
+									<img id="pi" src="{{ vich_uploader_asset(app.user, 'imageFile') }}" alt="image" width="35px" height="35px" />
+								{% endif %}
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="{{ path('user_edit-profile') }}">Voir mon profil</a>
@@ -78,8 +84,9 @@
 		</nav>
 
 		<div class="container-fluid"> {% block body %}{% endblock %}
-			</div>
-			<footer class="row mt-5">
+		</div>
+
+			<footer class="row mt-5 sticky-footer">
 				<div class="col my-4 mx-5">
 					<div class="row py-3">
 						<a href="#">
