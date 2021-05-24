@@ -48,7 +48,7 @@ class UserController extends AbstractController
     public function forgotPassword(Request $request, MailerInterface $mailer)
     {
         $this->denyAccessUnlessGranted('IS_ANONYMOUS');
-
+        $ip_server = $request->server->get('SERVER_ADDR');
         if ($request->request->get("email") != null) {
             $result = $this->getDoctrine()
                 ->getRepository(User::class)
@@ -65,13 +65,14 @@ class UserController extends AbstractController
                 $result->setToken($token);
                 $em->persist($result);
                 $em->flush();
-                $url = $this->generateUrl('user_reset_password', ["token" => $result->getToken()]);
+                $url = $this->generateUrl('user_reset_password', ["token" => $result->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $email = (new Email())
                     ->from('nenberpiedagnel@gmail.com')
                     ->to($request->request->get("email"))
                     ->subject('Changement de mot de passe')
-                    ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" . "http://127.0.0.1:8000" . $url);
+                    ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" .  $url);
+                    // ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" . "http://127.0.0.1:8000" . $url);
 
                 $mailer->send($email);
                 
