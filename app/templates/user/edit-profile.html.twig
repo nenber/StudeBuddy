@@ -27,7 +27,7 @@
 							<h1>Complète ton profil
 								{{ app.user.firstname }}
 								{{ app.user.lastname }}
-							<hr></h1>
+								<hr></h1>
 						{% endif %}
 					</div>
 				</div>
@@ -40,11 +40,11 @@
 									{% if app.user.imageName == null %}
 										<img name="profilImage" id="previewimg" src="{{ asset('build/images/profil.png') }}" style="max-height:240px;max-width:240px;"/>
 									{% else %}
-									<img id="pi" src="{{ vich_uploader_asset(app.user, 'imageFile') }}" alt="image" style="width: 205px; height:205px" />
+										<img id="pi" src="{{ vich_uploader_asset(app.user, 'imageFile') }}" alt="image" style="width: 205px; height:205px" />
 									{% endif %}
 								</div>
 								<div class="row">
-										{{ form_widget(formEditProfil.imageFile) }}
+									{{ form_widget(formEditProfil.imageFile) }}
 								</div>
 							</div>
 						</div>
@@ -70,11 +70,11 @@
 								<h5>Tes langues parlées :</h5>
 								{# {{ form_label(formEditProfil.spokenLanguage, )}} #}
 								{{ form_widget(formEditProfil.spokenLanguage, {
-										'attr': {
-											'class' : 'form-control multiselect-select2',
-											'multiple':''
-										}
-									})
+									'attr': {
+										'class' : 'form-control multiselect-select2',
+										'multiple':''
+									}
+								})
 								}}
 							</div>
 							<br>
@@ -85,11 +85,11 @@
 								<h5>Tes langues en apprentissage :</h5>
 								{# {{ form_label(formEditProfil.languageToLearn, )}} #}
 								{{ form_widget(formEditProfil.languageToLearn, {
-										'attr': {
-											'class' : 'form-control multiselect-select2',
-											'multiple':''
-										}
-									})
+									'attr': {
+										'class' : 'form-control multiselect-select2',
+										'multiple':''
+									}
+								})
 								}}
 							</div>
 						</div>
@@ -100,21 +100,21 @@
 							<div class="col">
 								<div class="edit-profil">
 									<h5>Ta description :</h5>
-										{{ form_widget(formEditProfil.description, {
-											'attr': {
-												'placeholder': "Présente-toi et parles-nous de tes hobbies !",
-												'class' : 'form-control',
-												'style':'padding:20px;',
-												'onkeyup':'countUpdate(this.value)'
-												}
-											})
-										}}
+									{{ form_widget(formEditProfil.description, {
+										'attr': {
+											'placeholder': "Présente-toi et parles-nous de tes hobbies !",
+											'class' : 'form-control',
+											'style':'padding:20px;',
+											'onkeyup':'countUpdate(this.value)'
+										}
+									})
+									}}
 								</div>
 								<div class="row float-right">
 									<p id="description-lenght">
-									<small>
-										<span id="charcount">{{ app.user.description|length }}</span>
-										/ 600</small>
+										<small>
+											<span id="charcount">{{ app.user.description|length }}</span>
+											/ 600</small>
 									</p>
 								</div>
 							</div>
@@ -140,7 +140,7 @@
 	</div>
 	{{ form_end(formEditProfil) }}
 
-{% endblock %} 
+{% endblock %}
 {% block javascripts %}
 
 	{{ encore_entry_script_tags('app') }}
