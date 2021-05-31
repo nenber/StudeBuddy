@@ -4,7 +4,6 @@ import AOS from 'aos';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import 'jquery/dist/jquery';
 import 'popper.js/dist/popper';
-import 'select2';
 import 'bootstrap';
 import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/util';
@@ -12,11 +11,14 @@ import 'bootstrap/js/dist/util';
 AOS.init();
 const $ = require('jquery');
 
+import 'select2';
+require('select2');
+require('select2/dist/css/select2.css');
+
 global.$ = global.jQuery = $
 
     global.refreshPage = function refreshPage() {
         window.location.reload();
-
     }
 
 global.countUpdate = function(str){
@@ -24,6 +26,17 @@ global.countUpdate = function(str){
     var lng = str.length;
     document.getElementById("charcount").innerHTML = lng + ' ';
 }
+//select2
+$('.multiselect-select2')
+    .select2({
+        placeholder: 'Choisissez une langue',
+        width: 'resolve',
+        multiple: true,
+        tags: true,
+        tokenSeparators: ['/',',',';'," "],
+        maximumSelectionLength: 3,
+    });
+
 
 // $(document).ready(function () {
 //     $.ajax({
