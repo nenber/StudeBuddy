@@ -125,5 +125,11 @@
 	</div>
 {% endblock %}
 		{% block javascripts %}
-			{{ parent() }}
+			{{ encore_entry_script_tags('app') }}
+
+{#<script>#}
+{#function refreshPage() {#}
+{#    window.location.reload();#}
+{#}#}
+{#</script>#}
 		{% endblock %}

@@ -1,23 +1,35 @@
-## Lancer l'application
+## Installation avec docker
 
-- php -S localhost:8000 -t public
+- docker-compose build --no-cache
+- docker-compose up -d
 
+Pour Windows :
+
+```
+$ cd docker/nginx/
+$ find . -name "*.sh" | xargs dos2unix
+```
+
+## Debug docker
+
+- docker-compose ps
+- docker-compose logs -f [CONTAINER(php|node|nginx|db)]
 
 ## Commandes utiles
 
 #####Maker
 
 ```
-exec php bin/console make:controller
-exec php bin/console make:entity
-exec php bin/console make:form
+docker-compose exec php bin/console make:controller
+docker-compose exec php bin/console make:entity
+docker-compose exec php bin/console make:form
 ```
 
 #####Mise à jour de votre BDD
 
 ```
-php bin/console doctrine:schema:update --dump-sql
-php bin/console doctrine:schema:update --force
+docker-compose exec php bin/console doctrine:schema:update --dump-sql
+docker-compose exec php bin/console doctrine:schema:update --force
 ```
 
 ## STUD&BUDDY by Céline, Bérenger, Mathieu, Nathalie, Victor

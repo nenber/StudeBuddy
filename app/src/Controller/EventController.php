@@ -48,18 +48,6 @@ class EventController extends AbstractController
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $user = $this->getUser();
-
-        if($user != null)
-        {
-            if($user->getIsGodParent() != true){
-                $this->addFlash(
-                    'error',
-                    'Vous devez être connecté en tant que Buddy pour avoir accès à cette page.'
-                );
-                return $this->redirectToRoute('app_index');
-            }
-        }
 
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
@@ -99,19 +87,6 @@ class EventController extends AbstractController
     public function edit(Request $request, Event $event): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $user = $this->getUser();
-
-        if($user != null)
-        {
-            if($user->getId() != $event->getOrganizerId()->getId()){
-                $this->addFlash(
-                    'error',
-                    "Vous n'avez pas accès à cette page."
-                );
-                return $this->redirectToRoute('app_index');
-            }
-        }
 
 
         $form = $this->createForm(EventType::class, $event);
