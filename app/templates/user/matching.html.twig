@@ -80,12 +80,25 @@
 										<img
 										name="profilImage" id="previewimg" src="{{ item.profileImage }}300" style="max-height:320px;max-width:320px;"/>
 									{% endif %}
+					<div class="matching-card row">
+						<div class="col">
+							<div class="row">
+								{# a faire un sorte de while #}
+								{% for item in buddies|shuffle %}
+								<div class="card text-center mx-auto mr-xl-3 mr-sm-0 mr-0 mb-3">
+									{% if item.imageName == null %}
+										<div class="row profil-image mx-auto">
+											<img src="{{ asset('build/images/profil.png') }}"/>
+										</div>
+									{% else %}
+										<img id="pi" src="{{ vich_uploader_asset(item, 'imageFile') }}" alt="image" style="max-height:320px;max-width:320px;"/>
+									{% endif %}
 
 									<div class="card-body">
 										<div class="card-title">
 											<h5>
-												{{ item.firstname}}<br>
-												{{ item.lastname}}
+											{{ item.firstname}}<br>
+											{{ item.lastname}}
 											</h5>
 										</div>
 										<div class="card-description">
@@ -94,9 +107,7 @@
 											{% else %}
 												<p>{{ item.description}}</p>
 											{% endif %}
-
 										</div>
-
 										<div class="center-btn">
 											<button>
 												Envoyer un message
@@ -105,7 +116,7 @@
 
 									</div>
 								</div>
-							{% endfor %}
+								{% endfor %}
 
 						</div>
 

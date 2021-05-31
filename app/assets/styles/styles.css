@@ -10,9 +10,9 @@ body {
 body {
   font-family: "Nunito", sans-serif;
 }
+
 .main{
   min-height: 100vh;
-  padding-top: 10000px;
 }
 
 h1 {
@@ -267,7 +267,8 @@ hr {
 /* # FOOTER # */
 footer {
   background: #366db4;
-  position: sticky;
+  position: absolute;
+  bottom: 0;
   top: 100%;
   width: 100%;
 }
