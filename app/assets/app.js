@@ -37,7 +37,11 @@ $('.multiselect-select2')
         maximumSelectionLength: 3,
     });
 
-
+$(document).ready(function(){
+    $('#action_menu_btn').click(function(){
+        $('.action_menu').toggle();
+    });
+});
 // $(document).ready(function () {
 //     $.ajax({
 //         type: "POST",

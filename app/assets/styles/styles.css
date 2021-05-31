@@ -516,4 +516,181 @@ footer p {
   align-content: center;
 }
 
+/* {
+    # MESSENGER #
+} */
 
+#messenger {
+margin-top: 10%;
+}
+
+#messenger .chat{
+  margin-top: auto;
+  margin-bottom: auto;
+}
+#messenger .card{
+  height: 500px;
+  border-radius: 15px !important;
+  background-color: #366DB4 !important;
+}
+#messenger .contacts_body{
+  padding:  0.75rem 0 !important;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+#messenger .msg_card_body{
+  overflow-y: auto;
+  background-color: #FFFFFF !important;
+}
+#messenger .card-header{
+  border-radius: 15px 15px 0 0 !important;
+  border-bottom: 0 !important;
+}
+#messenger .card-footer{
+  border-radius: 0 0 15px 15px !important;
+  border-top: 0 !important;
+}
+#messenger .container{
+  align-content: center;
+}
+#messenger .type_msg{
+  background-color: #FFFFFF !important;
+  border:0 !important;
+  color:black !important;
+  height: 60px !important;
+  overflow-y: auto;
+}
+#messenger .type_msg:focus{
+  box-shadow:none !important;
+  outline:0px !important;
+}
+#messenger .send_btn{
+  border-radius: 0 15px 15px 0 !important;
+  border:0 !important;
+  color: white !important;
+  cursor: pointer;
+}
+#messenger .contacts{
+  list-style: none;
+  padding: 0;
+}
+#messenger .contacts li{
+  width: 100% !important;
+  padding: 5px 10px;
+  margin-bottom: 15px !important;
+}
+#messenger .active{
+  background-color: rgba(0,0,0,0.3);
+}
+#messenger .user_img{
+  height: 70px;
+  width: 70px;
+  border:1.5px solid #f5f6fa;
+
+}
+#messenger .user_img_msg{
+  height: 40px;
+  width: 40px;
+  border:1.5px solid #f5f6fa;
+
+}
+#messenger .img_cont{
+  position: relative;
+  height: 70px;
+  width: 70px;
+}
+#messenger .img_cont_msg{
+  height: 40px;
+  width: 40px;
+}
+#messenger .user_info{
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 15px;
+}
+
+#messenger .namespan{
+  color: #366DB4 !important;
+  font-weight: bold;
+}
+
+#messenger .user_info span{
+  font-size: 20px;
+  color: white;
+}
+#messenger .user_info p{
+  font-size: 10px;
+  color: rgba(255,255,255,0.6);
+}
+#messenger .msg_container{
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 10px;
+  border-radius: 25px;
+  background-color: #FFFFFF;
+  padding: 10px;
+  position: relative;
+  color: #366DB4;
+  border: solid #366DB4;
+  font-weight: bold;
+}
+#messenger .msg_container_send{
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 10px;
+  border-radius: 25px;
+  background-color: #366DB4;
+  padding: 10px;
+  position: relative;
+  color: #FFFFFF;
+  font-weight: bold;
+}
+#messenger .msg_head{
+  position: relative;
+  background-color: #FFFFFF !important;
+  color: #366DB4 !important;
+  font-weight: bold;
+  border-bottom: solid #366DB4;
+}
+#action_menu_btn{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+}
+#messenger .action_menu{
+  z-index: 1;
+  position: absolute;
+  padding: 15px 0;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  border-radius: 15px;
+  top: 30px;
+  right: 15px;
+  display: none;
+}
+#messenger .action_menu ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#messenger .action_menu ul li{
+  width: 100%;
+  padding: 10px 15px;
+  margin-bottom: 5px;
+}
+#messenger .action_menu ul li i{
+  padding-right: 10px;
+
+}
+#messenger .action_menu ul li:hover{
+  cursor: pointer;
+  background-color: rgba(0,0,0,0.2);
+}
+@media(max-width: 576px){
+  #messenger  .contacts_card{
+    margin-bottom: 15px !important;
+  }
+}
