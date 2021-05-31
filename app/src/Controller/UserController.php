@@ -188,6 +188,40 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/upload-profile-image", name="upload-profile-image")
+     */
+    public function uploadProfileImage(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $result = $em->getRepository(User::class)->findOneBy(['email' => $request->request->get("email")]);
+        if ($result != null) {
+            $result->setProfileImage($request->request->get("image"));
+            $em->persist($result);
+            $em->flush();
+        } else {
+            dump("false");
+        }
+
+        return new JsonResponse();
+    }
+
+    /**
+     * @Route("/get-profile-image", name="get-profile-image")
+     */
+    public function getProfileImage(Request $request)
+    {
+        if($this->getUser() != null)
+        {
+            $user = $this->getUser();
+            if ($user->getProfileImage() != null) {
+            $content = stream_get_contents($user->getProfileImage());
+            } else {
+                $content = null;
+            }
+        }
+        return new JsonResponse($content);
+    }
 
     /**
      * @Route("/edit-profile", name="edit-profile")
@@ -203,7 +237,29 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $user = $this->getUser();
-
+            $parameters = $request->request->get("custom_user_account");
+            $user->setSpokenLanguage($parameters["spokenLanguage"]);
+            $user->setLanguageToLearn($parameters["languageToLearn"]);
+            $user->setDescription($parameters["description"]);
+            
+            if (array_key_exists('isGodson', $parameters)) {
+                if ($parameters["isGodson"] == "1") {
+                    $user->setIsGodson(true);
+                } else {
+                    $user->setIsGodson(false);
+                }
+            } else {
+                $user->setIsGodson(false);
+            }
+            if (array_key_exists('isGodparent', $parameters)) {
+                if ($parameters["isGodparent"] == "1") {
+                    $user->setIsGodparent(true);
+                } else {
+                    $user->setIsGodparent(false);
+                }
+            } else {
+                $user->setIsGodparent(false);
+            }
             $em->persist($user);
             $em->flush();
 
@@ -211,12 +267,18 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('user_edit-profile');
         }
-
+        if ($user->getProfileImage() != null) {
+            // $content = stream_get_contents($user->getProfileImage());
+            $content = $user->getProfileImage();
+        } else {
+            $content = null;
+        }
         
         $request->query->get("new") == null ? $new = false : $new = true;
 
         return $this->render('user/edit-profile.html.twig', [
             'formEditProfil' => $form->createView(),
+            'profilImage' => $content,
             'new' => $new
         ]);
     }

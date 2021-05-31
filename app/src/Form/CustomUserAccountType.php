@@ -11,7 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
-use Vich\UploaderBundle\Form\Type\VichImageType;
+
+
 
 
 class CustomUserAccountType extends AbstractType
@@ -39,14 +40,7 @@ class CustomUserAccountType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => true,
-            ])
-            ->add('imageFile', VichImageType::class, [
-                'required' => false,
-                'allow_delete' => true,
-                'download_label' => false,
-                'image_uri' => false,
             ]);
-
 
         // $builder->get('spokenLanguage')
         //     ->addModelTransformer(new CallbackTransformer(
