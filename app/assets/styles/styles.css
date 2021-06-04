@@ -594,6 +594,12 @@ margin-top: 10%;
   border:1.5px solid #f5f6fa;
 
 }
+#messenger .user_img_msgProfile{
+  height: 150px;
+  width: 150px;
+  border:1.5px solid #f5f6fa;
+
+}
 #messenger .img_cont{
   position: relative;
   height: 70px;
@@ -602,6 +608,11 @@ margin-top: 10%;
 #messenger .img_cont_msg{
   height: 40px;
   width: 40px;
+}
+
+#messenger .img_cont_msgProfile{
+  height: 200px;
+  width: 200px;
 }
 #messenger .user_info{
   margin-top: auto;
@@ -650,7 +661,7 @@ margin-top: 10%;
   background-color: #FFFFFF !important;
   color: #366DB4 !important;
   font-weight: bold;
-  border-bottom: solid #366DB4;
+  box-shadow: 0 2px 2px -2px #C4C4C4;
 }
 #action_menu_btn{
   position: absolute;
@@ -694,3 +705,17 @@ margin-top: 10%;
     margin-bottom: 15px !important;
   }
 }
+
+#messenger h4 {
+  font-weight: bold;
+  color: #97CCEF;
+}
+#messenger h2 {
+  font-weight: bold;
+  color: #366db4;
+}
+
+#messenger .btn-lred {
+  background-color: red;
+}
+

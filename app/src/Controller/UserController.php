@@ -385,4 +385,17 @@ class UserController extends AbstractController
     }
 
 
+    /**
+     * @Route("/messenger_buddy_profile", name="messenger_buddy_profile")
+     */
+
+    public function messengerBuddyProfileAccess()
+    {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('user/messenger_buddy_profile.html.twig', [
+            'controller_name' => 'UserController',
+        ]);
+    }
 }
