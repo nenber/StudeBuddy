@@ -52,7 +52,7 @@
 
         // 'mercure' is used as the docker-compose service name. We replace it by the actual url for the browser.
         const link = '{{ app.request.attributes.get('_links').getLinksbyRel('mercure')[0].getHref }}'
-            .replace("mercure", "localhost:8000");
+            .replace("mercure", "localhost:3000");
         const url = new URL(link);
 
         url.searchParams.append('topic', 'http://localhost:8000/channel/{{ channel.id }}');
