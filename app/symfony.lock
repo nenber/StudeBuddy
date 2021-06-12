@@ -29,6 +29,9 @@
     "doctrine/dbal": {
         "version": "2.11.2"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.0",
         "recipe": {
@@ -331,6 +334,9 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/mercure": {
+        "version": "v0.5.3"
     },
     "symfony/mime": {
         "version": "v5.1.7"
