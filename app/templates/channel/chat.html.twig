@@ -55,7 +55,7 @@
             .replace("mercure", "localhost:3000");
         const url = new URL(link);
 
-        url.searchParams.append('topic', 'http://localhost:8000/channel/{{ channel.id }}');
+        url.searchParams.append('topic', 'http://89.90.32.147/channel/{{ channel.id }}');
         console.log(url)
         const eventSource = new EventSource(url);
 
