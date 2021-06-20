@@ -18,6 +18,46 @@ class UserFixtures extends Fixture
     }
 
     public function load(ObjectManager $manager) {
+        // create admin user
+        $user = new User();
+        // password encoding
+        $password = $this->encoder->encodePassword($user, 'Password$0');
+
+        $user->setEmail('admin@studandbuddy.com');
+        $user->setRoles(['ROLE_ADMIN']);
+        $user->setPassword($password);
+        $user->setFirstName('Admini');
+        $user->setLastName('Tracteur');
+        $user->setPhoneNumber('0102030405');
+        $user->setSchool('ESGI');
+        $user->setCreatedAt(new \DateTime());
+        $user->setIsGodparent(false);
+        $user->setIsGodson(false);
+        $user->setDescription("Je suis admin");
+
+        $manager->persist($user);
+
+        // create banned user
+        $user = new User();
+        // password encoding
+        $password = $this->encoder->encodePassword($user, 'Password$0');
+
+        $user->setEmail('banned@studandbuddy.com');
+        $user->setIsBanned(true);
+        $user->setPassword($password);
+        $user->setFirstName('Mais');
+        $user->setLastName('Champs');
+        $user->setPhoneNumber('0102030405');
+        $user->setSchool('ESGI');
+        $user->setCreatedAt(new \DateTime());
+        $user->setSpokenLanguage(['fr']);
+        $user->setLanguageToLearn(['fr']);
+        $user->setIsGodparent(true);
+        $user->setIsGodson(true);
+        $user->setDescription("Je suis un vilain !");
+
+        $manager->persist($user);
+
         // create 7 users
         $user = new User();
         // password encoding
