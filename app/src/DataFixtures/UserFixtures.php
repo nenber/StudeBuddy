@@ -39,7 +39,7 @@ class UserFixtures extends Fixture
 
         // create banned user
         $user = new User();
-        // password encoding
+        // password encoding 
         $password = $this->encoder->encodePassword($user, 'Password$0');
 
         $user->setEmail('banned@studandbuddy.com');
