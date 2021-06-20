@@ -50,8 +50,8 @@
                         <td>{{ user.firstName }}</td>
                         <td>{{ user.lastName }}</td>
                         <td>{{ user.email }}</td>
-                        <td> TO BE ADDED </td>
                         <td>{{ user.reportReason }} </td>
+                        <td> TO BE ADDED </td>
                         <td><a href="{{ path('ban', { 'id': user.id }) }}">Bannir</a> <a href="{{ path('cancel_report', { 'id': user.id }) }}">Gracier</td>
                     </tr>
                 {% endif %}
