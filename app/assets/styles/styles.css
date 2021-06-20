@@ -266,7 +266,7 @@ hr {
 
 /* # FOOTER # */
 footer {
-  background: #366db4;
+  background: #366db4 !important;
   position: absolute;
   bottom: 0;
   top: 100%;
@@ -516,5 +516,4 @@ footer p {
   align-items: flex-end;
   align-content: center;
 }
-
 
