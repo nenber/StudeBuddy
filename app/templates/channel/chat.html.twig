@@ -5,6 +5,21 @@
 {% block body %}
     <div class="container mt-5">
         <h1 class="mt-5 pt-5">Channel {{ channel.name }}</h1>
+
+        {% if app.user.isGodparent == true %}
+            <p>Souhaites-tu le parrainer : ?</p>
+            <a href="#">Devenir son parrain</a>
+        {% else %}
+        {% endif %}
+
+        {% for message in messages %}
+            <b>{{ message.author.firstname }} {{ message.author.lastname }}</b>
+            <p>{% if not message.author.isconnected %}
+                    <a href="{{ path('connected', { 'id': message.author.id }) }}">Seconnecter</a>
+                {% endif %}</p>
+            {{ dump(message.author.firstname) }}
+        {% endfor %}
+
         <div class="container" style="height: 600px">
             <div class="container bg-light h-75 overflow-auto test">
                 {% for message in messages %}

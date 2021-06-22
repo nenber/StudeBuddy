@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Channel;
+use App\Entity\User;
 use App\Repository\ChannelRepository;
 use App\Repository\MessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,5 +48,29 @@ class ChannelController extends AbstractController
             'channel' => $channel,
             'messages' => $messages
         ]);
+    }
+
+    /**
+     * @Route("/{id}/connected", name="connected", methods={"GET"})
+     */
+    public function isConnected(User $user): Response
+    {
+        $user->setIsConnected(true);
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('/chat');
+    }
+
+    /**
+     * @Route("/{id}/noconnected", name="noconnected", methods={"GET"})
+     */
+    public function noConnected(User $user): Response
+    {
+        $user->setIsConnected(false);
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('/chat');
     }
 }
