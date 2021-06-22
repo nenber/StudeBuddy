@@ -17,7 +17,7 @@ use Symfony\Component\WebLink\Link;
 class ChannelController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/messagerie", name="messagerie")
      */
     public function getChannels(ChannelRepository $channelRepository): Response
     {
@@ -29,7 +29,7 @@ class ChannelController extends AbstractController
     }
 
     /**
-     * @Route("/chat/{id}", name="chat")
+     * @Route("/messagerie/chat/{id}", name="chat")
      */
     public function chat(
         Request $request,
@@ -51,26 +51,37 @@ class ChannelController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/connected", name="connected", methods={"GET"})
+     * @Route("/messagerie/{id}/connected", name="connected", methods={"GET"})
      */
-    public function isConnected(User $user): Response
+    public function isConnected(User $user, Request $request): Response
     {
         $user->setIsConnected(true);
 
+        $this->addFlash(
+            'notice',
+            'Bien ! Tu es parrain d\'un nouveau buddy !'
+        );
+
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('/chat');
+        return $this->redirectToRoute('messagerie');
+
     }
 
     /**
-     * @Route("/{id}/noconnected", name="noconnected", methods={"GET"})
+     * @Route("/messagerie/{id}/noconnected", name="noconnected", methods={"GET"})
      */
-    public function noConnected(User $user): Response
+    public function noConnected(User $user, Request $request): Response
     {
         $user->setIsConnected(false);
 
+        $this->addFlash(
+            'notice',
+            'Ok ! Tu t\'es déconnecté de ce buddy !'
+        );
+
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('/chat');
+        return $this->redirectToRoute('messagerie');
     }
 }

@@ -5,12 +5,14 @@
   
 {% block body %}  
   
-<div class="container">  
-    {% if app.user %}  
-        <div class="mb-3">  
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>  
-        </div>  
-    {% endif %}  
+<div class="container" style="margin-top: 100px">
+
+    {% for message in app.flashes('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     {% if channels %}  
         <h2>Which chan do you want to join ?</h2>  
         <table class="table table-striped">  

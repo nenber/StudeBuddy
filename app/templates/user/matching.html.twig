@@ -64,6 +64,7 @@
 							class="row">
 							{# a faire un sorte de while #}
 							{% for item in buddies|shuffle %}
+								{% if not item.isconnected %}
 								<div class="card text-center mx-auto mr-xl-3 mr-sm-0 mr-0 mb-3">
 									{% if item.imageName == null %}
 										<div class="row profil-image mx-auto">
@@ -93,6 +94,7 @@
 										</div>
 									</div>
 								</div>
+								{% endif %}
 							{% endfor %}
 						</div>
 						{% if  ((warning == false) and (sorry == false)) %}
