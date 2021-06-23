@@ -158,6 +158,21 @@ class User implements UserInterface, \Serializable
      */
     private $participated_events;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isBanned;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isReported;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reportReason;
+
     public function __construct()
     {
         $this->thread_user_id = new ArrayCollection();
@@ -549,6 +564,42 @@ class User implements UserInterface, \Serializable
             $this->email,
             $this->password,
             ) = unserialize($serialized);
+    }
+
+    public function getIsBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setIsBanned(bool $isBanned): self
+    {
+        $this->isBanned = $isBanned;
+
+        return $this;
+    }
+
+    public function getIsReported(): ?bool
+    {
+        return $this->isReported;
+    }
+
+    public function setIsReported(?bool $isReported): self
+    {
+        $this->isReported = $isReported;
+
+        return $this;
+    }
+
+    public function getReportReason(): ?string
+    {
+        return $this->reportReason;
+    }
+
+    public function setReportReason(?string $reportReason): self
+    {
+        $this->reportReason = $reportReason;
+
+        return $this;
     }
 
 }
