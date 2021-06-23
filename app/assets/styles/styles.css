@@ -196,12 +196,10 @@ hr {
 
 #description h1 {
   color: #366db4;
-  color: #366db4;
   text-align: center;
 }
 
 #description h3 {
-  color: #97ccef;
   color: #97ccef;
   padding-top: 10%;
   line-height: 1.5;
@@ -243,8 +241,6 @@ hr {
   height: 250px;
   background: #97ccef;
   color: white;
-  margin-top: 0px;
-  margin-bottom: 0px;
   padding-top: 0 !important;
   position: relative;
   width: 105%;
@@ -515,4 +511,18 @@ footer p {
   align-content: center;
 }
 
+#admin h1{
+  color: #366DB4;
+  text-decoration: underline #366db4;
+  font-weight: bolder;
+}
 
+#admin h3{
+  color: #97ccef;
+  font-weight: bolder;
+}
+
+#admin th{
+  font-family: "Nunito", sans-serif;
+  font-weight: bolder;
+}
