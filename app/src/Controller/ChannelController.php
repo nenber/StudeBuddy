@@ -58,7 +58,7 @@ class ChannelController extends AbstractController
         $user->setIsConnected(true);
 
         $this->addFlash(
-            'notice',
+            'noticeGood',
             'Bien ! Tu es parrain d\'un nouveau buddy !'
         );
 
@@ -76,7 +76,7 @@ class ChannelController extends AbstractController
         $user->setIsConnected(false);
 
         $this->addFlash(
-            'notice',
+            'noticeDisconnect',
             'Ok ! Tu t\'es déconnecté de ce buddy !'
         );
 
