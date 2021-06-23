@@ -54,7 +54,7 @@ class MessageController extends AbstractController
         ]);
 
         $update = new Update(
-            sprintf('http://localhost:8000/channel/%s',
+            sprintf('http://89.90.32.147/channel/%s',
                 $channel->getId()),
             $jsonMessage
         );
