@@ -196,12 +196,10 @@ hr {
 
 #description h1 {
   color: #366db4;
-  color: #366db4;
   text-align: center;
 }
 
 #description h3 {
-  color: #97ccef;
   color: #97ccef;
   padding-top: 10%;
   line-height: 1.5;
@@ -517,3 +515,22 @@ footer p {
   align-content: center;
 }
 
+/* {
+    # PROFILE MESSENGER #
+} */
+
+#profile {
+  margin-top: 110px;
+}
+
+#profile h4 {
+  color: #97ccef;
+}
+
+#profile h2 {
+  color: #366DB4;
+}
+
+#profile span {
+  color: #97ccef;
+}
