@@ -16,6 +16,7 @@
         <table class="table table-striped">  
             <tbody>  
             {% for channel in channels %}  
+                {{ dump(channel.participant.id)}}
                 <tr class="">  
                     <th>  
                         <span>{{ channel.name }}</span>  

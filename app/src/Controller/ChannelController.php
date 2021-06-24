@@ -16,7 +16,7 @@ use Symfony\Component\WebLink\Link;
 class ChannelController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/channel", name="home_channel")
      */
     public function getChannels(ChannelRepository $channelRepository): Response
     {

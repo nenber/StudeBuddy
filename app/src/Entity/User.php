@@ -159,11 +159,22 @@ class User implements UserInterface, \Serializable
      */
     private $messages;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Channel::class, inversedBy="users")
+     */
+    private $channel;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Channel::class, mappedBy="participant")
+     */
+    private $channels;
+
     public function __construct()
     {
         $this->organized_events = new ArrayCollection();
         $this->participated_events = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->channels = new ArrayCollection();
     }
 
 
@@ -546,6 +557,45 @@ class User implements UserInterface, \Serializable
             if ($message->getAuthor() === $this) {
                 $message->setAuthor(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getChannel(): ?Channel
+    {
+        return $this->channel;
+    }
+
+    public function setChannel(?Channel $channel): self
+    {
+        $this->channel = $channel;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Channel[]
+     */
+    public function getChannels(): Collection
+    {
+        return $this->channels;
+    }
+
+    public function addChannel(Channel $channel): self
+    {
+        if (!$this->channels->contains($channel)) {
+            $this->channels[] = $channel;
+            $channel->addParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChannel(Channel $channel): self
+    {
+        if ($this->channels->removeElement($channel)) {
+            $channel->removeParticipant($this);
         }
 
         return $this;

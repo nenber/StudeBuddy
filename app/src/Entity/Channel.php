@@ -31,9 +31,16 @@ class Channel
      */
     private Collection $messages;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="channels")
+     */
+    private $participant;
+
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->participant = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,4 +90,30 @@ class Channel
 
         return $this;
     }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getParticipant(): Collection
+    {
+        return $this->participant;
+    }
+
+    public function addParticipant(User $participant): self
+    {
+        if (!$this->participant->contains($participant)) {
+            $this->participant[] = $participant;
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(User $participant): self
+    {
+        $this->participant->removeElement($participant);
+
+        return $this;
+    }
+
+
 }
