@@ -31,6 +31,14 @@
                     <button id="submit" type="submit" >Send</button>
                 </form>
             </div>
+            <div class="gif-display">
+                <form>
+                    <label for="search">Search</label>
+                    <input id="search" type="search" />
+                    <button id="btnSearch">Go</button>
+                    <div class="out"></div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -64,13 +72,15 @@
                 'beforeend',
                 appUser === message.author.id ?
                     `<div class="row w-75 float-right">
-                    <b>${message.author.firstname}</b>
-                    <p class="alert alert-info w-100">${message.content}</p>
-                </div>` :
+                        <b>${message.author.firstname}</b>
+                        <p class="alert alert-info w-100">${message.content}</p>
+                        <div class="out"></div>
+                    </div>` :
                     `<div class="row w-75 float-left">
-                    <b>${message.author.username}</b>
-                    <p class="alert alert-success w-100">${message.content}</p>
-                </div>`
+                        <b>${message.author.username}</b>
+                        <p class="alert alert-success w-100">${message.content}</p>
+                        <div class="out"></div>
+                    </div>`
             )
             chatDiv.scrollTop = chatDiv.scrollHeight;
         }
@@ -94,5 +104,55 @@
                 console.log(response);
             });
         }
+        //GIF
+        const APIKEY = "pJWXJFYRSz1RpqOcpnI1Tu8NXFq9qDSu";
+        document.addEventListener("DOMContentLoaded", getGif);
+        function getGif() {
+            document.getElementById("btnSearch").addEventListener("click", ev => {
+                ev.preventDefault(); //to stop the page reload
+                let url = `https://api.giphy.com/v1/gifs/search?api_key=${APIKEY}&limit=1&q=`;
+                let str = document.getElementById("search").value.trim();
+                url = url.concat(str);
+                fetch(url)
+                    .then(
+                        response => {
+                            if(response.ok){
+                                return response.json();
+                            } else {
+                                throw new Error("NETWORK RESPONSE ERROR")
+                            }
+                        })
+                    .then(content => {
+                        let fig = document.createElement("figure");
+                        let img = document.createElement("img");
+                        img.src = content.data[0].images.downsized.url;
+                        img.alt = content.data[0].title;
+                        fig.appendChild(img);
+                        const gifData = { // La variable data sera envoyée au controller
+                            'gif': img, // On transmet le message...
+                            'channel': {{ channel.id }},// ... Et le canal correspondant
+                            };
+                            console.log("img", gifData);
+                            const formData = new FormData();
+                            formData.append('gif', gifData);
+                            console.log("icicicicic",formData)
+                            const options = {
+                            method: 'POST',
+                            body: formData,
+                            // If you add this, upload won't work
+                            // headers: {
+                            //   'Content-Type': 'multipart/form-data',
+                            // }
+                            };
+                            fetch('/message', options);
+                        let out = document.querySelector(".out");
+                        out.insertAdjacentElement("afterbegin", fig);
+                        document.querySelector("#search").value = "";
+                    })
+                    .catch((error) => {
+                        console.log("error: " + error)
+                    })
+                })
+        };
     </script>
 {% endblock %}

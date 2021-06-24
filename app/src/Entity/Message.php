@@ -23,7 +23,7 @@ class Message
     private int $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("message")
      */
     private string $content;
@@ -46,6 +46,12 @@ class Message
      * @Groups("message")
      */
     private Channel $channel;
+
+    /**
+     * @ORM\Column(type="blob", nullable=true)
+     * @Groups("message")
+     */
+    private $gif;
 
     public function __construct()
     {
@@ -101,6 +107,18 @@ class Message
     public function setChannel(Channel $channel): self
     {
         $this->channel = $channel;
+
+        return $this;
+    }
+
+    public function getGif()
+    {
+        return $this->gif;
+    }
+
+    public function setGif($gif): self
+    {
+        $this->gif = $gif;
 
         return $this;
     }
