@@ -26,6 +26,11 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ml-auto">
+					{% if is_granted('ROLE_ADMIN') %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{path('admin')}}">Administration</a>
+						</li>
+					{% endif %}
 					{% if is_granted('ROLE_USER') %}
 						<li class="nav-item">
 							<a class="nav-link" href="{{path('user_matching')}}">Matching</a>
@@ -82,7 +87,7 @@
 				</ul>
 			</div>
 		</nav>
-		<main role="main" class="container-fluid"> {% block body %}{% endblock %}
+		<main role="main" class="container-fluid mb-3"> {% block body %}{% endblock %}
 		</main>
 		
 		<footer class="footer">

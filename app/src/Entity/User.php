@@ -158,6 +158,21 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author")
      */
     private $messages;
+    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isBanned;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isReported;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reportReason;
 
     public function __construct()
     {
@@ -536,6 +551,16 @@ class User implements UserInterface, \Serializable
             $message->setAuthor($this);
         }
 
+    }
+    public function getIsBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setIsBanned(bool $isBanned): self
+    {
+        $this->isBanned = $isBanned;
+
         return $this;
     }
 
@@ -547,6 +572,28 @@ class User implements UserInterface, \Serializable
                 $message->setAuthor(null);
             }
         }
+
+    }
+    public function getIsReported(): ?bool
+    {
+        return $this->isReported;
+    }
+
+    public function setIsReported(?bool $isReported): self
+    {
+        $this->isReported = $isReported;
+
+        return $this;
+    }
+
+    public function getReportReason(): ?string
+    {
+        return $this->reportReason;
+    }
+
+    public function setReportReason(?string $reportReason): self
+    {
+        $this->reportReason = $reportReason;
 
         return $this;
     }

@@ -38,4 +38,5 @@ security:
      - { path: ^/profile, roles: ROLE_USER }
      - { path: ^/chat, roles: ROLE_USER }
      - { path: ^/channel, roles: ROLE_USER }
+     - { path: '^/admin', roles: ROLE_ADMIN }
 

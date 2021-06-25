@@ -264,9 +264,7 @@ hr {
 
 /* # FOOTER # */
 footer {
-  background: #366db4 !important;
-  position: absolute;
-  bottom: 0;
+  background: #366db4;
   top: 100%;
   width: 100%;
 }
