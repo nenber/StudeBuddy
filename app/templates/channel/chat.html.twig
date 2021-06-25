@@ -1,0 +1,110 @@
+
+
+{% block title %}Chat{% endblock %}
+
+{% block body %}
+    <div class="container mt-5" >
+        <h1 class="mt-5 pt-5">Channel {{ channel.name }}</h1>
+
+        <div class="container" style="height: 600px">
+            <div class="container bg-light h-75 overflow-auto test">
+                {% for message in messages %}
+                    {% if app.user == message.author %}
+                        <div class="row w-75 float-right">
+                            <b>{{ message.author.firstname }} {{ message.author.lastname }}</b>
+                            <p class="alert alert-info w-100">
+                                {{ message.content }}
+                            </p>
+                        </div>
+                    {% else %}
+                        <div class="row w-75 float-left">
+                            <b><a href="/messagerie/{{ message.author.id }}">{{ message.author.firstname }} {{ message.author.lastname }}
+                                </a>
+                        {% if app.user.isGodparent == true %}
+                                {% if not message.author.isconnected %}
+                                <a href="{{ path('connected', { 'id': message.author.id }) }} ">Se connecter</a>
+                                {% endif %}
+                                {% if message.author.isconnected %}
+                                    <a href="{{ path('noconnected', { 'id': message.author.id }) }}">Se déconnecter</a>
+                                {% endif %}
+                        {% endif %}
+                                </p>
+                            </b>
+                            <p class="alert alert-success w-100">
+                                {{ message.content }}
+                            </p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div >
+                <form id="form" class="container row">
+                    <input id="message" class="input-group-text col-sm-9" placeholder="Message" type="text" />
+                    <button id="submit" type="submit" >Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        let chatDiv = document.querySelector('.test');
+        chatDiv.scrollTop = chatDiv.scrollHeight; // On souhaite scroller toujours jusqu'au dernier message du chat
+
+        let form = document.getElementById('form');
+        function handleForm(event) {
+          //  event.preventDefault(); // Empêche la page de se rafraîchir après le submit du formulaire
+        }
+        form.addEventListener('submit', handleForm);
+
+        // 'mercure' is used as the docker-compose service name. We replace it by the actual url for the browser.
+        const link = '{{ app.request.attributes.get('_links').getLinksbyRel('mercure')[0].getHref }}'
+            .replace("mercure", "localhost:3000");
+        const url = new URL(link);
+
+        url.searchParams.append('topic', 'http://localhost:8000/channel/{{ channel.id }}');
+        console.log(url)
+        const eventSource = new EventSource(url);
+
+        const appUser = {{ app.user.id }};
+
+        eventSource.onmessage = ({data}) => {
+            const message = JSON.parse(data);
+            document.querySelector('.bg-light').insertAdjacentHTML(
+                'beforeend',
+                appUser === message.author.id ?
+                    `<div class="row w-75 float-right">
+                    <b>${message.author.firstname}</b>
+                    <p class="alert alert-info w-100">${message.content}</p>
+                </div>` :
+                    `<div class="row w-75 float-left">
+                    <b>${message.author.username}</b>
+                    <p class="alert alert-success w-100">${message.content}</p>
+                </div>`
+            )
+            chatDiv.scrollTop = chatDiv.scrollHeight;
+        }
+
+        const submit = document.querySelector('button');
+        submit.onclick = e => { // On change le comportement du submit
+            console.log("fefefef")
+            const message = document.getElementById('message'); // Récupération du message dans l'input correspondant
+            const data = { // La variable data sera envoyée au controller
+                'content': message.value, // On transmet le message...
+                'channel': {{ channel.id }} // ... Et le canal correspondant
+            }
+            console.log(data); // Pour vérifier vos informations
+            console.log("clique ici !!")
+
+            fetch('/message', { // On envoie avec un post nos datas sur le endpoint /message de notre application
+                method: 'POST',
+                body: JSON.stringify(data) // On envoie les data sous format JSON
+            }).then((response) => {
+                message.value = '';
+                console.log(response);
+            });
+        }
+    </script>
+{% endblock %}

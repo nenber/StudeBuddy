@@ -26,3 +26,7 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
+    # key jwt provider
+    App\Services\Mercure\JwtProvider:
+        arguments:
+            $key: '%env(MERCURE_JWT_KEY)%'
