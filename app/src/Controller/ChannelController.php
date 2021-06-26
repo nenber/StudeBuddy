@@ -6,26 +6,50 @@ namespace App\Controller;
 
 use App\Entity\Channel;
 use App\Entity\User;
+use App\Form\ChannelType;
 use App\Repository\ChannelRepository;
 use App\Repository\MessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-// use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\WebLink\Link;
 
 class ChannelController extends AbstractController
 {
     /**
-     * @Route("/messagerie", name="messagerie")
+     * @Route("/messagerie", name="messagerie", methods={"GET"})
      */
     public function getChannels(ChannelRepository $channelRepository): Response
     {
-        $channels = $channelRepository->findAll();
 
         return $this->render('channel/index.html.twig', [
-            'channels' => $channels ?? []
+            'channels' => $channelRepository->findAll()
+        ]);
+    }
+
+    /**
+     * @Route("/messagerie/new", name="messagerie_new", methods={"GET","POST"})
+     */
+    public function new(Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $channel = new Channel();
+        $form = $this->createForm(ChannelType::class, $channel);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $channel->setAuthorId($this->getUser());
+            $entityManager->persist($channel);
+            $entityManager->flush();
+            return $this->redirectToRoute('messagerie');
+        }
+
+        return $this->render('channel/new.html.twig', [
+            'channel' => $channel,
+            'form' => $form->createView(),
         ]);
     }
 

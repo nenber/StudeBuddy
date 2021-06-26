@@ -150,6 +150,11 @@ class User implements UserInterface, \Serializable
     private $organized_events;
 
     /**
+     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="author_id")
+     */
+    private $author_channel;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="participant_id")
      */
     private $participated_events;
@@ -594,6 +599,37 @@ class User implements UserInterface, \Serializable
     public function setReportReason(?string $reportReason): self
     {
         $this->reportReason = $reportReason;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getAuthorChannel(): Collection
+    {
+        return $this->author_channel;
+    }
+
+    public function addAuthorChannel(Channel $author_channel): self
+    {
+        if (!$this->author_channel->contains($author_channel)) {
+            $this->author_channel[] = $author_channel;
+            $author_channel->setAuthorId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOAuthorChannel(Channel $author_channel): self
+    {
+        if ($this->author_channel->contains($author_channel)) {
+            $this->author_channel->removeElement($author_channel);
+            // set the owning side to null (unless already changed)
+            if ($author_channel->getAuthorId() === $this) {
+                $author_channel->setAuthorId(null);
+            }
+        }
 
         return $this;
     }

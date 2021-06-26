@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Channel{% endblock %}
+
+{% block body %}
+    <h1>Create new Channel</h1>
+    <div class="container mt-5">
+    <div class="col-md-4">
+        {{ form_start(form) }}
+        {{ form_label(form.name, "Nom du Channel :") }}
+        {{ form_widget(form.name, {
+            'attr': {'placeholder': "Nom du Channel", 'class' : 'form-control'}
+        }) }}
+        {{ form_errors(form.name) }}
+        <button class="btn-lg">Valider</button>
+        {{ form_end(form) }}
+    </div>
+
+    </div>
+{% endblock %}

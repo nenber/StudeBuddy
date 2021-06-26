@@ -27,6 +27,11 @@ class Channel
     private string $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="author_channel")
+     */
+    private $author_id;
+
+    /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="channel", orphanRemoval=true)
      */
     private Collection $messages;
@@ -49,6 +54,18 @@ class Channel
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getAuthorId(): ?User
+    {
+        return $this->author_id;
+    }
+
+    public function setAuthorId(?User $author_id): self
+    {
+        $this->author_id = $author_id;
 
         return $this;
     }
