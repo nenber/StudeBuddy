@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
@@ -14,112 +18,89 @@ class Message
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("message")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
+     * @Groups("message")
      */
-    private $thread_id;
+    private string $content;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups("message")
      */
-    private $sender_id;
+    private UserInterface $author;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="datetime")
      */
-    private $sent_to;
+    private \DateTimeInterface $createdAt;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\ManyToOne(targetEntity=Channel::class, inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups("message")
      */
-    private $text_body;
+    private Channel $channel;
 
-    /**
-     * @ORM\Column(type="datetimetz")
-     */
-    private $created_at;
-
-    /**
-     * @ORM\Column(type="binary", nullable=true)
-     */
-    private $joined_file;
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getThreadId(): ?int
+    public function getContent(): ?string
     {
-        return $this->thread_id;
+        return $this->content;
     }
 
-    public function setThreadId(int $thread_id): self
+    public function setContent(string $content): self
     {
-        $this->thread_id = $thread_id;
+        $this->content = $content;
 
         return $this;
     }
 
-    public function getSenderId(): ?int
+    public function getAuthor(): UserInterface
     {
-        return $this->sender_id;
+        return $this->author;
     }
 
-    public function setSenderId(int $sender_id): self
+    public function setAuthor(UserInterface $author): self
     {
-        $this->sender_id = $sender_id;
-
-        return $this;
-    }
-
-    public function getSentTo(): ?int
-    {
-        return $this->sent_to;
-    }
-
-    public function setSentTo(?int $sent_to): self
-    {
-        $this->sent_to = $sent_to;
-
-        return $this;
-    }
-
-    public function getTextBody(): ?string
-    {
-        return $this->text_body;
-    }
-
-    public function setTextBody(?string $text_body): self
-    {
-        $this->text_body = $text_body;
+        $this->author = $author;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getJoinedFile()
+    public function getChannel(): Channel
     {
-        return $this->joined_file;
+        return $this->channel;
     }
 
-    public function setJoinedFile($joined_file): self
+    public function setChannel(Channel $channel): self
     {
-        $this->joined_file = $joined_file;
+        $this->channel = $channel;
 
         return $this;
     }

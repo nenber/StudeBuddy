@@ -101,10 +101,6 @@ class User implements UserInterface, \Serializable
      */
     private $language_to_learn = ['fr'];
 
-    /**
-     * @ORM\OneToMany(targetEntity=ThreadUser::class, mappedBy="user_id")
-     */
-    private $thread_user_id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -154,10 +150,20 @@ class User implements UserInterface, \Serializable
     private $organized_events;
 
     /**
+     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="author_id")
+     */
+    private $author_channel;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="participant_id")
      */
     private $participated_events;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author")
+     */
+    private $messages;
+    
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
@@ -173,11 +179,17 @@ class User implements UserInterface, \Serializable
      */
     private $reportReason;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="get_participant")
+     */
+    private $participant_channel;
+
     public function __construct()
     {
-        $this->thread_user_id = new ArrayCollection();
         $this->organized_events = new ArrayCollection();
         $this->participated_events = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->participant_channel = new ArrayCollection();
     }
 
 
@@ -367,37 +379,6 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    /**
-     * @return Collection|ThreadUser[]
-     */
-    public function getThreadUserId(): Collection
-    {
-        return $this->thread_user_id;
-    }
-
-    public function addThreadUserId(ThreadUser $threadUserId): self
-    {
-        if (!$this->thread_user_id->contains($threadUserId)) {
-            $this->thread_user_id[] = $threadUserId;
-            $threadUserId->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeThreadUserId(ThreadUser $threadUserId): self
-    {
-        if ($this->thread_user_id->contains($threadUserId)) {
-            $this->thread_user_id->removeElement($threadUserId);
-            // set the owning side to null (unless already changed)
-            if ($threadUserId->getUserId() === $this) {
-                $threadUserId->setUserId(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -566,6 +547,22 @@ class User implements UserInterface, \Serializable
             ) = unserialize($serialized);
     }
 
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setAuthor($this);
+        }
+
+    }
     public function getIsBanned(): ?bool
     {
         return $this->isBanned;
@@ -578,6 +575,16 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getAuthor() === $this) {
+                $message->setAuthor(null);
+            }
+        }
+
+    }
     public function getIsReported(): ?bool
     {
         return $this->isReported;
@@ -598,6 +605,67 @@ class User implements UserInterface, \Serializable
     public function setReportReason(?string $reportReason): self
     {
         $this->reportReason = $reportReason;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getAuthorChannel(): Collection
+    {
+        return $this->author_channel;
+    }
+
+    public function addAuthorChannel(Channel $author_channel): self
+    {
+        if (!$this->author_channel->contains($author_channel)) {
+            $this->author_channel[] = $author_channel;
+            $author_channel->setAuthorId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOAuthorChannel(Channel $author_channel): self
+    {
+        if ($this->author_channel->contains($author_channel)) {
+            $this->author_channel->removeElement($author_channel);
+            // set the owning side to null (unless already changed)
+            if ($author_channel->getAuthorId() === $this) {
+                $author_channel->setAuthorId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Channel[]
+     */
+    public function getParticipantChannel(): Collection
+    {
+        return $this->participant_channel;
+    }
+
+    public function addParticipantChannel(Channel $participantChannel): self
+    {
+        if (!$this->participant_channel->contains($participantChannel)) {
+            $this->participant_channel[] = $participantChannel;
+            $participantChannel->setGetParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipantChannel(Channel $participantChannel): self
+    {
+        if ($this->participant_channel->removeElement($participantChannel)) {
+            // set the owning side to null (unless already changed)
+            if ($participantChannel->getGetParticipant() === $this) {
+                $participantChannel->setGetParticipant(null);
+            }
+        }
 
         return $this;
     }

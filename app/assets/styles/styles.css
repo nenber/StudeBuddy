@@ -510,7 +510,6 @@ footer p {
   align-items: flex-end;
   align-content: center;
 }
-
 #admin h1{
   color: #366DB4;
   text-decoration: underline #366db4;
@@ -525,4 +524,24 @@ footer p {
 #admin th{
   font-family: "Nunito", sans-serif;
   font-weight: bolder;
+
+/* {
+    # PROFILE MESSENGER #
+} */
+
+#profile {
+  margin-top: 110px;
+}
+
+#profile h4 {
+  color: #97ccef;
+}
+
+#profile h2 {
+  color: #366DB4;
+}
+
+#profile span {
+  color: #97ccef;
+
 }
