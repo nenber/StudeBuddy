@@ -36,12 +36,14 @@ class ChannelController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $channel = new Channel();
+        $user = $this->getUser();
         $form = $this->createForm(ChannelType::class, $channel);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $channel->setAuthorId($this->getUser());
+            $channel->setAuthorId($user);
+            $channel->setGetParticipant($user);
             $entityManager->persist($channel);
             $entityManager->flush();
             return $this->redirectToRoute('messagerie');

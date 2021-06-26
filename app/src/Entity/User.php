@@ -179,11 +179,17 @@ class User implements UserInterface, \Serializable
      */
     private $reportReason;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="get_participant")
+     */
+    private $participant_channel;
+
     public function __construct()
     {
         $this->organized_events = new ArrayCollection();
         $this->participated_events = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->participant_channel = new ArrayCollection();
     }
 
 
@@ -628,6 +634,36 @@ class User implements UserInterface, \Serializable
             // set the owning side to null (unless already changed)
             if ($author_channel->getAuthorId() === $this) {
                 $author_channel->setAuthorId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Channel[]
+     */
+    public function getParticipantChannel(): Collection
+    {
+        return $this->participant_channel;
+    }
+
+    public function addParticipantChannel(Channel $participantChannel): self
+    {
+        if (!$this->participant_channel->contains($participantChannel)) {
+            $this->participant_channel[] = $participantChannel;
+            $participantChannel->setGetParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipantChannel(Channel $participantChannel): self
+    {
+        if ($this->participant_channel->removeElement($participantChannel)) {
+            // set the owning side to null (unless already changed)
+            if ($participantChannel->getGetParticipant() === $this) {
+                $participantChannel->setGetParticipant(null);
             }
         }
 

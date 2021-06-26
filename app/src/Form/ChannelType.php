@@ -21,6 +21,11 @@ class ChannelType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
+            ->add('get_participant', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
             // peut-être ajouter un champs avec l'auteur
         ;
     }

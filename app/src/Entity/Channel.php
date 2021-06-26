@@ -36,6 +36,11 @@ class Channel
      */
     private Collection $messages;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="participant_channel")
+     */
+    private $get_participant;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -97,6 +102,18 @@ class Channel
                 $message->setChannel(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGetParticipant(): ?User
+    {
+        return $this->get_participant;
+    }
+
+    public function setGetParticipant(?User $get_participant): self
+    {
+        $this->get_participant = $get_participant;
 
         return $this;
     }

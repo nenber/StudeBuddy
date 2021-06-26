@@ -23,7 +23,7 @@
         <table class="table table-striped">  
             <tbody>  
             {% for channel in channels %}
-                {% if app.user == channel.authorId %}
+                {% if (app.user == channel.authorId) or (app.user == channel.getParticipant) %}
                 <tr class="">  
                     <th>  
                         <span>{{ channel.name }}</span>  
@@ -31,6 +31,7 @@
                     </th>  
                 </tr>
                 {% endif %}
+
             {% endfor %}  
             </tbody>  
         </table>  
