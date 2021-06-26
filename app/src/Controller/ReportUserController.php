@@ -36,4 +36,20 @@ class ReportUserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/user/{id}/block", name="block", methods={"GET","POST"})
+     */
+    public function blockUser(User $user, Request $request): Response
+    {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user_id[] = $user->getId();
+        $this->getUser()->setBlacklist($user_id);
+        $this->getDoctrine()->getManager()->flush();
+
+        $this->addFlash('blockedUser', "Vous avez bloqué cet utilisateur");
+        return $this->redirectToRoute('app_index');
+    }
 }
