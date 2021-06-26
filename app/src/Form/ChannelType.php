@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Channel;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,7 +23,9 @@ class ChannelType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('get_participant', TextType::class, [
+            ->add('get_participant', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'firstname',
                 'attr' => [
                     'class' => 'form-control'
                 ]

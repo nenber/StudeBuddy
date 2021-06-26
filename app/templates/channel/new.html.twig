@@ -13,13 +13,10 @@
         }) }}
         {{ form_errors(form.get_participant) }}
         {{ form_label(form.get_participant, "Nom du participant :") }}
-        {{ form_widget(form.get_participant, {
-            'attr': {'placeholder': "Nom du participant", 'class' : 'form-control'}
-        }) }}
+        {{ form_widget(form.get_participant) }}
         {{ form_errors(form.get_participant) }}
         <button class="btn-lg">Valider</button>
         {{ form_end(form) }}
-        {{ dump(app.user.firstname) }}
     </div>
 
     </div>

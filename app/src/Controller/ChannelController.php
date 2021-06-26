@@ -43,7 +43,6 @@ class ChannelController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $channel->setAuthorId($user);
-            $channel->setGetParticipant($user);
             $entityManager->persist($channel);
             $entityManager->flush();
             return $this->redirectToRoute('messagerie');
