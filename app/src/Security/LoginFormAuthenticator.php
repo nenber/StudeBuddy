@@ -68,7 +68,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         }
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
-
         
         if (!$user) {
             // fail authentication with a custom error
@@ -81,6 +80,25 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
         return $user;
     }
+
+    public function getId($credentials, UserProviderInterface $userProvider)
+    {
+        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+        if (!$this->csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException();
+        }
+
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['id' => $credentials['id']]);
+
+        if (!$user) {
+            // fail authentication with a custom error
+            throw new CustomUserMessageAuthenticationException("Cet id n'est pas inscrit sur notre site.");
+        }
+
+        return $user;
+    }
+
+
 
     public function checkCredentials($credentials, UserInterface $user)
     {

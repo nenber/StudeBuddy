@@ -27,9 +27,19 @@ class Channel
     private string $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="author_channel")
+     */
+    private $author_id;
+
+    /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="channel", orphanRemoval=true)
      */
     private Collection $messages;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="participant_channel")
+     */
+    private $get_participant;
 
     public function __construct()
     {
@@ -49,6 +59,18 @@ class Channel
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getAuthorId(): ?User
+    {
+        return $this->author_id;
+    }
+
+    public function setAuthorId(?User $author_id): self
+    {
+        $this->author_id = $author_id;
 
         return $this;
     }
@@ -80,6 +102,18 @@ class Channel
                 $message->setChannel(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGetParticipant(): ?User
+    {
+        return $this->get_participant;
+    }
+
+    public function setGetParticipant(?User $get_participant): self
+    {
+        $this->get_participant = $get_participant;
 
         return $this;
     }
