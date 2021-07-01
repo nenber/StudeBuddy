@@ -29,16 +29,42 @@ class ChannelController extends AbstractController
         ]);
     }
 
+//    /**
+//     * @Route("/messagerie/new", name="messagerie_new", methods={"GET","POST"})
+//     */
+//    public function new(Request $request): Response
+//    {
+//        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+//        $channel = new Channel();
+//        $user = $this->getUser();
+//        $form = $this->createForm(ChannelType::class, $channel);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $channel->setAuthorId($user);
+//            $entityManager->persist($channel);
+//            $entityManager->flush();
+//            return $this->redirectToRoute('messagerie');
+//        }
+//
+//        return $this->render('channel/new.html.twig', [
+//            'channel' => $channel,
+//            'form' => $form->createView(),
+//        ]);
+//    }
+
     /**
-     * @Route("/messagerie/new", name="messagerie_new", methods={"GET","POST"})
+     * @Route("/messagerie/new/{id}", name="messagerie_new_id", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function newFormBaseOnUser(Request $request, User $user): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $channel = new Channel();
         $user = $this->getUser();
         $form = $this->createForm(ChannelType::class, $channel);
         $form->handleRequest($request);
+        $request->query->get('id');
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -50,9 +76,13 @@ class ChannelController extends AbstractController
 
         return $this->render('channel/new.html.twig', [
             'channel' => $channel,
+            'user' => $user,
             'form' => $form->createView(),
         ]);
+
     }
+
+
 
     /**
      * @Route("/messagerie/chat/{id}", name="chat")

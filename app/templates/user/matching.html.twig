@@ -67,6 +67,7 @@
 								{% if not item.isconnected %}
 							{% if not item.isBanned %}
 								<div class="card text-center mx-auto mr-xl-3 mr-sm-0 mr-0 mb-3">
+									{{ dump(item) }}
 									{% if item.imageName == null %}
 										<div class="row profil-image mx-auto">
 											<img src="{{ asset('build/images/profil.png') }}"/>
@@ -90,7 +91,9 @@
 										</div>
 										<div class="center-btn">
 											<button>
-												Envoyer un message
+												<a href="{{ path('messagerie_new_id', {'id': item.id}) }}">
+														Envoyer un message
+												</a>
 											</button>
 										</div>
 									</div>
