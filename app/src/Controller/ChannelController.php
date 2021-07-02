@@ -28,21 +28,25 @@ class ChannelController extends AbstractController
             'channels' => $channelRepository->findAll()
         ]);
     }
+    
 
     /**
-     * @Route("/messagerie/new", name="messagerie_new", methods={"GET","POST"})
+     * @Route("/messagerie/new/{id}", name="messagerie_new_id", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function newFormBaseOnUser(Request $request, User $user): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $channel = new Channel();
-        $user = $this->getUser();
+        $userA = $this->getUser();
         $form = $this->createForm(ChannelType::class, $channel);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $channel->setAuthorId($user);
+            $channel->setAuthorId($userA);
+            $channel->setName($user->getFirstName());
+            $channel->setGetParticipant($user);
             $entityManager->persist($channel);
             $entityManager->flush();
             return $this->redirectToRoute('messagerie');
@@ -50,9 +54,13 @@ class ChannelController extends AbstractController
 
         return $this->render('channel/new.html.twig', [
             'channel' => $channel,
+            'user' => $user,
             'form' => $form->createView(),
         ]);
+
     }
+
+
 
     /**
      * @Route("/messagerie/chat/{id}", name="chat")

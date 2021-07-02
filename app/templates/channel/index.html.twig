@@ -26,7 +26,7 @@
                 {% if (app.user == channel.authorId) or (app.user == channel.getParticipant) %}
                 <tr class="">  
                     <th>  
-                        <span>{{ channel.name }}</span>  
+                        <span>{{ channel.getParticipant.firstName }} {{ channel.getParticipant.lastName }} et {{ channel.authorId.firstName }} {{ channel.authorId.lastName }}</span>
                         <a class="btn btn-primary float-right" href="{{ path('chat', {id: channel.id}) }}">Go chat !</a>  
                     </th>  
                 </tr>
