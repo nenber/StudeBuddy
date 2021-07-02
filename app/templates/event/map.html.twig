@@ -23,9 +23,28 @@
 			</div>
 		</div>
 	</div>
+	{{ dump(events) }}
 {% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
+	<script>
+		var markers = [];{% for event in events %}
+{# {% if event.organizer_id.id|first is not app.user %}
+{{ dump(app.user) }} #}
+		markers.push([{{ event.id }},"{{ event.address }}", {{ event.lat }}, {{ event.lng }}])
+
+{# {% endif %} #}
+// markers["{{ event.address| convert_encoding('UTF-8', 'ISO-8859-1') }}"]["lat"] = {{ event.lat }};
+
+
+// markers["{{ event.address| convert_encoding('UTF-8', 'ISO-8859-1') }}"]["lng"] = {{ event.lng }}
+
+
+{% endfor %}
+//console.log(markers)
+	</script>
 	{{ encore_entry_script_tags('map') }}
+
+
 {% endblock %}

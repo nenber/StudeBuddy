@@ -24,9 +24,11 @@ class EventController extends AbstractController
     public function displayMap()
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
+        $repository = $this->getDoctrine()->getRepository(Event::class);
+        $events = $repository->findAll();
         return $this->render('event/map.html.twig', [
             'controller_name' => 'EventController',
+            'events' => $events
         ]);
     }
 
@@ -67,21 +69,44 @@ class EventController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // set organizer id
-            $event->setOrganizerId($this->getUser());
-            
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($event);
-            $entityManager->flush();
+            ////////////////////////////////////////////////////////
+            $req = $request->request->get("event");
+            // // url encode the address
+            $address = urlencode($req["address"]);
 
-            return $this->redirectToRoute('event_index');
+            // google map geocode api url
+            $url = "http://api.positionstack.com/v1/forward?access_key=56ebc1cf8ff6963df4f34386870621f4&query={$address}";
+
+            // get the json response
+            $resp_json = file_get_contents($url);
+
+            // decode the json
+            $resp = json_decode($resp_json, true);
+            // response status will be 'OK', if able to geocode given address 
+            if($resp['data']!=null){
+                $lat = $resp['data'][0]["latitude"];
+                $lon = $resp['data'][0]["longitude"];
+                $event->setLat($lat);
+                $event->setLng($lon);
+                    ///////////////////////////////////////////////////
+                $event->setOrganizerId($this->getUser());
+                
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($event);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('event_index');
+            }
         }
 
         return $this->render('event/new.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
         ]);
+        
     }
+
+   
 
     /**
      * @Route("/{id}", name="event_show", methods={"GET"})
@@ -131,6 +156,39 @@ class EventController extends AbstractController
             'event' => $event,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="event_join", methods={"POST"})
+     */
+    public function join(Request $request, Event $event): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $this->getUser();
+
+        if($user != null)
+        {
+            // if($user->getId() == $event->getOrganizerId()->getId()){
+            //     $this->addFlash(
+            //         'error',
+            //         "Vous ne pouvez pas rejoindre cet événement."
+            //     );
+            //     return $this->redirectToRoute('event_map');
+            // }
+            // $entityManager = $this->getDoctrine()->getManager();
+            //  $repository = $entityManager->getRepository(Event::class);
+            //  $event = $repository->find($event->getOrganizerId()->getId());
+            //  $event->addParticipantId($user->getId());
+            //  $entityManager->flush($event);
+        }
+
+
+        
+
+        $this->getDoctrine()->getManager();
+
+        return $this->redirectToRoute('event_map');
     }
 
     /**
