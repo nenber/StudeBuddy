@@ -630,6 +630,8 @@ class User implements UserInterface, \Serializable
     public function setBlacklist(?array $blacklist): self
     {
         $this->blacklist = $blacklist;
+
+        return $this;
     }
   
     /**
