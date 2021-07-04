@@ -176,13 +176,26 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 200,
+     *      minMessage = "Votre message est trop court (minimum 10 caractères.",
+     *      maxMessage = "Votre message est trop long (maximum 200 caractères)."
+     * )
      */
     private $reportReason;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $blacklist = [];
+  
+    /**
      * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="get_participant")
      */
     private $participant_channel;
+
 
     public function __construct()
     {
@@ -609,6 +622,16 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    public function getBlacklist(): ?array
+    {
+        return $this->blacklist;
+    }
+
+    public function setBlacklist(?array $blacklist): self
+    {
+        $this->blacklist = $blacklist;
+    }
+  
     /**
      * @return Collection|Event[]
      */

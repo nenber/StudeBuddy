@@ -124,6 +124,9 @@ class ChannelController extends AbstractController
      */
     public function show(User $user) : Response
     {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
         return $this->render('channel/profile.html.twig', [
             'User' => $user,
         ]);

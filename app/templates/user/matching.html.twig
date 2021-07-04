@@ -66,6 +66,9 @@
 							{% for item in buddies|shuffle %}
 								{% if not item.isconnected %}
 							{% if not item.isBanned %}
+							{# {{dump(item.id)}} #}
+							{% if item.id in app.user.blacklist %}
+							{% else %}
 								<div class="card text-center mx-auto mr-xl-3 mr-sm-0 mr-0 mb-3">
 									{% if item.imageName == null %}
 										<div class="row profil-image mx-auto">
@@ -98,6 +101,7 @@
 									</div>
 								</div>
 								{% endif %}
+							{% endif %}
 							{% endif %}
 							{% endfor %}
 						</div>

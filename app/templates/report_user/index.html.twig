@@ -20,7 +20,11 @@
                     {{ form_widget(form.report_reason, {
                         'attr': {'placeholder': "Raison du signalement", 'class' : 'form-control'}
                     }) }}
-                </div>     
+                    {{ form_errors(form.report_reason) }}
+                <br>
+                * Veuillez entrer un message entre 10 et 200 caractères.
+                </div>    
+                 
            </div>
              En cliquant sur "Valider", vous acceptez que nous accédions à votre conversation afin de vérifier les faits.
              <div class="row container-button mt-5">
