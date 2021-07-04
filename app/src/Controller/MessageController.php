@@ -53,12 +53,12 @@ class MessageController extends AbstractController
             'groups' => ['message']
         ]);
 
-        $update = new Update(
-            sprintf('http://localhost:8000/channel/%s',
-                $channel->getId()),
-            $jsonMessage
-        );
-        $publisher($update);
+//        $update = new Update(
+//            sprintf('http://localhost:8000/channel/%s',
+//                $channel->getId()),
+//            $jsonMessage
+//        );
+//        $publisher($update);
 
         return new JsonResponse(
             $jsonMessage,

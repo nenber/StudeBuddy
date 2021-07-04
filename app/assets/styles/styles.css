@@ -241,8 +241,6 @@ hr {
   height: 250px;
   background: #97ccef;
   color: white;
-  margin-top: 0px;
-  margin-bottom: 0px;
   padding-top: 0 !important;
   position: relative;
   width: 105%;
@@ -512,6 +510,20 @@ footer p {
   align-items: flex-end;
   align-content: center;
 }
+#admin h1{
+  color: #366DB4;
+  text-decoration: underline #366db4;
+  font-weight: bolder;
+}
+
+#admin h3{
+  color: #97ccef;
+  font-weight: bolder;
+}
+
+#admin th{
+  font-family: "Nunito", sans-serif;
+  font-weight: bolder;
 
 /* {
     # PROFILE MESSENGER #
@@ -531,4 +543,5 @@ footer p {
 
 #profile span {
   color: #97ccef;
+
 }

@@ -6,28 +6,61 @@ namespace App\Controller;
 
 use App\Entity\Channel;
 use App\Entity\User;
+use App\Form\ChannelType;
 use App\Repository\ChannelRepository;
 use App\Repository\MessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-// use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\WebLink\Link;
 
 class ChannelController extends AbstractController
 {
     /**
-     * @Route("/messagerie", name="messagerie")
+     * @Route("/messagerie", name="messagerie", methods={"GET"})
      */
     public function getChannels(ChannelRepository $channelRepository): Response
     {
-        $channels = $channelRepository->findAll();
 
         return $this->render('channel/index.html.twig', [
-            'channels' => $channels ?? []
+            'channels' => $channelRepository->findAll()
         ]);
     }
+    
+
+    /**
+     * @Route("/messagerie/new/{id}", name="messagerie_new_id", methods={"GET","POST"})
+     */
+    public function newFormBaseOnUser(Request $request, User $user): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $channel = new Channel();
+        $userA = $this->getUser();
+        $form = $this->createForm(ChannelType::class, $channel);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $channel->setAuthorId($userA);
+            $channel->setName($user->getFirstName());
+            $channel->setGetParticipant($user);
+            $entityManager->persist($channel);
+            $entityManager->flush();
+            return $this->redirectToRoute('messagerie');
+        }
+
+        return $this->render('channel/new.html.twig', [
+            'channel' => $channel,
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+
+    }
+
+
 
     /**
      * @Route("/messagerie/chat/{id}", name="chat")

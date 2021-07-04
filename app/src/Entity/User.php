@@ -150,6 +150,11 @@ class User implements UserInterface, \Serializable
     private $organized_events;
 
     /**
+     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="author_id")
+     */
+    private $author_channel;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="participant_id")
      */
     private $participated_events;
@@ -185,12 +190,19 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="array", nullable=true)
      */
     private $blacklist = [];
+  
+    /**
+     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="get_participant")
+     */
+    private $participant_channel;
+
 
     public function __construct()
     {
         $this->organized_events = new ArrayCollection();
         $this->participated_events = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->participant_channel = new ArrayCollection();
     }
 
 
@@ -618,8 +630,72 @@ class User implements UserInterface, \Serializable
     public function setBlacklist(?array $blacklist): self
     {
         $this->blacklist = $blacklist;
+    }
+  
+    /**
+     * @return Collection|Event[]
+     */
+    public function getAuthorChannel(): Collection
+    {
+        return $this->author_channel;
+    }
+
+    public function addAuthorChannel(Channel $author_channel): self
+    {
+        if (!$this->author_channel->contains($author_channel)) {
+            $this->author_channel[] = $author_channel;
+            $author_channel->setAuthorId($this);
+        }
 
         return $this;
+    }
+
+    public function removeOAuthorChannel(Channel $author_channel): self
+    {
+        if ($this->author_channel->contains($author_channel)) {
+            $this->author_channel->removeElement($author_channel);
+            // set the owning side to null (unless already changed)
+            if ($author_channel->getAuthorId() === $this) {
+                $author_channel->setAuthorId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Channel[]
+     */
+    public function getParticipantChannel(): Collection
+    {
+        return $this->participant_channel;
+    }
+
+    public function addParticipantChannel(Channel $participantChannel): self
+    {
+        if (!$this->participant_channel->contains($participantChannel)) {
+            $this->participant_channel[] = $participantChannel;
+            $participantChannel->setGetParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipantChannel(Channel $participantChannel): self
+    {
+        if ($this->participant_channel->removeElement($participantChannel)) {
+            // set the owning side to null (unless already changed)
+            if ($participantChannel->getGetParticipant() === $this) {
+                $participantChannel->setGetParticipant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->id;
     }
 
 }

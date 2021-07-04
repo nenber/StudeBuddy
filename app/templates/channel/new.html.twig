@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Channel{% endblock %}
+
+{% block body %}
+    <h1>Create new Channel</h1>
+    <div class="container mt-5 h-100">
+    <div class="col-md-12 mx-auto text-center">
+        <h3>Souhaites-tu commencer à discuter avec {{ user.firstname }} {{ user.lastname }} ?</h3>
+        {{ form_start(form) }}
+        <button class="btn-lg">Oui, je le veux !</button>
+        {{ form_end(form) }}
+    </div>
+
+    </div>
+{% endblock %}
