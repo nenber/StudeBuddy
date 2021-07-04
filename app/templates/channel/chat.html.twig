@@ -6,10 +6,14 @@
     <div class="container mt-5" >
         <h1 class="mt-5 pt-5">
             {% if (app.user == channel.authorId) %}
+            <a href="/messagerie/{{ channel.getParticipant.id }}">
                 <span>{{ channel.getParticipant.firstName }} {{ channel.getParticipant.lastName }}</span>
+            </a>
             {% endif %}
             {% if (app.user == channel.getParticipant) %}
+            <a href="/messagerie/{{ channel.authorId.id }}">
                 <span>{{ channel.authorId.firstName }} {{ channel.authorId.lastName }}</span>
+            </a>
             {% endif %}        </h1>
 
         <div class="container" style="height: 600px">
