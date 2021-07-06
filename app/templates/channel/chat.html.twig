@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Chat{% endblock %}
-
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 {% block body %}
     <div class="container mt-5" >
         <h1 class="mt-5 pt-5">
@@ -59,65 +61,6 @@
 
 {% endblock %}
 {% block javascripts %}
-    <script>
-        let chatDiv = document.querySelector('.test');
-        chatDiv.scrollTop = chatDiv.scrollHeight; // On souhaite scroller toujours jusqu'au dernier message du chat
-
-        let form = document.getElementById('form');
-        function handleForm(event) {
-          //  event.preventDefault(); // Empêche la page de se rafraîchir après le submit du formulaire
-        }
-        form.addEventListener('submit', handleForm);
-
-        {#// 'mercure' is used as the docker-compose service name. We replace it by the actual url for the browser.#}
-        {#const link = '{{ app.request.attributes.get('_links').getLinksbyRel('mercure')[0].getHref }}'#}
-        {#    .replace("mercure", "localhost:3000");#}
-        {#const url = new URL(link);#}
-
-        {#url.searchParams.append('topic', 'http://localhost:8000/channel/{{ channel.id }}');#}
-        {#console.log(url)#}
-        {#const eventSource = new EventSource(url);#}
-
-        {#const appUser = {{ app.user.id }};#}
-
-        {#eventSource.onmessage = ({data}) => {#}
-        {#    const message = JSON.parse(data);#}
-        {#    document.querySelector('.bg-light').insertAdjacentHTML(#}
-        {#        'beforeend',#}
-        {#        appUser === message.author.id ?#}
-        {#            `<div class="row w-75 float-right">#}
-        {#            <b>${message.author.firstname}</b>#}
-        {#            <p class="alert alert-info w-100">${message.content}</p>#}
-        {#        </div>` :#}
-        {#            `<div class="row w-75 float-left">#}
-        {#            <b>${message.author.username}</b>#}
-        {#            <p class="alert alert-success w-100">${message.content}</p>#}
-        {#        </div>`#}
-        {#    )#}
-        {#    chatDiv.scrollTop = chatDiv.scrollHeight;#}
-        {#}#}
-
-
-
-        const submit = document.getElementById('btnEnvoi');
-        submit.onclick = e => { // On change le comportement du submit
-            console.log("fefefef")
-            const message = document.getElementById('message'); // Récupération du message dans l'input correspondant
-            const data = { // La variable data sera envoyée au controller
-                'content': message.value, // On transmet le message...
-                'channel': {{ channel.id }} // ... Et le canal correspondant
-            }
-            console.log(data); // Pour vérifier vos informations
-            console.log("clique ici !!")
-
-            fetch('/message', { // On envoie avec un post nos datas sur le endpoint /message de notre application
-                method: 'POST',
-                body: JSON.stringify(data) // On envoie les data sous format JSON
-            }).then((response) => {
-                message.value = '';
-                console.log(response);
-                window.location.reload();
-            });
-        }
-    </script>
+    {{ parent() }}
+    {{ encore_entry_script_tags('chat') }}
 {% endblock %}

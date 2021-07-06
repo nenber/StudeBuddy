@@ -21,7 +21,7 @@
 			<a class="navbar-brand" href="{{ path('app_index') }}">
 				<img src="{{ asset('build/images/logo.png') }}" alt="logo studandbuddy" width="180px"/>
 			</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -36,8 +36,8 @@
 							<a class="nav-link" href="{{path('user_matching')}}">Matching</a>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" id="navbarDropdownn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mes évènements</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownn">
+							<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mes évènements</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="{{ path('event_map') }}">Rejoindre un évènement</a>
 								<a class="dropdown-item" href="{{ path('event_index') }}">Mes évènements</a>
 								{% if app.user.isGodParent == true %}
