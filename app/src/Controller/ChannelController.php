@@ -23,7 +23,7 @@ class ChannelController extends AbstractController
      */
     public function getChannels(ChannelRepository $channelRepository): Response
     {
-
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('channel/index.html.twig', [
             'channels' => $channelRepository->findAll()
         ]);
@@ -71,6 +71,7 @@ class ChannelController extends AbstractController
         MessageRepository $messageRepository
     ): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $messages = $messageRepository->findBy([
             'channel' => $channel
         ], ['createdAt' => 'ASC']);
@@ -89,6 +90,7 @@ class ChannelController extends AbstractController
      */
     public function isConnected(User $user, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user->setIsConnected(true);
 
         $this->addFlash(
@@ -107,6 +109,7 @@ class ChannelController extends AbstractController
      */
     public function noConnected(User $user, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user->setIsConnected(false);
 
         $this->addFlash(
