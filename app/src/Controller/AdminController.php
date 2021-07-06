@@ -27,6 +27,7 @@ class AdminController extends AbstractController
     public function banUser(User $user): Response
     {
         $user->setIsBanned(true);
+        $user->setRoles(['']);
         $user->setIsReported(false);
 
         $this->getDoctrine()->getManager()->flush();

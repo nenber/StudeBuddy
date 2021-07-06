@@ -20,15 +20,18 @@
         </thead>
         <tbody>
             {% for user in users %}
+            {% if "ROLE_ADMIN" in user.roles %}
+            {% else %}
                 <tr>
                     <td>{{ user.firstName }}</td>
                     <td>{{ user.lastName }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{% if not user.isBanned %}
-                            <a class="btn btn-danger" role="button" href="{{ path('ban', { 'id': user.id }) }}">Bannir</a>
-                         {% endif %}
+                    <td>{% if not user.isBanned %}   
+                        <a class="btn btn-danger" role="button" href="{{ path('ban', { 'id': user.id }) }}">Bannir</a>
+                        {% endif %}
                     </td>
                 </tr>
+            {% endif %}
             {% endfor %}
         </tbody>
     </table>
