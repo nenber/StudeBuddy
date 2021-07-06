@@ -49,7 +49,7 @@ class ChannelController extends AbstractController
             $channel->setGetParticipant($user);
             $entityManager->persist($channel);
             $entityManager->flush();
-            return $this->redirectToRoute('messagerie');
+            return $this->redirectToRoute('chat', ['id' => $channel->getId()]);
         }
 
         return $this->render('channel/new.html.twig', [
