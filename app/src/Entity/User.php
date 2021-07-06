@@ -176,7 +176,6 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank
      * @Assert\Length(
      *      min = 10,
      *      max = 200,
@@ -190,7 +189,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="array", nullable=true)
      */
     private $blacklist = [];
-  
+    
     /**
      * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="get_participant")
      */
