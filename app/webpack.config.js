@@ -39,6 +39,7 @@ Encore
     .addEntry('reset-password', './assets/reset-password.js')
     .addEntry('map', './assets/map.js')
     .addEntry('leaflet', './assets/styles/leaflet.css')
+    .addEntry('chat', './assets/chat.js')
 
     .enableSassLoader()
     .autoProvidejQuery()
