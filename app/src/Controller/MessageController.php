@@ -30,7 +30,7 @@ class MessageController extends AbstractController
         PublisherInterface $publisher): JsonResponse
     {
         $data = \json_decode($request->getContent(), true);
-        if (empty($content = $data['content'])) {
+        if (null==($content = $data['content']) && null==($gif = $data['gif'])) {
             throw new AccessDeniedHttpException('No data sent');
         }
 
@@ -43,6 +43,7 @@ class MessageController extends AbstractController
 
         $message = new Message();
         $message->setContent($content);
+        $message->setGif($gif);
         $message->setChannel($channel);
         $message->setAuthor($this->getUser());
 
