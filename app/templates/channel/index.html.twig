@@ -18,7 +18,13 @@
         </div>
     {% endfor %}
 
-    {% if channels %}  
+    {% set i = 0 %}
+    {% for channel in channels %}
+        {% if (app.user == channel.authorId) or (app.user == channel.getParticipant) %}
+         {% set i = i + 1 %}
+        {% endif %}
+    {% endfor %}
+    {% if i > 0 %} 
         <h2>Mes conversations</h2>
         <table class="table table-striped">  
             <tbody>  

@@ -195,6 +195,11 @@ class User implements UserInterface, \Serializable
      */
     private $participant_channel;
 
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     */
+    private $reportedBy;
+
 
     public function __construct()
     {
@@ -697,6 +702,18 @@ class User implements UserInterface, \Serializable
     public function __toString(): string
     {
         return $this->id;
+    }
+
+    public function getReportedBy(): ?self
+    {
+        return $this->reportedBy;
+    }
+
+    public function setReportedBy(?self $reportedBy): self
+    {
+        $this->reportedBy = $reportedBy;
+
+        return $this;
     }
 
 }

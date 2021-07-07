@@ -25,9 +25,12 @@ class ReportUserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // set report user status to true
             $user->setIsReported(true);
+            $user->setReportedBy($this->getUser());
 
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash("successReport", "Votre signalement a bien été enregistré et sera traité dans les plus brefs délais.");
+            
             return $this->redirectToRoute('app_index');
         }
 
