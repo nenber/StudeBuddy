@@ -81,6 +81,7 @@ import refreshPath from './img/refresh.png';
 import talkPath from './img/talk.png';
 import logoPath from './img/logo.png';
 import faviconPath from './img/favicon.png';
+import phonePath from './img/phonechat.jpg';
 
 let titleImage = `<img src="${titleImage1Path}" >`;
 let hiker = `<img src="${hikerPath}" >`;
@@ -94,3 +95,4 @@ let profil = `<img src="${profilPath}" alt="ACME logo">`;
 let logowhite = `<img src="${logowhitePath}" alt="ACME logo">`;
 let logo = `<img src="${logoPath}" alt="ACME logo">`;
 let favicon = `<img src="${faviconPath}" alt="ACME logo">`;
+let phone = `<img src="${phonePath}" alt="phone chat">`;
