@@ -27,7 +27,7 @@ Encore
     .setPublicPath('/build')
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
-
+    .cleanupOutputBeforeBuild()
     /*
      * ENTRY CONFIG
      *
@@ -35,6 +35,12 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('edit-profile', './assets/edit-profile.js')
+    .addEntry('reset-password', './assets/reset-password.js')
+    .addEntry('map', './assets/map.js')
+    .addEntry('leaflet', './assets/styles/leaflet.css')
+    .addEntry('chat', './assets/chat.js')
+
     .enableSassLoader()
     .autoProvidejQuery()
 

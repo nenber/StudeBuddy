@@ -5,10 +5,17 @@ body {
   margin: 0;
   padding: 0;
   scroll-behavior: smooth;
+  height: 100%;
 }
 
 body {
   font-family: "Nunito", sans-serif;
+}
+
+main{
+  min-height: 100vh;
+  height: auto !important;
+  margin-top: 100px;
 }
 
 h1 {
@@ -192,12 +199,10 @@ hr {
 
 #description h1 {
   color: #366db4;
-  color: #366db4;
   text-align: center;
 }
 
 #description h3 {
-  color: #97ccef;
   color: #97ccef;
   padding-top: 10%;
   line-height: 1.5;
@@ -239,8 +244,6 @@ hr {
   height: 250px;
   background: #97ccef;
   color: white;
-  margin-top: 0px;
-  margin-bottom: 0px;
   padding-top: 0 !important;
   position: relative;
   width: 105%;
@@ -263,13 +266,25 @@ hr {
 /* # FOOTER # */
 footer {
   background: #366db4;
-  margin-top: 10vh;
-  width: 100vw;
+  top: 100%;
+  width: 100%;
 }
 footer p {
   font-family: "Nunito", sans-serif;
   font-weight: 600;
   color: white;
+}
+
+footer .modal-body p{
+  color: black !important;
+}
+
+footer .modal-body h2{
+  color: #366db4 !important;
+}
+
+footer .modal-header h1 {
+  color: #366db4 !important;
 }
 /* # EDIT-PROFIL # */
 
@@ -509,5 +524,51 @@ footer p {
   align-items: flex-end;
   align-content: center;
 }
+#admin h1{
+  color: #366DB4;
+  text-decoration: underline #366db4;
+  font-weight: bolder;
+}
+
+#admin h3{
+  color: #97ccef;
+  font-weight: bolder;
+}
+
+#admin th{
+  font-family: "Nunito", sans-serif;
+  font-weight: bolder;
+}
+
+/* {
+    # PROFILE MESSENGER #
+} */
+
+#profile {
+  margin-top: 110px;
+}
+
+#profile h4 {
+  color: #97ccef;
+}
+
+#profile h2 {
+  color: #366DB4;
+}
+
+#profile span {
+  color: #97ccef;
+
+}
 
 
+/* CREATE CHANNEL*/
+#createChannel  h3 {
+  color: #97ccef;
+  font-weight: bolder;
+}
+
+#createChannel {
+  text-align: center;
+  margin-top: 200px;
+}

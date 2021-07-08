@@ -1,0 +1,7 @@
+{
+    "require": {
+        "symfony/google-mailer": "^5.2",
+        "symfony/sendgrid-mailer": "^5.2",
+        "symfony/apache-pack": "^1.0"
+    }
+}

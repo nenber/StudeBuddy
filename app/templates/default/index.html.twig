@@ -12,6 +12,16 @@
 					<div class="block-blue">
 						<div class="d-flex ml-auto d-flex align-items-center">
 							<div class="d-flex flex-column m-xl-5 m-4">
+							{% for message in app.flashes('error') %}
+								<div class="alert alert-danger" role="alert">
+									{{message}}
+								</div>
+							{% endfor %}
+							{% for message in app.flashes('blockedUser') %}
+								<div class="alert alert-danger" role="alert">
+									{{message}}
+								</div>
+							{% endfor %}
 								<h1 class="mt-xl-1 mt-5">
 									L'entraide internationale étudiante
 								</h1>

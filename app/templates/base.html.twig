@@ -1,49 +1,60 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>
-			{% block title %}Welcome!
-			{% endblock %}
-		</title>
-		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
-		 {% block stylesheets %}
-		 {{ encore_entry_link_tags('app') }}
-		 {% endblock %}
-		<link rel="preconnect" href="https://fonts.gstatic.com">
-		<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-		<link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
 
-	</head>
-	<body>
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}Welcome!
+        {% endblock %}
+    </title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
 
+</head>
+<body>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 			<a class="navbar-brand" href="{{ path('app_index') }}">
 				<img src="{{ asset('build/images/logo.png') }}" alt="logo studandbuddy" width="180px"/>
 			</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse"  id="navbarSupportedContent">
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ml-auto">
+					{% if is_granted('ROLE_ADMIN') %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{path('admin')}}">Administration</a>
+						</li>
+					{% endif %}
 					{% if is_granted('ROLE_USER') %}
 						<li class="nav-item">
 							<a class="nav-link" href="{{path('user_matching')}}">Matching</a>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" id="navbarDropdownn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mes évènements</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownn">
+							<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mes évènements</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="{{ path('event_map') }}">Rejoindre un évènement</a>
 								<a class="dropdown-item" href="{{ path('event_index') }}">Mes évènements</a>
-								<a class="dropdown-item" href="{{ path('event_new') }}">Créer un évènement</a>
+								{% if app.user.isGodParent == true %}
+									<a class="dropdown-item" href="{{ path('event_new') }}">Créer un évènement</a>
+								{% endif %}
 							</div>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#messagerie">Messagerie</a>
+							<a class="nav-link" href="{{ path('messagerie') }}">Messagerie</a>
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<img id="pi" src="{{ app.user.profileImage }}/100" alt="Photo de profil" width="35px" height="35px"/>
+								{% if app.user.imageName == null %}
+									<img name="profilImage" id="previewimg" src="{{ asset('build/images/profil.png') }}" style="max-height:40px;max-width:40px;"/>
+								{% else %}
+									<img id="pi" src="{{ vich_uploader_asset(app.user, 'imageFile') }}" alt="image" width="35px" height="35px" />
+								{% endif %}
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="{{ path('user_edit-profile') }}">Voir mon profil</a>
@@ -57,7 +68,7 @@
 							<a class="nav-link" href="#description">Qui sommes-nous ?</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Fonctionnalités</a>
+							<a class="nav-link" href="#features">Fonctionnalités</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link login" href="{{ path('app_login') }}">Se connecter</a>
@@ -76,33 +87,199 @@
 				</ul>
 			</div>
 		</nav>
-
-		<div class="container-fluid"> {% block body %}{% endblock %}
-			</div>
-			<footer class="row mt-5">
+		<main role="main" class="container-fluid"> {% block body %}{% endblock %}
+		</main>
+		
+		<footer class="footer">
+			<div class="container row">
 				<div class="col my-4 mx-5">
 					<div class="row py-3">
 						<a href="#">
 							<img src="{{ asset('build/images/logo_white.png') }}">
 						</a>
 					</div>
-					<div class="row pt-3 ml-3">
-						<a href="#">
-							<p>Politique de confidentialité</p>
+					<div class="row pt-3 ml-3 text-white">
+						<a
+								type="button"
+								data-toggle="modal"
+								data-target=".politiques"
+						>
+							Politique de confidentialité
 						</a>
+
 					</div>
-					<div class="row pt-3 ml-3">
-						<a href="#">
-							<p>Mentions légales</p>
+					<div class="row pt-3 ml-3 text-white">
+						<a
+								type="button"
+								data-toggle="modal"
+								data-target=".mention"
+						>
+							Mentions légales
 						</a>
+
 					</div>
 				</div>
-			</footer>
+			</div>
+			<div
+					class="modal fade politiques"
+					tabindex="-1"
+					role="dialog"
+					aria-labelledby="myLargeModalLabel"
+					aria-hidden="true"
+			>
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1>Politique de confidentialité</h1>
+							<button
+									type="button"
+									class="close"
+									data-dismiss="modal"
+									aria-label="Close"
+							>
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body text-left">
+							<h2>Données personnelles recueillies</h2>
+							<p>
+								Les données personnelles que nous pouvons recueillir
+								sont les réponses des utilisateurs du quizz accessible à
+								l’adresse Les données personnelles que nous pouvons
+								recueillir sont les réponses des utilisateurs du quizz
+								accessible à l’adresse
+								<a href="https://minima-france.fr"
+								>https://minima-france.fr</a
+								>
+							</p>
+							<p>
+								Le traitement des données personnelles a pour finalité
+								de trier les différentes données visible du site afin
+								d’offrir un contenu personnalisé lors de la
+								fréquentation de la partie du social wall du site.
+							</p>
+							<p>
+								Les données personnelles sont traitées par Euphoriart
+								sur la base son intérêt légitime (article 6.1 sous f°)
+								du Règlement général sur le protection des données).
+							</p>
+							<br />
+							<h2>Conservation des données personnelles</h2>
+							<p>
+								Les données personnelles seront conservées te temps
+								nécessaire pour traiter la demande lorsque l’utilisateur
+								du site nous aura communiqué L’utilisateur du Site
+								dispose d’un droit d’accès, de rectification,
+								d’effacement des informations personnelles le
+								concernant, ainsi que d’un droit d’opposition ou de
+								limitation du traitement le concernant, qu’il peut
+								exercer à tout moment en utilisant le questionnaire du
+								site.
+							</p>
+							<p>
+								L’utilisateur dispose enfin du droit à la portabilité de
+								ses données ainsi que du droit d’introduire une
+								réclamation auprès d’une autorité de contrôle. Les
+								utilisateurs du Site sont informés que des témoins de
+								connexion ou « cookies » peuvent être temporairement
+								installés dans leur terminal (ordinateur, mobile ou
+								tablette), qu’ils sont libres d’accepter ou refuser.
+							</p>
+						</div>
+						<div class="modal-footer">
+							<button
+									type="button"
+									class="button_tertiary"
+									data-dismiss="modal"
+							>
+								J'accepte
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-			{% block javascripts %}
-				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-					{{ encore_entry_script_tags('app') }}
-			{% endblock %}
+			<div
+					class="modal fade mention"
+					tabindex="-1"
+					role="dialog"
+					aria-labelledby="myLargeModalLabel"
+					aria-hidden="true"
+			>
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1>Mentions légales</h1>
+							<button
+									type="button"
+									class="close"
+									data-dismiss="modal"
+									aria-label="Close"
+							>
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body text-left">
+							<h2>Données personnelles recueillies</h2>
+							<p>
+								Les données personnelles que nous pouvons recueillir
+								sont les réponses des utilisateurs du quizz accessible à
+								l’adresse Les données personnelles que nous pouvons
+								recueillir sont les réponses des utilisateurs du quizz
+								accessible à l’adresse
+								<a href="https://minima-france.fr"
+								>https://minima-france.fr</a
+								>
+							</p>
+							<p>
+								Le traitement des données personnelles a pour finalité
+								de trier les différentes données visible du site afin
+								d’offrir un contenu personnalisé lors de la
+								fréquentation de la partie du social wall du site.
+							</p>
+							<p>
+								Les données personnelles sont traitées par Euphoriart
+								sur la base son intérêt légitime (article 6.1 sous f°)
+								du Règlement général sur le protection des données).
+							</p>
+							<br />
+							<h2>Conservation des données personnelles</h2>
+							<p>
+								Les données personnelles seront conservées te temps
+								nécessaire pour traiter la demande lorsque l’utilisateur
+								du site nous aura communiqué L’utilisateur du Site
+								dispose d’un droit d’accès, de rectification,
+								d’effacement des informations personnelles le
+								concernant, ainsi que d’un droit d’opposition ou de
+								limitation du traitement le concernant, qu’il peut
+								exercer à tout moment en utilisant le questionnaire du
+								site.
+							</p>
+							<p>
+								L’utilisateur dispose enfin du droit à la portabilité de
+								ses données ainsi que du droit d’introduire une
+								réclamation auprès d’une autorité de contrôle. Les
+								utilisateurs du Site sont informés que des témoins de
+								connexion ou « cookies » peuvent être temporairement
+								installés dans leur terminal (ordinateur, mobile ou
+								tablette), qu’ils sont libres d’accepter ou refuser.
+							</p>
+						</div>
+						<div class="modal-footer">
+							<button
+									type="button"
+									class="button_tertiary"
+									data-dismiss="modal"
+							>
+								J'accepte
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</footer>
 
 		</body>
 	</html>

@@ -97,10 +97,6 @@ class User implements UserInterface
      */
     private $language_to_learn = ['fr'];
 
-    /**
-     * @ORM\OneToMany(targetEntity=ThreadUser::class, mappedBy="user_id")
-     */
-    private $thread_user_id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -128,15 +124,58 @@ class User implements UserInterface
     private $organized_events;
 
     /**
+     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="author_id")
+     */
+    private $author_channel;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="participant_id")
      */
     private $participated_events;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author")
+     */
+    private $messages;
+    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isBanned;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isReported;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 200,
+     *      minMessage = "Votre message est trop court (minimum 10 caractères.",
+     *      maxMessage = "Votre message est trop long (maximum 200 caractères)."
+     * )
+     */
+    private $reportReason;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $blacklist = [];
+    
+    /**
+     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="get_participant")
+     */
+    private $participant_channel;
+
+
     public function __construct()
     {
-        $this->thread_user_id = new ArrayCollection();
         $this->organized_events = new ArrayCollection();
         $this->participated_events = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->participant_channel = new ArrayCollection();
     }
 
 
@@ -326,37 +365,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|ThreadUser[]
-     */
-    public function getThreadUserId(): Collection
-    {
-        return $this->thread_user_id;
-    }
-
-    public function addThreadUserId(ThreadUser $threadUserId): self
-    {
-        if (!$this->thread_user_id->contains($threadUserId)) {
-            $this->thread_user_id[] = $threadUserId;
-            $threadUserId->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeThreadUserId(ThreadUser $threadUserId): self
-    {
-        if ($this->thread_user_id->contains($threadUserId)) {
-            $this->thread_user_id->removeElement($threadUserId);
-            // set the owning side to null (unless already changed)
-            if ($threadUserId->getUserId() === $this) {
-                $threadUserId->setUserId(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -463,4 +471,218 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return User
+     * @throws Exception
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageSize(?int $imageSize): void
+    {
+        $this->imageSize = $imageSize;
+    }
+
+    public function getImageSize(): ?int
+    {
+        return $this->imageSize;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+
+        list(
+            $this->id,
+            $this->email,
+            $this->password,
+            ) = unserialize($serialized);
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setAuthor($this);
+        }
+
+    }
+    public function getIsBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setIsBanned(bool $isBanned): self
+    {
+        $this->isBanned = $isBanned;
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getAuthor() === $this) {
+                $message->setAuthor(null);
+            }
+        }
+
+    }
+    public function getIsReported(): ?bool
+    {
+        return $this->isReported;
+    }
+
+    public function setIsReported(?bool $isReported): self
+    {
+        $this->isReported = $isReported;
+
+        return $this;
+    }
+
+    public function getReportReason(): ?string
+    {
+        return $this->reportReason;
+    }
+
+    public function setReportReason(?string $reportReason): self
+    {
+        $this->reportReason = $reportReason;
+
+        return $this;
+    }
+
+    public function getBlacklist(): ?array
+    {
+        return $this->blacklist;
+    }
+
+    public function setBlacklist(?array $blacklist): self
+    {
+        $this->blacklist = $blacklist;
+
+        return $this;
+    }
+  
+    /**
+     * @return Collection|Event[]
+     */
+    public function getAuthorChannel(): Collection
+    {
+        return $this->author_channel;
+    }
+
+    public function addAuthorChannel(Channel $author_channel): self
+    {
+        if (!$this->author_channel->contains($author_channel)) {
+            $this->author_channel[] = $author_channel;
+            $author_channel->setAuthorId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOAuthorChannel(Channel $author_channel): self
+    {
+        if ($this->author_channel->contains($author_channel)) {
+            $this->author_channel->removeElement($author_channel);
+            // set the owning side to null (unless already changed)
+            if ($author_channel->getAuthorId() === $this) {
+                $author_channel->setAuthorId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Channel[]
+     */
+    public function getParticipantChannel(): Collection
+    {
+        return $this->participant_channel;
+    }
+
+    public function addParticipantChannel(Channel $participantChannel): self
+    {
+        if (!$this->participant_channel->contains($participantChannel)) {
+            $this->participant_channel[] = $participantChannel;
+            $participantChannel->setGetParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipantChannel(Channel $participantChannel): self
+    {
+        if ($this->participant_channel->removeElement($participantChannel)) {
+            // set the owning side to null (unless already changed)
+            if ($participantChannel->getGetParticipant() === $this) {
+                $participantChannel->setGetParticipant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->id;
+    }
+
 }
+

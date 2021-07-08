@@ -16,20 +16,16 @@
 							<hr></h1>
 					</div>
 					<div class="offset-xl-2 col-xl-2">
-
 					{% if  ((warning == false) and (sorry == false)) %}
 						<div class="row refresh">
 							<div id="refresh-btn" class="col-lg-4 d-none d-lg-block align-right">
 								<a class="right" type="submit" onclick="refreshPage()"><img src="{{ asset('build/images/refresh.png') }}" alt="refresh">
 									Actualiser</a>
-
 							</div>
 						{% endif %}
 					</div>
 				</div>
-
 				<div class="row">
-
 					{% if warning == true %}
 						<div class="alert alert-info alert-dismissible">
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -48,7 +44,6 @@
 							</p>
 						</div>
 					{% endif %}
-
 					{% if sorry == true and warning == false %}
 						<div class="alert alert-warning alert-dismissible">
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -62,25 +57,26 @@
 							</p>
 						</div>
 					{% endif %}
-
 				</div>
-
 				<div class="matching-card row">
 					<div class="col">
 						<div
 							class="row">
 							{# a faire un sorte de while #}
 							{% for item in buddies|shuffle %}
+								{% if not item.isconnected %}
+							{% if not item.isBanned %}
+							{# {{dump(item.id)}} #}
+							{% if item.id in app.user.blacklist %}
+							{% else %}
 								<div class="card text-center mx-auto mr-xl-3 mr-sm-0 mr-0 mb-3">
-									{% if item.profileImage == false %}
+									{% if item.imageName == null %}
 										<div class="row profil-image mx-auto">
 											<img src="{{ asset('build/images/profil.png') }}"/>
 										</div>
 									{% else %}
-										<img
-										name="profilImage" id="previewimg" src="{{ item.profileImage }}300" style="max-height:320px;max-width:320px;"/>
+										<img id="pi" src="{{ vich_uploader_asset(item, 'imageFile') }}" alt="image" style="max-height:320px;max-width:320px;"/>
 									{% endif %}
-
 									<div class="card-body">
 										<div class="card-title">
 											<h5>
@@ -94,42 +90,33 @@
 											{% else %}
 												<p>{{ item.description}}</p>
 											{% endif %}
-
 										</div>
-
 										<div class="center-btn">
 											<button>
-												Envoyer un message
+												<a href="{{ path('messagerie_new_id', {'id': item.id}) }}">
+														Envoyer un message
+												</a>
 											</button>
 										</div>
-
 									</div>
 								</div>
+								{% endif %}
+							{% endif %}
+							{% endif %}
 							{% endfor %}
-
 						</div>
-
 						{% if  ((warning == false) and (sorry == false)) %}
 							<div id="refresh-btn" class="row d-xl-none d-lg-block">
 								<a type="submit" onclick="refreshPage()"><img src="{{ asset('build/images/refresh.png') }}" alt="refresh">
 									Actualiser</a>
 							</div>
 						{% endif %}
-
 					</div>
 				</div>
-
-
 			</div>
 		</div>
 	</div>
 {% endblock %}
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
-
-{#<script>#}
-{#function refreshPage() {#}
-{#    window.location.reload();#}
-{#}#}
-{#</script>#}
 		{% endblock %}
