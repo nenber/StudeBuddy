@@ -5,14 +5,17 @@ body {
   margin: 0;
   padding: 0;
   scroll-behavior: smooth;
+  height: 100%;
 }
 
 body {
   font-family: "Nunito", sans-serif;
 }
 
-.main{
+main{
   min-height: 100vh;
+  height: auto !important;
+  margin-top: 100px;
 }
 
 h1 {
@@ -272,6 +275,17 @@ footer p {
   color: white;
 }
 
+footer .modal-body p{
+  color: black !important;
+}
+
+footer .modal-body h2{
+  color: #366db4 !important;
+}
+
+footer .modal-header h1 {
+  color: #366db4 !important;
+}
 /* # EDIT-PROFIL # */
 
 .edit-profil h5 {
@@ -545,4 +559,16 @@ footer p {
 #profile span {
   color: #97ccef;
 
+}
+
+
+/* CREATE CHANNEL*/
+#createChannel  h3 {
+  color: #97ccef;
+  font-weight: bolder;
+}
+
+#createChannel {
+  text-align: center;
+  margin-top: 200px;
 }

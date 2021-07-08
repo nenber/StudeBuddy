@@ -3,14 +3,30 @@
 {% block title %}New Channel{% endblock %}
 
 {% block body %}
-    <h1>Create new Channel</h1>
-    <div class="container mt-5 h-100">
-    <div class="col-md-12 mx-auto text-center">
-        <h3>Souhaites-tu commencer à discuter avec {{ user.firstname }} {{ user.lastname }} ?</h3>
-        {{ form_start(form) }}
-        <button class="btn-lg">Oui, je le veux !</button>
-        {{ form_end(form) }}
+<div id="createChannel">
+
+    <div class="container" >
+    <div class="col-md-12 mx-auto text-center mt-5" data-aos="zoom-in" data-aos-offset="300" data-aos-easing="ease-in-sine">
+
+        <h3>Souhaites-tu commencer à discuter avec <span class="text-dark"><u>{{ user.firstname }} {{ user.lastname }} ? </u><span></span></h3>
+        <div class="row text-center">
+        <div class="col-md-12 ">
+            <div class="d-flex justify-content-center mt-3">
+                <div class="mr-3">
+                    <button class="btn-lg btn-danger">Annuler</button>
+                </div>
+                <div class="ml-5">
+                    {{ form_start(form) }}
+                    <button class="btn-lg">Oui, let's go !</button>
+                    {{ form_end(form) }}
+                </div>
+
+            </div>
+            </div>
+        </div>
     </div>
+        <img src="{{ asset('build/images/phonechat.jpg') }}" alt="phone chat" width="700"/>
 
     </div>
+</div>
 {% endblock %}
