@@ -66,7 +66,6 @@ class ChannelController extends AbstractController
      * @Route("/messagerie/chat/{id}", name="chat")
      */
     public function chat(
-        Request $request,
         Channel $channel,
         MessageRepository $messageRepository
     ): Response
@@ -76,8 +75,8 @@ class ChannelController extends AbstractController
             'channel' => $channel
         ], ['createdAt' => 'ASC']);
 
-        $hubUrl = $this->getParameter('mercure.default_hub');
-        $this->addLink($request, new Link('mercure', $hubUrl));
+//        $hubUrl = $this->getParameter('mercure.default_hub');
+//        $this->addLink($request, new Link('mercure', $hubUrl));
 
         return $this->render('channel/chat.html.twig', [
             'channel' => $channel,
