@@ -6,24 +6,20 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use http\Exception;
-use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\EmailValidator;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
- * @Vich\Uploadable
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email") 
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -108,31 +104,9 @@ class User implements UserInterface, \Serializable
     private $description;
 
     /**
-     *
-     * @Vich\UploadableField(mapping="buddy_images", fileNameProperty="imageName", size="imageSize")
-     *
-     * @var File|null
-     */
-    private $imageFile;
-
-    /**
      * @ORM\Column(type="string", nullable=true)
-     *
-     * @var string|null
      */
-    private $imageName;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     *
-     * @var int|null
-     */
-    private $imageSize;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $updatedAt;
+    private $profile_image;
 
     /**
      * @ORM\Column(type="boolean")
@@ -403,6 +377,17 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    public function getProfileImage()
+    {
+        return $this->profile_image;
+    }
+
+    public function setProfileImage($profile_image): self
+    {
+        $this->profile_image = $profile_image;
+
+        return $this;
+    }
 
     public function getIsGodson(): ?bool
     {
