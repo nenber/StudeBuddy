@@ -12,9 +12,28 @@
             {% endif %}
             {% if (app.user == channel.getParticipant) %}
             <a href="/messagerie/{{ channel.authorId.id }}">
-                <span>{{ channel.authorId.firstName }} {{ channel.authorId.lastName }}</span>
+                <span>{{ channel.authorId.firstName }} {{ channel.authorId.lastName }} </span>
             </a>
-            {% endif %}        </h1>
+        </h1>
+                <button>
+                    <a href="{{ path('friendship_new_id', {'id': channel.authorId}) }}">
+                        Ajouter en ami
+                    </a>
+                </button>
+                {% for friendship in friendships %}
+                    {#                                {% if friendship.hasBeenHelpful == false %}#}
+                    {#                                {% endif %}#}
+                    {% if friendship.hasBeenHelpful == true %}
+                        <button class="btn-danger">
+                        <a href="{{ path('friendship_delete_id', {'id': friendship.id}) }}">
+                            Retirer ce buddy
+                        </a>
+                        </button>
+                    {% endif %}
+
+
+                {% endfor %}
+            {% endif %}
 
         <div class="container" style="height: 600px">
             <div class="container bg-light h-75 overflow-auto test">
@@ -30,23 +49,7 @@
                         <div class="row w-75 float-left">
                             <b><a href="/messagerie/{{ message.author.id }}">{{ message.author.firstname }} {{ message.author.lastname }}
                                 </a>
-                                <button>
-                                    <a href="{{ path('friendship_new_id', {'id': message.author.id}) }}">
-                                        Ajouter en ami
-                                    </a>
-                                </button>
-                                {% for friendship in friendships %}
-{#                                {% if friendship.hasBeenHelpful == false %}#}
-{#                                {% endif %}#}
-                                {% if friendship.hasBeenHelpful == true %}
-                                <button>
-                                    <a href="{{ path('friendship_delete_id', {'id': friendship.id}) }}">
-                                        retirer en ami
-                                    </a>
-                                    {% endif %}
 
-                                </button>
-                                {% endfor %}
                                 </p>
                             </b>
                             <p class="alert alert-success w-100">
