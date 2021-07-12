@@ -205,6 +205,11 @@ class User implements UserInterface, \Serializable
      */
     private $friendsWithMe;
 
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     */
+    private $reportedBy;
+
+
 
     public function __construct()
     {
@@ -711,6 +716,7 @@ class User implements UserInterface, \Serializable
         return $this->id;
     }
 
+
     /**
      * @return Collection|Friendship[]
      */
@@ -767,6 +773,16 @@ class User implements UserInterface, \Serializable
                 $friendsWithMe->setFriend(null);
             }
         }
+
+    public function getReportedBy(): ?self
+    {
+        return $this->reportedBy;
+    }
+
+    public function setReportedBy(?self $reportedBy): self
+    {
+        $this->reportedBy = $reportedBy;
+
 
         return $this;
     }

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\UserRepository;
+use App\Repository\ChannelRepository;
 use App\Entity\User;
 
 
@@ -14,10 +15,11 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="admin")
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, ChannelRepository $channelRepository): Response
     {
         return $this->render('admin/index.html.twig', [
-            'users' => $userRepository->findAll()
+            'users' => $userRepository->findAll(),
+            'channels' => $channelRepository->findAll()
         ]);
     }
 
@@ -27,7 +29,9 @@ class AdminController extends AbstractController
     public function banUser(User $user): Response
     {
         $user->setIsBanned(true);
+        $user->setRoles(['']);
         $user->setIsReported(false);
+        $user->setReportedBy(NULL);
 
         $this->getDoctrine()->getManager()->flush();
 
@@ -41,6 +45,7 @@ class AdminController extends AbstractController
     {
         $user->setIsReported(false);
         $user->setReportReason("");
+        $user->setReportedBy(NULL);
         
         $this->getDoctrine()->getManager()->flush();
 
