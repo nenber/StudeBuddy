@@ -266,8 +266,8 @@ hr {
 /* # FOOTER # */
 footer {
   background: #366db4;
-  top: 100%;
   width: 100%;
+flex-shrink: 0;
 }
 footer p {
   font-family: "Nunito", sans-serif;
@@ -556,8 +556,13 @@ footer .modal-header h1 {
   color: #366DB4;
 }
 
+#profile p {
+  font-size: 20px;
+}
+
 #profile span {
   color: #97ccef;
+  font-weight: bold;
 
 }
 
