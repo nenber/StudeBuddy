@@ -23,7 +23,7 @@ class ChannelController extends AbstractController
      */
     public function getChannels(ChannelRepository $channelRepository): Response
     {
-
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('channel/index.html.twig', [
             'channels' => $channelRepository->findAll()
         ]);
@@ -49,7 +49,7 @@ class ChannelController extends AbstractController
             $channel->setGetParticipant($user);
             $entityManager->persist($channel);
             $entityManager->flush();
-            return $this->redirectToRoute('messagerie');
+            return $this->redirectToRoute('chat', ['id' => $channel->getId()]);
         }
 
         return $this->render('channel/new.html.twig', [
@@ -66,17 +66,17 @@ class ChannelController extends AbstractController
      * @Route("/messagerie/chat/{id}", name="chat")
      */
     public function chat(
-        Request $request,
         Channel $channel,
         MessageRepository $messageRepository
     ): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $messages = $messageRepository->findBy([
             'channel' => $channel
         ], ['createdAt' => 'ASC']);
 
-        $hubUrl = $this->getParameter('mercure.default_hub');
-        $this->addLink($request, new Link('mercure', $hubUrl));
+//        $hubUrl = $this->getParameter('mercure.default_hub');
+//        $this->addLink($request, new Link('mercure', $hubUrl));
 
         return $this->render('channel/chat.html.twig', [
             'channel' => $channel,
@@ -89,6 +89,7 @@ class ChannelController extends AbstractController
      */
     public function isConnected(User $user, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user->setIsConnected(true);
 
         $this->addFlash(
@@ -107,6 +108,7 @@ class ChannelController extends AbstractController
      */
     public function noConnected(User $user, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user->setIsConnected(false);
 
         $this->addFlash(

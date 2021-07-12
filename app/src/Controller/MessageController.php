@@ -26,9 +26,9 @@ class MessageController extends AbstractController
         Request $request,
         ChannelRepository $channelRepository,
         SerializerInterface $serializer,
-        EntityManagerInterface $em,
-        PublisherInterface $publisher): JsonResponse
+        EntityManagerInterface $em): JsonResponse
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $data = \json_decode($request->getContent(), true);
         if (empty($content = $data['content'])) {
             throw new AccessDeniedHttpException('No data sent');
