@@ -9,7 +9,16 @@
 {% endblock %}
 
 {% block body %}
-
+{% for message in app.flashes('error') %}
+                    	<div class="alert alert-success" role="alert">
+                        	{{message}}
+                    	</div>
+                	{% endfor %}
+					{% for message in app.flashes('success') %}
+                    	<div class="alert alert-success" role="alert">
+                        	{{message}}
+                    	</div>
+                	{% endfor %}
 	<div id="map-display">
 		<div class="row">
 			<div class="col-xl-4 p-4">
@@ -17,32 +26,24 @@
 					<hr></h1>
 			</div>
 			<div class="col-xl-8">
-				<div
-					id="map"><!-- Affichage de la carte -->
-				</div>
+				<div id="map"></div>
 			</div>
 		</div>
 	</div>
-	{{ dump(events) }}
 {% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
 	<script>
-		var markers = [];{% for event in events %}
-{# {% if event.organizer_id.id|first is not app.user %}
-{{ dump(app.user) }} #}
-		markers.push([{{ event.id }},"{{ event.address }}", {{ event.lat }}, {{ event.lng }}])
 
-{# {% endif %} #}
-// markers["{{ event.address| convert_encoding('UTF-8', 'ISO-8859-1') }}"]["lat"] = {{ event.lat }};
+		var markers = [];
+		{% for event in events %}
+		{% set entity = event[0] %}
+		{% set url = event[1] %}
 
-
-// markers["{{ event.address| convert_encoding('UTF-8', 'ISO-8859-1') }}"]["lng"] = {{ event.lng }}
-
-
-{% endfor %}
-//console.log(markers)
+		 markers.push([{{ entity.id }},"{{ entity.address }}", {{ entity.lat }}, {{ entity.lng }}, "{{url}}"]) 
+		{% endfor %}
+		console.log(markers)
 	</script>
 	{{ encore_entry_script_tags('map') }}
 

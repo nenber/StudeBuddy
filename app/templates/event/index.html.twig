@@ -13,7 +13,21 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <p>A faire</p>
+            {% for event in myEvents %}
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h3>{{ event.name }}</h3>
+                                <p><span class="gras">Organisateur :</span> {{ event.name }}</p>
+                                <p><span class="gras">Adresse :</span> {{ event.address }}</p>
+                                <p><span class="gras">Date :</span> {{ event.date ? event.date|date('Y-m-d') : '' }}</p>
+                                <br>
+                                <div class="mt-2 text-right">
+                                    {{ include('event/_leave_event_form.html.twig') }}
+                                </div>
+                            </div>
+                        </div>
+                 
+                {% endfor %}
             </div>
         </div>
         <div class="row mt-5">

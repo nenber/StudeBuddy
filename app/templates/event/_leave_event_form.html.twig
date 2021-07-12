@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('event_leave', {'id': event.id}) }}" onsubmit="return confirm('Voulez-vous vraiment quitter cet évènement ?');">
+    <input type="hidden" name="_method" value="leave">
+    <input type="hidden" name="_token" value="{{ csrf_token('leave' ~ event.id) }}">
+    <button>Quitter</button>
+</form>

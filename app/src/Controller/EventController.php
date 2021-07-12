@@ -6,10 +6,13 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\EventRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 
 /**
  * Class EventController
@@ -26,9 +29,15 @@ class EventController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $repository = $this->getDoctrine()->getRepository(Event::class);
         $events = $repository->findAll();
+        $return = array();
+        foreach($events as $key => $value)
+        {
+            array_push($return,[$value, $this->generateUrl('event_join', ['id' => $value->getId()],UrlGeneratorInterface::ABSOLUTE_URL)]);
+        }
+        
         return $this->render('event/map.html.twig', [
             'controller_name' => 'EventController',
-            'events' => $events
+            'events' => $return
         ]);
     }
 
@@ -37,8 +46,26 @@ class EventController extends AbstractController
      */
     public function index(EventRepository $eventRepository): Response
     {
+        $repository = $this->getDoctrine()->getRepository(Event::class);
+        $events = $repository->findAll();
+        $return = array();
+        foreach($events as $key=>$value)
+        {
+
+            foreach($value->getParticipantId() as $key2=>$value2)
+            {
+                dump($value2);
+                if($value2 == $this->getUser())
+                {
+                    
+                    array_push($return, $value);
+                }
+            }
+        }
+        dump($return);
         return $this->render('event/index.html.twig', [
-            'events' => $eventRepository->findAll()
+            "myEvents" => $return,
+            'events' => $events
         ]);
     }
 
@@ -159,36 +186,56 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="event_join", methods={"POST"})
+     * @Route("join/{id}", name="event_join", methods={"GET"})
      */
-    public function join(Request $request, Event $event): Response
+    public function join(Request $request, int $id): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $entityManager->getRepository(Event::class);
 
         $user = $this->getUser();
 
         if($user != null)
         {
-            // if($user->getId() == $event->getOrganizerId()->getId()){
-            //     $this->addFlash(
-            //         'error',
-            //         "Vous ne pouvez pas rejoindre cet événement."
-            //     );
-            //     return $this->redirectToRoute('event_map');
-            // }
-            // $entityManager = $this->getDoctrine()->getManager();
-            //  $repository = $entityManager->getRepository(Event::class);
-            //  $event = $repository->find($event->getOrganizerId()->getId());
-            //  $event->addParticipantId($user->getId());
-            //  $entityManager->flush($event);
+            $event = $repository->findOneBy(["id" => $id]);
+            if($event != null)
+            {
+                if($user->getId() == $event->getOrganizerId()->getId()){
+                    $this->addFlash(
+                        'error',
+                        "Vous ne pouvez pas rejoindre cet événement."
+                    );
+                    return $this->redirectToRoute('app_index');
+                }else
+                {
+                    $event = $repository->find($event->getOrganizerId()->getId());
+                    $event->addParticipantId($user);
+                    $entityManager->flush($event);
+                    $this->addFlash(
+                       'success',
+                       "Vous avez rejoind l'événement"
+                   );
+                   return $this->redirectToRoute('event_map');
+
+                }
+                 
+                
+            }
+            else
+            {
+                $this->addFlash(
+                    'error',
+                    "Il semble que cet événement est inexistant."
+                );
+                return $this->redirectToRoute('app_index');
+            }
         }
-
-
-        
-
-        $this->getDoctrine()->getManager();
-
-        return $this->redirectToRoute('event_map');
+        $this->addFlash(
+            'error',
+            "Une erreur s'est produite"
+        );
+        return $this->redirectToRoute('app_index');
     }
 
     /**
@@ -201,6 +248,23 @@ class EventController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($event);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('event_index');
+    }
+    /**
+     * @Route("/{id}", name="event_leave")
+     */
+    public function leave(Request $request, Event $event): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if ($this->isCsrfTokenValid('leave'.$event->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $repository = $entityManager->getRepository(Event::class);
+            $myEvent = $repository->findOneBy(['id' => $event->getID()]);
+            $myEvent->removeParticipantId($this->getUser());
             $entityManager->flush();
         }
 
