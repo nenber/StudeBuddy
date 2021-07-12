@@ -8,6 +8,7 @@ use App\Entity\Channel;
 use App\Entity\User;
 use App\Form\ChannelType;
 use App\Repository\ChannelRepository;
+use App\Repository\FriendshipRepository;
 use App\Repository\MessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +43,7 @@ class ChannelController extends AbstractController
         $form->handleRequest($request);
 
 
-        if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $channel->setAuthorId($userA);
             $channel->setName($user->getFirstName());
@@ -50,13 +51,7 @@ class ChannelController extends AbstractController
             $entityManager->persist($channel);
             $entityManager->flush();
             return $this->redirectToRoute('chat', ['id' => $channel->getId()]);
-        }
 
-        return $this->render('channel/new.html.twig', [
-            'channel' => $channel,
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
 
     }
 
@@ -67,59 +62,22 @@ class ChannelController extends AbstractController
      */
     public function chat(
         Channel $channel,
-        MessageRepository $messageRepository
+        MessageRepository $messageRepository, FriendshipRepository $friendshipRepository
     ): Response
     {
+
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $messages = $messageRepository->findBy([
             'channel' => $channel
         ], ['createdAt' => 'ASC']);
 
-//        $hubUrl = $this->getParameter('mercure.default_hub');
-//        $this->addLink($request, new Link('mercure', $hubUrl));
-
         return $this->render('channel/chat.html.twig', [
             'channel' => $channel,
+            'friendships' => $friendshipRepository->findAll(),
             'messages' => $messages
         ]);
     }
 
-    /**
-     * @Route("/messagerie/{id}/connected", name="connected", methods={"GET"})
-     */
-    public function isConnected(User $user, Request $request): Response
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $user->setIsConnected(true);
-
-        $this->addFlash(
-            'noticeGood',
-            'Bien ! Tu es parrain d\'un nouveau buddy !'
-        );
-
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToRoute('messagerie');
-
-    }
-
-    /**
-     * @Route("/messagerie/{id}/noconnected", name="noconnected", methods={"GET"})
-     */
-    public function noConnected(User $user, Request $request): Response
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $user->setIsConnected(false);
-
-        $this->addFlash(
-            'noticeDisconnect',
-            'Ok ! Tu t\'es déconnecté de ce buddy !'
-        );
-
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToRoute('messagerie');
-    }
 
     /**
      * @Route("messagerie/{id}", name="show", methods="GET")
