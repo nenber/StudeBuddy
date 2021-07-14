@@ -34,7 +34,7 @@ class ChannelController extends AbstractController
     /**
      * @Route("/messagerie/new/{id}", name="messagerie_new_id", methods={"GET","POST"})
      */
-    public function newFormBaseOnUser(Request $request, User $user): Response
+    public function newFormBaseOnUser(Request $request, User $user, ChannelRepository $channelRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $channel = new Channel();
@@ -42,15 +42,25 @@ class ChannelController extends AbstractController
         $form = $this->createForm(ChannelType::class, $channel);
         $form->handleRequest($request);
 
+        $entityManager = $this->getDoctrine()->getManager();
+        $channel->setAuthorId($userA);
+        $channel->setName($user->getFirstName());
+        $channel->setGetParticipant($user);
+        $entityManager->persist($channel);
 
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $channel->setAuthorId($userA);
-            $channel->setName($user->getFirstName());
-            $channel->setGetParticipant($user);
-            $entityManager->persist($channel);
-            $entityManager->flush();
-            return $this->redirectToRoute('chat', ['id' => $channel->getId()]);
+        foreach($channelRepository->findAll() as $existingChannel){
+            if(($channel->getAuthorId()->getId() == $existingChannel->getAuthorId()->getId() 
+                &&  $channel->getGetParticipant()->getId() == $existingChannel->getGetParticipant()->getId()))
+            {
+                $this->addFlash(
+                        'error',
+                        'Vous avez déjà une conversation avec cette personne.'
+                );
+                return $this->redirectToRoute('app_index');
+            }
+        }
+        $entityManager->flush();
+        return $this->redirectToRoute('chat', ['id' => $channel->getId()]);
 
 
     }

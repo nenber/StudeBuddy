@@ -23,7 +23,7 @@
                     {% if friendship.user.id == app.user.id and friendship.friend.id == userProfile and friendship.hasBeenHelpful == true %}
                         <button class="btn-danger ml-2">
                         <a href="{{ path('friendship_delete_id', {'id': friendship.id}) }}">
-                            Retirer ce buddy
+                            Retirer cet ami
                         </a>
                         </button>
                         {% set connected = true %}
