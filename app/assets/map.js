@@ -1,11 +1,17 @@
 import L from 'leaflet';
-
-
+import marker_icon_2Path from './img/marker-icon-2x.png';
+import marker_iconPath from './img/marker-icon.png';
+import marker_shadowPath from './img/marker-shadow.png';
+/*
+var myIcon = L.icon({
+    iconUrl: 'build/images/marker-icon.png',
+    shadowUrl: 'build/images/marker-shadow.png',
+});*/
 
 L.Icon.Default.mergeOptions({
-    iconRetinaUrl: "{{ asset('build/images/marker-icon-2x.png') }}",
-    iconUrl: "{{ asset('build/images/marker-icon.png') }}",
-    shadowUrl: "{{ asset('build/images/marker-shadow.png') }}",
+    iconRetinaUrl:  marker_icon_2Path,
+    iconUrl: marker_iconPath,
+    shadowUrl: marker_shadowPath,
 });
 
 // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
@@ -31,7 +37,6 @@ markers.forEach(function(obj) {
     let la = obj[2];
     let ln = obj[3];
     let url = obj[4]
-
 
     var m = L.marker([la, ln]).addTo(carte),
         p = new L.Popup({ autoClose: false, closeOnClick: false })
