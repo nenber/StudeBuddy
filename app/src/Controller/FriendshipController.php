@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\FriendshipRepository;
 
 class FriendshipController extends AbstractController
 {
@@ -26,23 +27,36 @@ class FriendshipController extends AbstractController
     /**
      * @Route("/friendship/new/{id}", name="friendship_new_id", methods={"GET","POST"})
      */
-    public function addFriend(Request $request, User $user): Response
+    public function addFriend(Request $request, User $user, FriendshipRepository $friendshipRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $ami = new Friendship();
         $currentUser = $this->getUser();
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $ami->setUser($currentUser);
-            $ami->setFriend($user);
-            $ami->setHasBeenHelpful(true);
-            $entityManager->persist($ami);
-            $entityManager->flush();
+        $friendships = $friendshipRepository->findAll();
+        foreach($friendships as $friendship){
+            if ($friendship->getUser()->getId() == $currentUser->getId() && $friendship->getFriend()->getId() == $user->getId() && $friendship->getHasBeenHelpful(true)){
+                $this->addFlash(
+                    'error',
+                    'Accès interdit.'
+                );
+                return $this->redirectToRoute('app_index');
+            }
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $ami->setUser($currentUser);
+        $ami->setFriend($user);
+        $ami->setHasBeenHelpful(true);
+        $entityManager->persist($ami);
+        $entityManager->flush();
+
         $this->addFlash(
             'noticeGood',
-            'Bien ! Tu es parrain d\'un nouveau buddy !'
+            'Bien ! Tu es connecté(e) à cet utilisateur !'
         );
-            return $this->redirectToRoute('messagerie');
+
+        return $this->redirectToRoute('messagerie');
 
 
     }
@@ -54,13 +68,21 @@ class FriendshipController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-                $entityManager = $this->getDoctrine()->getManager();
-                $user->setHasBeenHelpful(false);
-                $entityManager->flush();
+        if($this->getUser()->getId() !== $user->getUser()->getId()){
+            $this->addFlash(
+                'error',
+                'Accès interdit.'
+            );
+            return $this->redirectToRoute('app_index');
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $user->setHasBeenHelpful(false);
+        $entityManager->flush();
 
         $this->addFlash(
             'noticeDisconnect',
-            'Ok ! Tu t\'es déconnecté de ce buddy !'
+            'Ok ! Tu t\'es déconnecté de cet utilisateur !'
         );
 
         return $this->RedirectToRoute('messagerie');

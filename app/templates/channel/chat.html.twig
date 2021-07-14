@@ -3,37 +3,43 @@
 {% block title %}Chat{% endblock %}
 
 {% block body %}
-    <div class="container mt-5" >
-        <h1 class="mt-5 pt-5">
+    <div class="container mt-5">
+        <div class="row pt-5">
+            <h1>
             {% if (app.user == channel.authorId) %}
-            <a href="/messagerie/{{ channel.getParticipant.id }}">
-                <span>{{ channel.getParticipant.firstName }} {{ channel.getParticipant.lastName }}</span>
-            </a>
+                <a href="/messagerie/{{ channel.getParticipant.id }}">
+                    <span>{{ channel.getParticipant.firstName }} {{ channel.getParticipant.lastName }}</span>
+                </a>
+                {% set userProfile = channel.getParticipant.id %}
             {% endif %}
             {% if (app.user == channel.getParticipant) %}
-            <a href="/messagerie/{{ channel.authorId.id }}">
-                <span>{{ channel.authorId.firstName }} {{ channel.authorId.lastName }} </span>
-            </a>
-        </h1>
-                <button>
-                    <a href="{{ path('friendship_new_id', {'id': channel.authorId}) }}">
-                        Ajouter en ami
-                    </a>
-                </button>
+                <a href="/messagerie/{{ channel.authorId.id }}">
+                    <span>{{ channel.authorId.firstName }} {{ channel.authorId.lastName }} </span>
+                </a>
+            </h1>
+                {% set userProfile = channel.authorId.id %}
+                {% set connected = false %}
                 {% for friendship in friendships %}
-                    {#                                {% if friendship.hasBeenHelpful == false %}#}
-                    {#                                {% endif %}#}
-                    {% if friendship.hasBeenHelpful == true %}
-                        <button class="btn-danger">
+                    {% if friendship.user.id == app.user.id and friendship.friend.id == userProfile and friendship.hasBeenHelpful == true %}
+                        <button class="btn-danger ml-2">
                         <a href="{{ path('friendship_delete_id', {'id': friendship.id}) }}">
                             Retirer ce buddy
                         </a>
                         </button>
+                        {% set connected = true %}
                     {% endif %}
-
-
                 {% endfor %}
+                {% if not connected %}
+                <button class="ml-5">
+                    <a href="{{ path('friendship_new_id', {'id': channel.authorId}) }}">
+                        Ajouter en ami
+                    </a>
+                </button>
+                {% endif %} 
             {% endif %}
+                
+            
+        </div>
 
         <div class="container" style="height: 600px">
             <div class="container bg-light h-75 overflow-auto test">
