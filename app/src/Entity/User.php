@@ -196,9 +196,20 @@ class User implements UserInterface, \Serializable
     private $participant_channel;
 
     /**
+     * @ORM\OneToMany(targetEntity=Friendship::class, mappedBy="user")
+     */
+    private $friends;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Friendship::class, mappedBy="friend")
+     */
+    private $friendsWithMe;
+
+    /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      */
     private $reportedBy;
+
 
 
     public function __construct()
@@ -207,6 +218,8 @@ class User implements UserInterface, \Serializable
         $this->participated_events = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->participant_channel = new ArrayCollection();
+        $this->friends = new ArrayCollection();
+        $this->friendsWithMe = new ArrayCollection();
     }
 
 
@@ -704,6 +717,65 @@ class User implements UserInterface, \Serializable
         return $this->id;
     }
 
+
+    /**
+     * @return Collection|Friendship[]
+     */
+    public function getFriends(): Collection
+    {
+        return $this->friends;
+    }
+
+    public function addFriend(Friendship $friend): self
+    {
+        if (!$this->friends->contains($friend)) {
+            $this->friends[] = $friend;
+            $friend->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFriend(Friendship $friend): self
+    {
+        if ($this->friends->removeElement($friend)) {
+            // set the owning side to null (unless already changed)
+            if ($friend->getUser() === $this) {
+                $friend->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Friendship[]
+     */
+    public function getFriendsWithMe(): Collection
+    {
+        return $this->friendsWithMe;
+    }
+
+    public function addFriendsWithMe(Friendship $friendsWithMe): self
+    {
+        if (!$this->friendsWithMe->contains($friendsWithMe)) {
+            $this->friendsWithMe[] = $friendsWithMe;
+            $friendsWithMe->setFriend($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFriendsWithMe(Friendship $friendsWithMe): self
+    {
+        if ($this->friendsWithMe->removeElement($friendsWithMe)) {
+            // set the owning side to null (unless already changed)
+            if ($friendsWithMe->getFriend() === $this) {
+                $friendsWithMe->setFriend(null);
+            }
+        }
+    }
+
     public function getReportedBy(): ?self
     {
         return $this->reportedBy;
@@ -712,6 +784,7 @@ class User implements UserInterface, \Serializable
     public function setReportedBy(?self $reportedBy): self
     {
         $this->reportedBy = $reportedBy;
+
 
         return $this;
     }

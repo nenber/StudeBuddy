@@ -8,6 +8,7 @@ use App\Entity\Channel;
 use App\Entity\User;
 use App\Form\ChannelType;
 use App\Repository\ChannelRepository;
+use App\Repository\FriendshipRepository;
 use App\Repository\MessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +34,7 @@ class ChannelController extends AbstractController
     /**
      * @Route("/messagerie/new/{id}", name="messagerie_new_id", methods={"GET","POST"})
      */
-    public function newFormBaseOnUser(Request $request, User $user): Response
+    public function newFormBaseOnUser(Request $request, User $user, ChannelRepository $channelRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $channel = new Channel();
@@ -41,22 +42,28 @@ class ChannelController extends AbstractController
         $form = $this->createForm(ChannelType::class, $channel);
         $form->handleRequest($request);
 
+        $entityManager = $this->getDoctrine()->getManager();
+        $channel->setAuthorId($userA);
+        $channel->setName($user->getFirstName());
+        $channel->setGetParticipant($user);
+        $entityManager->persist($channel);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $channel->setAuthorId($userA);
-            $channel->setName($user->getFirstName());
-            $channel->setGetParticipant($user);
-            $entityManager->persist($channel);
-            $entityManager->flush();
-            return $this->redirectToRoute('chat', ['id' => $channel->getId()]);
+        foreach($channelRepository->findAll() as $existingChannel){
+            if(($channel->getAuthorId()->getId() == $existingChannel->getAuthorId()->getId() 
+                &&  $channel->getGetParticipant()->getId() == $existingChannel->getGetParticipant()->getId())
+                || ($channel->getAuthorId()->getId() == $existingChannel->getGetParticipant()->getId() 
+                && $channel->getGetParticipant()->getId() == $existingChannel->getAuthorId()->getId()) )
+            {
+                $this->addFlash(
+                        'error',
+                        'Vous avez déjà une conversation avec cette personne.'
+                );
+                return $this->redirectToRoute('app_index');
+            }
         }
+        $entityManager->flush();
+        return $this->redirectToRoute('chat', ['id' => $channel->getId()]);
 
-        return $this->render('channel/new.html.twig', [
-            'channel' => $channel,
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
 
     }
 
@@ -67,59 +74,22 @@ class ChannelController extends AbstractController
      */
     public function chat(
         Channel $channel,
-        MessageRepository $messageRepository
+        MessageRepository $messageRepository, FriendshipRepository $friendshipRepository
     ): Response
     {
+
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $messages = $messageRepository->findBy([
             'channel' => $channel
         ], ['createdAt' => 'ASC']);
 
-//        $hubUrl = $this->getParameter('mercure.default_hub');
-//        $this->addLink($request, new Link('mercure', $hubUrl));
-
         return $this->render('channel/chat.html.twig', [
             'channel' => $channel,
+            'friendships' => $friendshipRepository->findAll(),
             'messages' => $messages
         ]);
     }
 
-    /**
-     * @Route("/messagerie/{id}/connected", name="connected", methods={"GET"})
-     */
-    public function isConnected(User $user, Request $request): Response
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $user->setIsConnected(true);
-
-        $this->addFlash(
-            'noticeGood',
-            'Bien ! Tu es parrain d\'un nouveau buddy !'
-        );
-
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToRoute('messagerie');
-
-    }
-
-    /**
-     * @Route("/messagerie/{id}/noconnected", name="noconnected", methods={"GET"})
-     */
-    public function noConnected(User $user, Request $request): Response
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $user->setIsConnected(false);
-
-        $this->addFlash(
-            'noticeDisconnect',
-            'Ok ! Tu t\'es déconnecté de ce buddy !'
-        );
-
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToRoute('messagerie');
-    }
 
     /**
      * @Route("messagerie/{id}", name="show", methods="GET")
