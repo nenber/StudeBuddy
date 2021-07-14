@@ -17,23 +17,23 @@ require('select2/dist/css/select2.css');
 
 global.$ = global.jQuery = $
 
-    global.refreshPage = function refreshPage() {
-        window.location.reload();
-    }
-
-global.countUpdate = function(str){
-    var lng=document.getElementById("custom_user_account_description").value.length;
-    var lng = str.length;
-    document.getElementById("charcount").innerHTML = lng + ' ';
+global.refreshPage = function refreshPage() {
+    window.location.reload();
 }
-//select2
+
+global.countUpdate = function(str) {
+        var lng = document.getElementById("custom_user_account_description").value.length;
+        var lng = str.length;
+        document.getElementById("charcount").innerHTML = lng + ' ';
+    }
+    //select2
 $('.multiselect-select2')
     .select2({
         placeholder: 'Choisissez une langue',
         width: 'resolve',
         multiple: true,
         tags: true,
-        tokenSeparators: ['/',',',';'," "],
+        tokenSeparators: ['/', ',', ';', " "],
         maximumSelectionLength: 3,
     });
 
@@ -81,7 +81,13 @@ import refreshPath from './img/refresh.png';
 import talkPath from './img/talk.png';
 import logoPath from './img/logo.png';
 import faviconPath from './img/favicon.png';
+import marker_icon_2Path from './img/marker-icon-2x.png';
+import marker_iconPath from './img/marker-icon.png';
+import marker_shadowPath from './img/marker-shadow.png';
 
+let marker_icon_2 = `<img src="${marker_icon_2Path}" >`;
+let marker_icon = `<img src="${marker_iconPath}" >`;
+let marker_shadow = `<img src="${marker_shadowPath}" >`;
 let titleImage = `<img src="${titleImage1Path}" >`;
 let hiker = `<img src="${hikerPath}" >`;
 let languages = `<img src="${languagesPath}" >`;

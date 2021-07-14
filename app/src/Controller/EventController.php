@@ -209,7 +209,9 @@ class EventController extends AbstractController
                     return $this->redirectToRoute('app_index');
                 }else
                 {
-                    $event = $repository->find($event->getOrganizerId()->getId());
+                    $event = $repository->findOneBy(["organizer_id" => $event->getOrganizerId()->getId()]);
+                    // dump($event);
+                    // die(0);
                     $event->addParticipantId($user);
                     $entityManager->flush($event);
                     $this->addFlash(

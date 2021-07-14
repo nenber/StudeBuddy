@@ -1,14 +1,11 @@
 import L from 'leaflet';
-import icon_marker_2 from './styles/images/marker-icon-2x.png';
-import icon_marker from './styles/images/marker-icon.png';
-import icon_marker_shadow from './styles/images/marker-shadow.png';
 
 
 
 L.Icon.Default.mergeOptions({
-    iconRetinaUrl: require('./styles/images/marker-icon-2x.png'),
-    iconUrl: require('./styles/images/marker-icon.png'),
-    shadowUrl: require('./styles/images/marker-shadow.png'),
+    iconRetinaUrl: "{{ asset('build/images/marker-icon-2x.png') }}",
+    iconUrl: "{{ asset('build/images/marker-icon.png') }}",
+    shadowUrl: "{{ asset('build/images/marker-shadow.png') }}",
 });
 
 // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
