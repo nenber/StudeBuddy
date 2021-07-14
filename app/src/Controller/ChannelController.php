@@ -50,7 +50,9 @@ class ChannelController extends AbstractController
 
         foreach($channelRepository->findAll() as $existingChannel){
             if(($channel->getAuthorId()->getId() == $existingChannel->getAuthorId()->getId() 
-                &&  $channel->getGetParticipant()->getId() == $existingChannel->getGetParticipant()->getId()))
+                &&  $channel->getGetParticipant()->getId() == $existingChannel->getGetParticipant()->getId())
+                || ($channel->getAuthorId()->getId() == $existingChannel->getGetParticipant()->getId() 
+                && $channel->getGetParticipant()->getId() == $existingChannel->getAuthorId()->getId()) )
             {
                 $this->addFlash(
                         'error',
