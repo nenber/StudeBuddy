@@ -5,6 +5,11 @@
 {% block body %}
 
     <div id="eventIndex">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success" role="success">
+                {{message}}
+            </div>
+        {% endfor %}
         <div class="row">
             <div class="col-12">
                 <h1>Mes évènements rejoints</h1>

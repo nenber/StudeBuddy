@@ -210,15 +210,13 @@ class EventController extends AbstractController
                 }else
                 {
                     $event = $repository->findOneBy(["organizer_id" => $event->getOrganizerId()->getId()]);
-                    // dump($event);
-                    // die(0);
                     $event->addParticipantId($user);
                     $entityManager->flush($event);
                     $this->addFlash(
                        'success',
-                       "Vous avez rejoind l'événement"
+                       "Vous avez rejoint l'événement"
                    );
-                   return $this->redirectToRoute('event_map');
+                   return $this->redirectToRoute('event_index');
 
                 }
                  
