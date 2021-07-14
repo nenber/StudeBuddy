@@ -205,6 +205,7 @@ class User implements UserInterface, \Serializable
      */
     private $friendsWithMe;
 
+    /** 
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      */
     private $reportedBy;
@@ -773,6 +774,7 @@ class User implements UserInterface, \Serializable
                 $friendsWithMe->setFriend(null);
             }
         }
+    }
 
     public function getReportedBy(): ?self
     {

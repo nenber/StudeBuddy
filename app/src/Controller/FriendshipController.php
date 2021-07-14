@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\FriendshipRepository;
 
 class FriendshipController extends AbstractController
 {
@@ -26,11 +27,23 @@ class FriendshipController extends AbstractController
     /**
      * @Route("/friendship/new/{id}", name="friendship_new_id", methods={"GET","POST"})
      */
-    public function addFriend(Request $request, User $user): Response
+    public function addFriend(Request $request, User $user, FriendshipRepository $friendshipRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $ami = new Friendship();
         $currentUser = $this->getUser();
+
+        $friendships = $friendshipRepository->findAll();
+        foreach($friendships as $friendship){
+            if ($friendship->getUser()->getId() == $currentUser->getId() && $friendship->getFriend()->getId() == $user->getId() && $friendship->getHasBeenHelpful(true)){
+                $this->addFlash(
+                    'error',
+                    'Accès interdit.'
+                );
+                return $this->redirectToRoute('app_index');
+            }
+        }
+
 
             $entityManager = $this->getDoctrine()->getManager();
             $ami->setUser($currentUser);
@@ -38,12 +51,12 @@ class FriendshipController extends AbstractController
             $ami->setHasBeenHelpful(true);
             $entityManager->persist($ami);
             $entityManager->flush();
-        $this->addFlash(
-            'noticeGood',
-            'Bien ! Tu es parrain d\'un nouveau buddy !'
-        );
-            return $this->redirectToRoute('messagerie');
+            $this->addFlash(
+                'noticeGood',
+                'Bien ! Tu es filleul d\'un nouveau buddy !'
+            );
 
+            return $this->redirectToRoute('messagerie');
 
     }
 
