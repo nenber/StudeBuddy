@@ -47,4 +47,16 @@ class ChannelRepository extends ServiceEntityRepository
         ;
     }
     */
+    
+    // public function findOneBySomeField($id): ?Channel
+    // {
+    //     return $this->createQueryBuilder('c')
+    //         ->andWhere('c.author_id = :val')
+    //         ->orWhere('c.author_id = :val')
+    //         ->setParameter('val', $id)
+    //         ->getQuery()
+    //         ->getOneOrNullResult()
+    //     ;
+    // }
+    
 }
