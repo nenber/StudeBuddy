@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+
+<div class="mt-5" id="admin">
+    <h1 class="pt-5">Administration</h1>
+
+    <h3 class="pt-2 pb-1">Utilisateurs</h3>
+    <div class="container-fluid table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            {% if "ROLE_ADMIN" in user.roles %}
+            {% else %}
+                <tr>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.lastName }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{% if not user.isBanned %}   
+                        <a class="btn btn-danger" role="button" href="{{ path('ban', { 'id': user.id }) }}">Bannir</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <h3 class="pt-4 pb-3">Utilisateurs reportés</h3>
+    <div class="container-fluid table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Plaignant</th>
+                <th scope="col">Raison</th>
+                <th scope="col">Voir conversation</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                {% if user.isReported %}
+                    <tr>
+                        <td>{{ user.firstName }}</td>
+                        <td>{{ user.lastName }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.reportedBy.firstName }}  {{ user.reportedBy.lastName }} </td>
+                        <td>{{ user.reportReason }} </td>
+                        {% set break = false %}
+                        {% for channel in channels %}
+                            {% if user.reportedBy.id == channel.authorId.id and user.id == channel.getParticipant.id %}
+                                <td> <a href="{{ path('chat', { 'id': channel.id }) }}">Conversation</a></td>
+                            {% elseif user.reportedBy.id == channel.getParticipant.id and user.id == channel.authorId.id %}
+                                <td> <a href="{{ path('chat', { 'id': channel.id }) }}">Conversation</a></td>
+                            {% endif %} 
+                        {% endfor %}
+                        
+                        <td>
+                            <a class="btn btn-danger" role="button" href="{{ path('ban', { 'id': user.id }) }}">Bannir</a>
+                            <a class="btn btn-primary" role="button" href="{{ path('cancel_report', { 'id': user.id }) }}">Gracier</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <h3 class="pt-4 pb-3">Utilisateurs bannis</h3>
+    <div class="container-fluid table-responsive pb-4">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Raison</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                {% if user.isBanned %}
+                    <tr>
+                        <td>{{ user.firstName }}</td>
+                        <td>{{ user.lastName }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.reportReason }} </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}

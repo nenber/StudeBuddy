@@ -84,6 +84,7 @@ import faviconPath from './img/favicon.png';
 import marker_icon_2Path from './img/marker-icon-2x.png';
 import marker_iconPath from './img/marker-icon.png';
 import marker_shadowPath from './img/marker-shadow.png';
+import phonePath from './img/phonechat.jpg';
 
 let marker_icon_2 = `<img src="${marker_icon_2Path}" >`;
 let marker_icon = `<img src="${marker_iconPath}" >`;
@@ -100,3 +101,4 @@ let profil = `<img src="${profilPath}" alt="ACME logo">`;
 let logowhite = `<img src="${logowhitePath}" alt="ACME logo">`;
 let logo = `<img src="${logoPath}" alt="ACME logo">`;
 let favicon = `<img src="${faviconPath}" alt="ACME logo">`;
+let phone = `<img src="${phonePath}" alt="phone chat">`;

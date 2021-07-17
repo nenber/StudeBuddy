@@ -68,7 +68,7 @@ class UserController extends AbstractController
                 $url = $this->generateUrl('user_reset_password', ["token" => $result->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $email = (new Email())
-                    ->from('nenberpiedagnel@gmail.com')
+                    ->from('net_eht@hotmail.com')
                     ->to($request->request->get("email"))
                     ->subject('Changement de mot de passe')
                     ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" .  $url);
@@ -372,6 +372,7 @@ class UserController extends AbstractController
             'sorry' => $sorry,
         ]);
     }
+
 
 
 }

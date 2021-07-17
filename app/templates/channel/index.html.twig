@@ -1,0 +1,57 @@
+{# templates/channel/index.html.twig #}
+{% extends 'base.html.twig' %}  
+  
+{% block title %}Messagerie{% endblock %}  
+  
+{% block body %}  
+  
+<div class="container" style="margin-top: 100px">
+
+    {% for message in app.flashes('noticeGood') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('noticeDisconnect') %}
+        <div class="alert alert-warning" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% set i = 0 %}
+    {% for channel in channels %}
+        {% if (app.user == channel.authorId) or (app.user == channel.getParticipant) %}
+         {% set i = i + 1 %}
+        {% endif %}
+    {% endfor %}
+    {% if i > 0 %} 
+        <h2>Mes conversations</h2>
+        <table class="table table-striped">  
+            <tbody>  
+            {% for channel in channels %}
+                {% if (app.user == channel.authorId) or (app.user == channel.getParticipant) %}
+                <tr class="">  
+                    <th>
+                        {% if (app.user == channel.authorId) %}
+                            <span>{{ channel.getParticipant.firstName }} {{ channel.getParticipant.lastName }}</span>
+                        {% endif %}
+                        {% if (app.user == channel.getParticipant) %}
+                            <span>{{ channel.authorId.firstName }} {{ channel.authorId.lastName }}</span>
+                        {% endif %}
+                        <a class="btn btn-primary float-right" href="{{ path('chat', {id: channel.id}) }}">Discuter</a>
+                    </th>  
+                </tr>
+                {% endif %}
+
+            {% endfor %}  
+            </tbody>  
+        </table>  
+    {% else %}
+        <div>
+            <div class="alert alert-danger text-center">Aucune conversation trouvée.</div>
+        </div>
+    {% endif %}
+
+
+</div>  
+{% endblock %}

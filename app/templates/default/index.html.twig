@@ -16,6 +16,16 @@
 									{{message}}
 								</div>
 							{% endfor %}
+							{% for message in app.flashes('blockedUser') %}
+								<div class="alert alert-danger" role="alert">
+									{{message}}
+								</div>
+							{% endfor %}
+							{% for message in app.flashes('successReport') %}
+								<div class="alert alert-danger" role="alert">
+									{{message}}
+								</div>
+							{% endfor %}
 								<h1 class="mt-xl-1 mt-5">
 									L'entraide internationale étudiante
 								</h1>

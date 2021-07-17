@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'ac776a4cbdfa793baa6a3a3a6101672c22a16f1b',
+    'reference' => '453ab75cfd0481369445f350f858493399abe33a',
     'name' => '__root__',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'ac776a4cbdfa793baa6a3a3a6101672c22a16f1b',
+      'reference' => '453ab75cfd0481369445f350f858493399abe33a',
     ),
     'doctrine/lexer' => 
     array (
@@ -71,6 +71,15 @@
       array (
       ),
       'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
+    ),
+    'symfony/apache-pack' => 
+    array (
+      'pretty_version' => 'v1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '3aa5818d73ad2551281fc58a75afd9ca82622e6c',
     ),
     'symfony/deprecation-contracts' => 
     array (

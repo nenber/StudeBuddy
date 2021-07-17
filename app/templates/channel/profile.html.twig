@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}Profil
+{% endblock %}
+{% block body %}
+    <div id="profile" class="container">
+        <div class="row mt-5">
+            <div class="col-xl-4">
+                {% if User.imageName == null %}
+                    <img src="{{ asset('build/images/profil.png') }}"/>
+                {% else %}
+                    <img id="pi" src="{{ vich_uploader_asset(User, 'imageFile') }}" alt="image"
+                         style="max-height:250px;max-width:250px;"/>
+                {% endif %}
+            </div>
+            <div class="col-xl-8">
+                <h2><b>
+                        {{ User.firstname }} {{ User.lastname }}
+                    </b>
+                </h2>
+                <p><span>Description : </span> {{ User.description }}</p>
+                <p><span>Langues parlées : </span> {{ User.spokenLanguage|join(', ') }}</p>
+                <p><span>Langues en apprentissage : </span> {{ User.languageToLearn|join(', ') }}</p>
+
+            </div>
+        </div>
+
+        {% if app.user.id == User.id %}
+        {% else %}
+            <div class="row mt-5">
+                <div class="col-xl-4">
+                    <div class="d-flex">
+                        <div class="p-2">
+                            <a href="{{ path('report', { 'id': User.id }) }}" class="btn btn-danger btn-lg">Signaler</a>
+                        </div>
+                        <div class="p-2">
+                            <a href="{{ path('block', { 'id': User.id }) }}" class="btn btn-danger btn-lg">Bloquer</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8">
+                    <button type="button" class="btn btn-success btn-lg">Inviter à un événement</button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+
+    {{ encore_entry_script_tags('app') }}
+
+{% endblock %}
