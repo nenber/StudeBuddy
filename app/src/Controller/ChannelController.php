@@ -10,18 +10,12 @@ use App\Form\ChannelType;
 use App\Repository\ChannelRepository;
 use App\Repository\FriendshipRepository;
 use App\Repository\MessageRepository;
-use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\WebLink\Link;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 class ChannelController extends AbstractController
 {
@@ -40,7 +34,7 @@ class ChannelController extends AbstractController
     /**
      * @Route("/messagerie/new/{id}", name="messagerie_new_id", methods={"GET","POST"})
      */
-    public function newFormBaseOnUser(Request $request, User $user, ChannelRepository $channelRepository,UserRepository $userRepository): Response
+    public function newFormBaseOnUser(Request $request, User $user, ChannelRepository $channelRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $channel = new Channel();
@@ -67,9 +61,8 @@ class ChannelController extends AbstractController
                 return $this->redirectToRoute('app_index');
             }
         }
-        $pa = $userRepository->findOneBy(["id" => $channel->getGetParticipant()->getId()]);
         $entityManager->flush();
-        return $this->redirectToRoute('chat', ['id' => $channel->getId(), "pa" => $pa]);
+        return $this->redirectToRoute('chat', ['id' => $channel->getId()]);
 
 
     }
@@ -109,27 +102,5 @@ class ChannelController extends AbstractController
         return $this->render('channel/profile.html.twig', [
             'User' => $user,
         ]);
-    }
-
-    /**
-     * @Route("messagerie/check", name="message_check", methods="POST")
-     */
-    public function checkMessage(Request $request,MessageRepository $messageRepository)
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $message = $messageRepository->findBy([
-            'channel' => intval($request->request->get("id"))
-        ], ['createdAt' => 'DESC']);
-        $result = array();
-        if(!empty(array_chunk($message, 10)[0]))
-        {
-            foreach(array_chunk($message, 10)[0] as $key=>$value)
-            {
-                $temp = [$value->getId(),$value->getAuthor()->getId(), $value->getContent(),$value->getCreatedAt()];
-                array_push($result,$temp);
-            }
-        }
-        
-        return New JsonResponse($result);
     }
 }

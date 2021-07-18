@@ -42,7 +42,7 @@
         </div>
 
         <div class="container" style="height: 600px">
-            <div id="container-message" class="container bg-light h-75 overflow-auto test">
+            <div class="container bg-light h-75 overflow-auto test">
                 {% for message in messages %}
                     {% if app.user == message.author %}
                         <div class="row w-75 float-right">
@@ -74,10 +74,10 @@
         </div>
     </div>
 
+
 {% endblock %}
 {% block javascripts %}
     <script>
-    
         let chatDiv = document.querySelector('.test');
         chatDiv.scrollTop = chatDiv.scrollHeight; // On souhaite scroller toujours jusqu'au dernier message du chat
 
@@ -106,11 +106,9 @@
             }).then((response) => {
                 message.value = '';
                 console.log(response);
-                //window.location.reload();
+                window.location.reload();
             });
         }
-
-
 
         var interval = 2000;
         var globalMessages = [];
@@ -180,5 +178,6 @@
         }
         setTimeout(makeRequest, interval);
         
+
     </script>
 {% endblock %}
