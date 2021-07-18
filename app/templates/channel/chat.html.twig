@@ -6,43 +6,43 @@
     <div class="container mt-5">
         <div class="row pt-5">
             <h1>
-            {% if (app.user == channel.authorId) %}
-                <a href="/messagerie/{{ channel.getParticipant.id }}">
-                    <span>{{ channel.getParticipant.firstName }} {{ channel.getParticipant.lastName }}</span>
-                </a>
-                {% set userProfile = channel.getParticipant.id %}
-            {% endif %}
-            {% if (app.user == channel.getParticipant) %}
+                {% if (app.user == channel.authorId) %}
+                    <a href="/messagerie/{{ channel.getParticipant.id }}">
+                        <span>{{ channel.getParticipant.firstName }} {{ channel.getParticipant.lastName }}</span>
+                    </a>
+                    {% set userProfile = channel.getParticipant.id %}
+                {% endif %}
+                {% if (app.user == channel.getParticipant) %}
                 <a href="/messagerie/{{ channel.authorId.id }}">
                     <span>{{ channel.authorId.firstName }} {{ channel.authorId.lastName }} </span>
                 </a>
             </h1>
-                {% set userProfile = channel.authorId.id %}
-                {% set connected = false %}
-                {% for friendship in friendships %}
-                    {% if friendship.user.id == app.user.id and friendship.friend.id == userProfile and friendship.hasBeenHelpful == true %}
-                        <button class="btn-danger ml-2">
+            {% set userProfile = channel.authorId.id %}
+            {% set connected = false %}
+            {% for friendship in friendships %}
+                {% if friendship.user.id == app.user.id and friendship.friend.id == userProfile and friendship.hasBeenHelpful == true %}
+                    <button class="btn-danger ml-2">
                         <a href="{{ path('friendship_delete_id', {'id': friendship.id}) }}">
                             Retirer cet ami
                         </a>
-                        </button>
-                        {% set connected = true %}
-                    {% endif %}
-                {% endfor %}
-                {% if not connected %}
+                    </button>
+                    {% set connected = true %}
+                {% endif %}
+            {% endfor %}
+            {% if not connected %}
                 <button class="ml-5">
                     <a href="{{ path('friendship_new_id', {'id': channel.authorId}) }}">
                         Ajouter en ami
                     </a>
                 </button>
-                {% endif %} 
             {% endif %}
-                
-            
+            {% endif %}
+
+
         </div>
 
         <div class="container" style="height: 600px">
-            <div class="container bg-light h-75 overflow-auto test">
+            <div id="container-message" class="container bg-light h-75 overflow-auto test">
                 {% for message in messages %}
                     {% if app.user == message.author %}
                         <div class="row w-75 float-right">
@@ -74,21 +74,17 @@
         </div>
     </div>
 
-
 {% endblock %}
 {% block javascripts %}
     <script>
+
         let chatDiv = document.querySelector('.test');
         chatDiv.scrollTop = chatDiv.scrollHeight; // On souhaite scroller toujours jusqu'au dernier message du chat
-
         let form = document.getElementById('form');
         function handleForm(event) {
-          //  event.preventDefault(); // Empêche la page de se rafraîchir après le submit du formulaire
+            //  event.preventDefault(); // Empêche la page de se rafraîchir après le submit du formulaire
         }
         form.addEventListener('submit', handleForm);
-
-
-
         const submit = document.getElementById('btnEnvoi');
         submit.onclick = e => { // On change le comportement du submit
             console.log("fefefef")
@@ -99,62 +95,59 @@
             }
             console.log(data); // Pour vérifier vos informations
             console.log("clique ici !!")
-
             fetch('/message', { // On envoie avec un post nos datas sur le endpoint /message de notre application
                 method: 'POST',
                 body: JSON.stringify(data) // On envoie les data sous format JSON
             }).then((response) => {
                 message.value = '';
                 console.log(response);
-                window.location.reload();
+                //window.location.reload();
             });
         }
-
         var interval = 2000;
         var globalMessages = [];
         var contactName = "";
         {% for message in messages %}
-            globalMessages.push([{{ message.id }}, {{ message.author.id }},"{{ message.content }}",new Date("{{ message.createdAt|date('d-m-Y H:i:s') }}")])
+        globalMessages.push([{{ message.id }}, {{ message.author.id }},"{{ message.content }}",new Date("{{ message.createdAt|date('d-m-Y H:i:s') }}")])
         {% endfor %}
         {% if app.user.id == channel.authorId.id %}
-            contactName = "{{ channel.getParticipant.firstName  }} {{ channel.getParticipant.lastName }}"
+        contactName = "{{ channel.getParticipant.firstName  }} {{ channel.getParticipant.lastName  }}"
         {% else %}
-            contactName = "{{ channel.authorId.lastName }} {{ channel.authorId.lastName }}"
+        contactName = "{{ channel.authorId.firstName }} {{ channel.authorId.lastName }}"
         {% endif %}
         function makeRequest() {
             httpRequest = new XMLHttpRequest();
-
             if (!httpRequest) {
-            alert('Abandon :( Impossible de créer une instance de XMLHTTP');
-            return false;
+                alert('Abandon :( Impossible de créer une instance de XMLHTTP');
+                return false;
             }
-             var data = new FormData();
+            var data = new FormData();
             data.append('date', interval);
             data.append('id',"{{ channel.id }}")
             httpRequest.onreadystatechange = function () {
-               
+
                 if (httpRequest.readyState === XMLHttpRequest.DONE) {
                     if (httpRequest.status === 200) {
-                     let datas = JSON.parse(httpRequest.responseText);
-                     let containerMessage = document.getElementById('container-message');
-                     globalMessages.forEach((item,index)=>{
-                         datas = datas.filter(dat => dat[0] > item[0]);
-                     });
-                       
-                      datas.forEach((item,index)=>{
-                          globalMessages.push(item);
-                          if(item[1] == {{ app.user.id }})
-                          {
-                              containerMessage.innerHTML += `
-                            <div class="row w-75 float-right">      
+                        let datas = JSON.parse(httpRequest.responseText);
+                        let containerMessage = document.getElementById('container-message');
+                        globalMessages.forEach((item,index)=>{
+                            datas = datas.filter(dat => dat[0] > item[0]);
+                        });
+
+                        datas.forEach((item,index)=>{
+                            globalMessages.push(item);
+                            if(item[1] == {{ app.user.id }})
+                            {
+                                containerMessage.innerHTML += `
+                            <div class="row w-75 float-right">
                                 <b>` + "{{ app.user.firstname }} {{ app.user.lastname }}" + `</b>
                                 <p class="alert alert-info w-100">
                                    `+item[2]+`
                                 </p>
                             </div>`
-                          }
-                          else{
-                            containerMessage.innerHTML += `<div class="row w-75 float-left">
+                            }
+                            else{
+                                containerMessage.innerHTML += `<div class="row w-75 float-left">
                                 <b><a href="/messagerie/` + item[1] + `">
                                     </a>` + contactName + `</p>
                                 </b>
@@ -162,13 +155,13 @@
                                    `+item[2]+`
                                 </p>
                             </div>`
-                          }
-  
-                      })
-                     datas = [];
-                         let chatDiv = document.querySelector('.test');
-                     chatDiv.scrollTop = chatDiv.scrollHeight; 
-                     setTimeout(makeRequest, interval);
+                            }
+
+                        })
+                        datas = [];
+                        let chatDiv = document.querySelector('.test');
+                        chatDiv.scrollTop = chatDiv.scrollHeight;
+                        setTimeout(makeRequest, interval);
                     } else {
                     }
                 }
@@ -177,7 +170,6 @@
             httpRequest.send(data);
         }
         setTimeout(makeRequest, interval);
-        
 
     </script>
 {% endblock %}
