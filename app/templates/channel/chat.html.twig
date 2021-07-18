@@ -119,7 +119,7 @@
             globalMessages.push([{{ message.id }}, {{ message.author.id }},"{{ message.content }}",new Date("{{ message.createdAt|date('d-m-Y H:i:s') }}")])
         {% endfor %}
         {% if app.user.id == channel.authorId.id %}
-            contactName = "{{ pa.lastName }} {{ pa.lastName }}"
+            contactName = "{{ channel.getParticipant.firstName  }} {{ channel.getParticipant.lastName }}"
         {% else %}
             contactName = "{{ channel.authorId.lastName }} {{ channel.authorId.lastName }}"
         {% endif %}

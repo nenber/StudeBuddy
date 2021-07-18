@@ -80,7 +80,7 @@ class ChannelController extends AbstractController
      * @Route("/messagerie/chat/{id}", name="chat")
      */
     public function chat(
-        Channel $channel,User $pa,
+        Channel $channel,
         MessageRepository $messageRepository, FriendshipRepository $friendshipRepository
     ): Response
     {
@@ -94,7 +94,6 @@ class ChannelController extends AbstractController
             'channel' => $channel,
             'friendships' => $friendshipRepository->findAll(),
             'messages' => $messages,
-            'pa' => $pa
         ]);
     }
 
