@@ -86,7 +86,7 @@ class ChannelController extends AbstractController
         return $this->render('channel/chat.html.twig', [
             'channel' => $channel,
             'friendships' => $friendshipRepository->findAll(),
-            'messages' => $messages
+            'messages' => $messages,
         ]);
     }
 
