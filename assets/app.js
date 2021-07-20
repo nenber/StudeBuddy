@@ -38,6 +38,8 @@ $('.multiselect-select2')
     });
 
 
+
+
 // $(document).ready(function () {
 //     $.ajax({
 //         type: "POST",
