@@ -54,7 +54,6 @@ class EventController extends AbstractController
 
             foreach($value->getParticipantId() as $key2=>$value2)
             {
-                dump($value2);
                 if($value2 == $this->getUser())
                 {
                     
@@ -62,7 +61,6 @@ class EventController extends AbstractController
                 }
             }
         }
-        dump($return);
         return $this->render('event/index.html.twig', [
             "myEvents" => $return,
             'events' => $events
