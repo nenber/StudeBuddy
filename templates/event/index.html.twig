@@ -18,11 +18,13 @@
         </div>
         <div class="row">
             <div class="col-12">
-            {% for event in myEvents %}
+            {% if myEvents|length > 0 %}
+                {% for event in myEvents %}
                         <div class="card" style="width: 18rem;">
                             <div class="card-body">
                                 <h3>{{ event.name }}</h3>
                                 <p><span class="gras">Organisateur :</span> {{ event.name }}</p>
+                                <p><span class="gras">Description :</span> {{ event.description }}</p>
                                 <p><span class="gras">Adresse :</span> {{ event.address }}</p>
                                 <p><span class="gras">Date :</span> {{ event.date ? event.date|date('Y-m-d') : '' }}</p>
                                 <br>
@@ -31,8 +33,11 @@
                                 </div>
                             </div>
                         </div>
-                 
                 {% endfor %}
+            {% else %}
+                <p>Pas d'évènements rejoints</p>
+                <a href="{{ path('event_map') }}">Rejoindre un évènement</a>
+            {% endif %}
             </div>
         </div>
         <div class="row mt-5">
@@ -43,12 +48,15 @@
         </div>
         <div class="row">
             <div class="col-12">
+                {% set i = 0 %}
                 {% for event in events %}
                     {% if app.user == event.organizerId %}
+                        {% set i = i + 1 %}
                         <div class="card" style="width: 18rem;">
                             <div class="card-body">
                                 <h3>{{ event.name }}</h3>
                                 <p><span class="gras">Organisateur :</span> {{ event.name }}</p>
+                                <p><span class="gras">Description :</span> {{ event.description }}</p>
                                 <p><span class="gras">Adresse :</span> {{ event.address }}</p>
                                 <p><span class="gras">Date :</span> {{ event.date ? event.date|date('Y-m-d') : '' }}</p>
                                 <a href="{{ path('event_edit', {'id': event.id}) }}">Modifier</a>
@@ -59,10 +67,11 @@
                             </div>
                         </div>
                     {% endif %}
-                {% else %}
-                        <p>Pas d'évènements encore créés</p>
-                    <a href="{{ path('event_new') }}">Créer un évènement</a>
                 {% endfor %}
+                {% if i == 0 %}
+                    <p>Pas d'évènements encore créés</p>
+                    <a href="{{ path('event_new') }}">Créer un évènement</a>
+                {% endif %}
             </div>
         </div>
     </div>

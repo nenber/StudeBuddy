@@ -18,12 +18,44 @@
         </div>
     {% endfor %}
 
+    {% set x = [] %}
+    {% set y = 0 %}
+    {% for friendship in friendships %}
+        {% if app.user == friendship.user and friendship.hasBeenHelpFul == true %}
+            {% set y = y + 1 %}
+            {% set x = x|merge({(y): friendship}) %}
+        {% endif %}
+    {% endfor %}
+
+    {% if x|length > 0 %} 
+    <h2>Mes amis</h2>
+        <table class="table table-striped">  
+            <tbody>  
+            {% for channel in channels %}  
+                {% for user in x %} 
+                    {% if user.user.id == channel.getParticipant.id and user.friend.id == channel.getAuthorId.id %}
+                    <tr class="">  
+                        <th>
+                            {% if (user.friend.id == channel.getAuthorId.id) %}
+                                <span>{{ channel.authorId.firstName }} {{ channel.authorId.lastName }}</span>
+                            {% endif %}
+                            <a class="btn btn-primary float-right" href="{{ path('chat', {id: channel.id}) }}">Discuter</a>
+                        </th>  
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}  
+            </tbody>  
+        </table>  
+    {% endif %}
+
     {% set i = 0 %}
     {% for channel in channels %}
         {% if (app.user == channel.authorId) or (app.user == channel.getParticipant) %}
          {% set i = i + 1 %}
         {% endif %}
     {% endfor %}
+    
     {% if i > 0 %} 
         <h2>Mes conversations</h2>
         <table class="table table-striped">  
