@@ -882,7 +882,9 @@ for (i in isoLangs) {
 langcode.forEach(function(item,index){
 	let resultsLtl = arr.filter(val => item["dataLtl"].includes(val[0]))
 	let resultsSl = arr.filter(val => item["dataSl"].includes(val[0]))
+
 	document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "<p> J'apprends :"
+
 	resultsLtl.forEach(function(v,i){
 		if(i == resultsLtl.length - 1)
 			document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML +=  v[1].name
@@ -891,7 +893,9 @@ langcode.forEach(function(item,index){
 	})
 	document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "</p>" 
 
+
 	document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "<p> Je parle :"
+
 	resultsSl.forEach(function(v,i){
 		if(i == resultsSl.length - 1)
 			document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML +=  v[1].name
