@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\ChannelType;
 use App\Repository\ChannelRepository;
 use App\Repository\FriendshipRepository;
+use App\Repository\EventRepository;
 use App\Repository\MessageRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,11 +29,12 @@ class ChannelController extends AbstractController
     /**
      * @Route("/messagerie", name="messagerie", methods={"GET"})
      */
-    public function getChannels(ChannelRepository $channelRepository): Response
+    public function getChannels(ChannelRepository $channelRepository, FriendshipRepository $friendshipRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('channel/index.html.twig', [
-            'channels' => $channelRepository->findAll()
+            'channels' => $channelRepository->findAll(),
+            'friendships' => $friendshipRepository->findAll()
         ]);
     }
 
@@ -101,13 +103,14 @@ class ChannelController extends AbstractController
     /**
      * @Route("messagerie/{id}", name="show", methods="GET")
      */
-    public function show(User $user) : Response
+    public function show(User $user, EventRepository $events) : Response
     {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         return $this->render('channel/profile.html.twig', [
             'User' => $user,
+            'events' => $events->findAll()
         ]);
     }
 
