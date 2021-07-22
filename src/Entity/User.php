@@ -144,12 +144,12 @@ class User implements UserInterface, \Serializable
     private $token;
 
     /**
-     * @ORM\OneToMany(targetEntity=Event::class, mappedBy="organizer_id")
+     * @ORM\OneToMany(targetEntity=Event::class, mappedBy="organizer_id", cascade={"persist", "remove"})
      */
     private $organized_events;
 
     /**
-     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="author_id")
+     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="author_id", cascade={"persist", "remove"})
      */
     private $author_channel;
 
@@ -159,7 +159,7 @@ class User implements UserInterface, \Serializable
     private $participated_events;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author", cascade={"persist", "remove"})
      */
     private $messages;
     
@@ -190,17 +190,17 @@ class User implements UserInterface, \Serializable
     private $blacklist = [];
     
     /**
-     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="get_participant")
+     * @ORM\OneToMany(targetEntity=Channel::class, mappedBy="get_participant", cascade={"persist", "remove"})
      */
     private $participant_channel;
 
     /**
-     * @ORM\OneToMany(targetEntity=Friendship::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Friendship::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $friends;
 
     /**
-     * @ORM\OneToMany(targetEntity=Friendship::class, mappedBy="friend")
+     * @ORM\OneToMany(targetEntity=Friendship::class, mappedBy="friend", cascade={"persist", "remove"})
      */
     private $friendsWithMe;
 
