@@ -26,6 +26,7 @@ class ChannelType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Channel::class,
+            'csrf_protection' => true,
         ]);
     }
 }
