@@ -48,6 +48,7 @@ class UserController extends AbstractController
     public function forgotPassword(Request $request, MailerInterface $mailer)
     {
         $this->denyAccessUnlessGranted('IS_ANONYMOUS');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $ip_server = $request->server->get('SERVER_ADDR');
         if ($request->request->get("email") != null) {
             $result = $this->getDoctrine()
@@ -57,7 +58,7 @@ class UserController extends AbstractController
 
 
             if ($result == null || empty($request->request->get("email")) || $request->request->get("email") == null) {
-                $this->addFlash("error", "L'email \"".$request->request->get("email")."\" n'est liée à aucun compte existant.");
+                $this->addFlash("error", "L'email \"" . $request->request->get("email") . "\" n'est liée à aucun compte existant.");
                 return $this->redirectToRoute('user_forgot-password');
             } else {
                 $uni = $result->getEmail();
@@ -72,12 +73,12 @@ class UserController extends AbstractController
                     ->to($request->request->get("email"))
                     ->subject('Changement de mot de passe')
                     ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" .  $url);
-                    // ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" . "http://127.0.0.1:8000" . $url);
+                // ->text("Veuillez cliquer sur le lien pour reinitialiser votre mot de passe :" . "http://127.0.0.1:8000" . $url);
 
                 $mailer->send($email);
-                
 
-                $this->addFlash("success", "Email envoyé à l'adresse \"".$request->request->get("email")."\" !");
+
+                $this->addFlash("success", "Email envoyé à l'adresse \"" . $request->request->get("email") . "\" !");
                 return $this->redirectToRoute('user_forgot-password');
             }
         }
@@ -89,7 +90,7 @@ class UserController extends AbstractController
     /**
      * @Route("/reset_password/{token}", name="reset_password")
      */
-    public function resetPassword($token, $message ="",Request $request)
+    public function resetPassword($token, $message = "", Request $request)
     {
         $this->denyAccessUnlessGranted('IS_ANONYMOUS');
 
@@ -119,8 +120,7 @@ class UserController extends AbstractController
             $newMdp  = $request->request->get("inputMdp");
             $confirmNewMdp = $request->request->get("inputConfirmMdp");
             if (preg_match_all("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})^", $newMdp) > 0) {
-                if($request->request->get("inputConfirmMdp") == $newMdp)
-                {
+                if ($request->request->get("inputConfirmMdp") == $newMdp) {
                     $result->setPassword(
                         $passwordEncoder->encodePassword(
                             $result,
@@ -132,15 +132,12 @@ class UserController extends AbstractController
                     $em->flush();
                     $this->addFlash('passwordUpdated', 'Votre mot de passe a été modifié.');
                     return $this->redirectToRoute("app_login");
-                }
-                else
-                {
+                } else {
                     $this->addFlash('error', 'Les deux mots de passe ne sont pas identiques.');
                     return $this->redirectToRoute('user_reset_password', [
-                        'token' => $token, 
+                        'token' => $token,
                     ]);
                 }
-
             } else {
                 $this->addFlash('error', 'Le mot de passe ne correspond pas au format requis.');
                 return $this->redirectToRoute('user_reset_password', [
@@ -214,7 +211,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_edit-profile');
         }
 
-        
+
         $request->query->get("new") == null ? $new = false : $new = true;
 
         return $this->render('user/edit-profile.html.twig', [
@@ -229,11 +226,11 @@ class UserController extends AbstractController
     public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
 
-       $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $changePassword = new ChangePassword();
-       
+
         $form = $this->createForm('App\Form\ChangePasswordType', $changePassword);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -254,7 +251,7 @@ class UserController extends AbstractController
             'user' => $user
         ));
     }
-    
+
 
     /**
      * @Route("/delete", name="delete_request")
@@ -286,11 +283,9 @@ class UserController extends AbstractController
 
         $this->get('security.token_storage')->setToken(null);
 
-//        $request->getSession()->getFlashBag()->add('message', "Votre compte a bien été supprimé.");
+        //        $request->getSession()->getFlashBag()->add('message', "Votre compte a bien été supprimé.");
         $this->addFlash('messageDelete', 'Votre compte a bien été supprimé.');
         return $this->redirectToRoute('app_index');
-
-
     }
 
 
@@ -373,7 +368,4 @@ class UserController extends AbstractController
             'sorry' => $sorry,
         ]);
     }
-
-
-
 }

@@ -30,11 +30,10 @@ class EventController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Event::class);
         $events = $repository->findAll();
         $return = array();
-        foreach($events as $key => $value)
-        {
-            array_push($return,[$value, $this->generateUrl('event_join', ['id' => $value->getId()],UrlGeneratorInterface::ABSOLUTE_URL)]);
+        foreach ($events as $key => $value) {
+            array_push($return, [$value, $this->generateUrl('event_join', ['id' => $value->getId()], UrlGeneratorInterface::ABSOLUTE_URL)]);
         }
-        
+
         return $this->render('event/map.html.twig', [
             'controller_name' => 'EventController',
             'events' => $return
@@ -46,17 +45,15 @@ class EventController extends AbstractController
      */
     public function index(EventRepository $eventRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $repository = $this->getDoctrine()->getRepository(Event::class);
         $events = $repository->findAll();
         $return = array();
-        foreach($events as $key=>$value)
-        {
+        foreach ($events as $key => $value) {
 
-            foreach($value->getParticipantId() as $key2=>$value2)
-            {
-                if($value2 == $this->getUser())
-                {
-                    
+            foreach ($value->getParticipantId() as $key2 => $value2) {
+                if ($value2 == $this->getUser()) {
+
                     array_push($return, $value);
                 }
             }
@@ -77,9 +74,8 @@ class EventController extends AbstractController
 
         $user = $this->getUser();
 
-        if($user != null)
-        {
-            if($user->getIsGodParent() != true){
+        if ($user != null) {
+            if ($user->getIsGodParent() != true) {
                 $this->addFlash(
                     'error',
                     'Vous devez être connecté en tant que Buddy pour avoir accès à cette page.'
@@ -108,14 +104,14 @@ class EventController extends AbstractController
             // decode the json
             $resp = json_decode($resp_json, true);
             // response status will be 'OK', if able to geocode given address 
-            if($resp['data']!=null){
+            if ($resp['data'] != null) {
                 $lat = $resp['data'][0]["latitude"];
                 $lon = $resp['data'][0]["longitude"];
                 $event->setLat($lat);
                 $event->setLng($lon);
-                    ///////////////////////////////////////////////////
+                ///////////////////////////////////////////////////
                 $event->setOrganizerId($this->getUser());
-                
+
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($event);
                 $entityManager->flush();
@@ -128,10 +124,9 @@ class EventController extends AbstractController
             'event' => $event,
             'form' => $form->createView(),
         ]);
-        
     }
 
-   
+
 
     /**
      * @Route("/{id}", name="event_show", methods={"GET"})
@@ -156,9 +151,8 @@ class EventController extends AbstractController
 
         $user = $this->getUser();
 
-        if($user != null)
-        {
-            if($user->getId() != $event->getOrganizerId()->getId()){
+        if ($user != null) {
+            if ($user->getId() != $event->getOrganizerId()->getId()) {
                 $this->addFlash(
                     'error',
                     "Vous n'avez pas accès à cette page."
@@ -194,49 +188,38 @@ class EventController extends AbstractController
 
         $user = $this->getUser();
 
-        if($user != null)
-        {
+        if ($user != null) {
             $event = $repository->findOneBy(["id" => $id]);
-            if($event != null)
-            {
-                if($user->getId() == $event->getOrganizerId()->getId()){
+            if ($event != null) {
+                if ($user->getId() == $event->getOrganizerId()->getId()) {
                     $this->addFlash(
                         'error',
                         "Vous ne pouvez pas rejoindre cet événement."
                     );
                     return $this->redirectToRoute('app_index');
-                }else
-                {
-                    $me = $event->getParticipantId()->filter(function($element) {
+                } else {
+                    $me = $event->getParticipantId()->filter(function ($element) {
                         return $element->getId() == $this->getUser()->getId();
                     });
-                    if($me->count() < 1)
-                    {
+                    if ($me->count() < 1) {
                         $event->addParticipantId($user);
-                    
-                        $entityManager->flush($event);
-                        $this->addFlash(
-                           'success',
-                           "Vous avez rejoint l'événement"
-                       );
-                    }
-                    else
-                    {
-                        $entityManager->flush($event);
-                        $this->addFlash(
-                           'error',
-                           "Vous avez déjà rejoint l'événement"
-                       );
-                    }
-                    
-                   return $this->redirectToRoute('event_index');
 
+                        $entityManager->flush($event);
+                        $this->addFlash(
+                            'success',
+                            "Vous avez rejoint l'événement"
+                        );
+                    } else {
+                        $entityManager->flush($event);
+                        $this->addFlash(
+                            'error',
+                            "Vous avez déjà rejoint l'événement"
+                        );
+                    }
+
+                    return $this->redirectToRoute('event_index');
                 }
-                 
-                
-            }
-            else
-            {
+            } else {
                 $this->addFlash(
                     'error',
                     "Il semble que cet événement est inexistant."
@@ -258,7 +241,7 @@ class EventController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $event->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($event);
             $entityManager->flush();
@@ -273,7 +256,7 @@ class EventController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if ($this->isCsrfTokenValid('leave'.$event->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('leave' . $event->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $repository = $entityManager->getRepository(Event::class);
             $myEvent = $repository->findOneBy(['id' => $event->getID()]);
@@ -283,6 +266,4 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('event_index');
     }
-
-
 }
