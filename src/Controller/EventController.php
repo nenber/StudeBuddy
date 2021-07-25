@@ -116,6 +116,7 @@ class EventController extends AbstractController
                 $entityManager->persist($event);
                 $entityManager->flush();
 
+                $this->addFlash('success', "L'évènement a bien été créé.");
                 return $this->redirectToRoute('event_index');
             }
         }
@@ -168,6 +169,7 @@ class EventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', "L'évènement a bien été modifié.");
             return $this->redirectToRoute('event_index');
         }
 
