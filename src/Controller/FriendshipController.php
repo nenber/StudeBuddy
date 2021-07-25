@@ -19,6 +19,7 @@ class FriendshipController extends AbstractController
      */
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('friendship/index.html.twig', [
             'controller_name' => 'FriendshipController',
         ]);
@@ -34,8 +35,8 @@ class FriendshipController extends AbstractController
         $currentUser = $this->getUser();
 
         $friendships = $friendshipRepository->findAll();
-        foreach($friendships as $friendship){
-            if ($friendship->getUser()->getId() == $currentUser->getId() && $friendship->getFriend()->getId() == $user->getId() && $friendship->getHasBeenHelpful(true)){
+        foreach ($friendships as $friendship) {
+            if ($friendship->getUser()->getId() == $currentUser->getId() && $friendship->getFriend()->getId() == $user->getId() && $friendship->getHasBeenHelpful(true)) {
                 $this->addFlash(
                     'error',
                     'Accès interdit.'
@@ -57,8 +58,6 @@ class FriendshipController extends AbstractController
         );
 
         return $this->redirectToRoute('messagerie');
-
-
     }
 
     /**
@@ -68,7 +67,7 @@ class FriendshipController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if($this->getUser()->getId() !== $user->getUser()->getId()){
+        if ($this->getUser()->getId() !== $user->getUser()->getId()) {
             $this->addFlash(
                 'error',
                 'Accès interdit.'
@@ -87,11 +86,7 @@ class FriendshipController extends AbstractController
 
         return $this->RedirectToRoute('messagerie');
 
-//      TO DO flash  message
+        //      TO DO flash  message
 
     }
-
-
-
-
 }
