@@ -22,6 +22,53 @@ class ReportUserController extends AbstractController
 
         $form = $this->createForm(ReportUserType::class, $user);
         $form->handleRequest($request);
+        $currentUser = $this->getUser();
+        $currentUserSpokenLangage = $currentUser->getSpokenLanguage();
+        $currentUserLTL = $currentUser->getLanguageToLearn();
+        $buddyLTL = $user->getLanguageToLearn();
+        $buddySL = $user->getSpokenLanguage();
+        //GP
+        if(($user->getIsGodson() && $currentUser->getIsGodParent()) || in_array('ROLE_ADMIN', $currentUser->getRoles())){
+            if (!empty(array_intersect($buddyLTL, $currentUserSpokenLangage))) {
+                if ($form->isSubmitted() && $form->isValid()) {
+                    // set report user status to true
+                    $user->setIsReported(true);
+                    $user->setReportedBy($this->getUser());
+                    $this->getDoctrine()->getManager()->flush();
+                    $this->addFlash("successReport", "Votre signalement a bien été enregistré et sera traité dans les plus brefs délais.");
+                    
+                    return $this->redirectToRoute('app_index');
+                }
+                
+                return $this->render('report_user/index.html.twig', [
+                    'user' => $user,
+                    'users' => $userRepository->findAll(),
+                    'form' => $form->createView(),
+                ]);
+            }
+        }//GS
+        elseif(($currentUser->getIsGodson() && $user->getIsGodParent()) || in_array('ROLE_ADMIN', $currentUser->getRoles())){
+            if (!empty(array_intersect($buddySL, $currentUserLTL))) {
+                if ($form->isSubmitted() && $form->isValid()) {
+                    // set report user status to true
+                    $user->setIsReported(true);
+                    $user->setReportedBy($this->getUser());
+                    $this->getDoctrine()->getManager()->flush();
+                    $this->addFlash("successReport", "Votre signalement a bien été enregistré et sera traité dans les plus brefs délais.");
+                    
+                    return $this->redirectToRoute('app_index');
+                }
+                return $this->render('report_user/index.html.twig', [
+                    'user' => $user,
+                    'users' => $userRepository->findAll(),
+                    'form' => $form->createView(),
+                ]);
+            }
+        }
+        else {
+                $this->addFlash("error", "Vous ne pouvez pas report ce user");
+                return $this->redirectToRoute('app_index');
+        } 
 
         if ($form->isSubmitted() && $form->isValid()) {
             // set report user status to true
@@ -34,6 +81,7 @@ class ReportUserController extends AbstractController
             
             return $this->redirectToRoute('app_index');
         }
+        
 
         return $this->render('report_user/index.html.twig', [
             'user' => $user,

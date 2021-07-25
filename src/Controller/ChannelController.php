@@ -53,25 +53,61 @@ class ChannelController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $channel->setAuthorId($userA);
         $channel->setName($user->getFirstName());
-        $channel->setGetParticipant($user);
-        $entityManager->persist($channel);
-
-        foreach($channelRepository->findAll() as $existingChannel){
-            if(($channel->getAuthorId()->getId() == $existingChannel->getAuthorId()->getId()
-                    &&  $channel->getGetParticipant()->getId() == $existingChannel->getGetParticipant()->getId())
-                || ($channel->getAuthorId()->getId() == $existingChannel->getGetParticipant()->getId()
-                    && $channel->getGetParticipant()->getId() == $existingChannel->getAuthorId()->getId()) )
-            {
-                $this->addFlash(
-                    'error',
-                    'Vous avez déjà une conversation avec cette personne.'
-                );
-                return $this->redirectToRoute('app_index');
+        $currentUserSpokenLangage = $userA->getSpokenLanguage();
+        $currentUserLTL = $userA->getLanguageToLearn();
+        $buddyLTL = $user->getLanguageToLearn();
+        $buddySL = $user->getSpokenLanguage();
+        //GP
+        if($user->getIsGodson() && $userA->getIsGodParent()){
+            if (!empty(array_intersect($buddyLTL, $currentUserSpokenLangage))) {
+                $channel->setGetParticipant($user);
+                $entityManager->persist($channel);
+                foreach($channelRepository->findAll() as $existingChannel){
+                    if(($channel->getAuthorId()->getId() == $existingChannel->getAuthorId()->getId()
+                            &&  $channel->getGetParticipant()->getId() == $existingChannel->getGetParticipant()->getId())
+                        || ($channel->getAuthorId()->getId() == $existingChannel->getGetParticipant()->getId()
+                            && $channel->getGetParticipant()->getId() == $existingChannel->getAuthorId()->getId()) )
+                    {
+                        $this->addFlash(
+                            'error',
+                            'Vous avez déjà une conversation avec cette personne.'
+                        );
+                        return $this->redirectToRoute('app_index');
+                    }
+                }
+                $pa = $userRepository->findOneBy(["id" => $channel->getGetParticipant()->getId()]);
+                $entityManager->flush();
+                return $this->redirectToRoute('chat', ['id' => $channel->getId(), "pa" => $pa]);
             }
+        }//GS
+        elseif($userA->getIsGodson() && $user->getIsGodParent()){
+            if (!empty(array_intersect($buddySL, $currentUserLTL))) {
+                $channel->setGetParticipant($user);
+                $entityManager->persist($channel);
+                foreach($channelRepository->findAll() as $existingChannel){
+                    if(($channel->getAuthorId()->getId() == $existingChannel->getAuthorId()->getId()
+                            &&  $channel->getGetParticipant()->getId() == $existingChannel->getGetParticipant()->getId())
+                        || ($channel->getAuthorId()->getId() == $existingChannel->getGetParticipant()->getId()
+                            && $channel->getGetParticipant()->getId() == $existingChannel->getAuthorId()->getId()) )
+                    {
+                        $this->addFlash(
+                            'error',
+                            'Vous avez déjà une conversation avec cette personne.'
+                        );
+                        return $this->redirectToRoute('app_index');
+                    }
+                }
+                $pa = $userRepository->findOneBy(["id" => $channel->getGetParticipant()->getId()]);
+                $entityManager->flush();
+                return $this->redirectToRoute('chat', ['id' => $channel->getId(), "pa" => $pa]);
+            }
+        }else {
+            $this->addFlash(
+                'error',
+                'Vous ne pouvez pas créer une conversation avec cette personne.'
+            );
+            return $this->redirectToRoute('app_index');
         }
-        $pa = $userRepository->findOneBy(["id" => $channel->getGetParticipant()->getId()]);
-        $entityManager->flush();
-        return $this->redirectToRoute('chat', ['id' => $channel->getId(), "pa" => $pa]);
 
 
     }
@@ -111,15 +147,53 @@ class ChannelController extends AbstractController
     /**
      * @Route("messagerie/{id}", name="show", methods="GET")
      */
-    public function show(User $user, EventRepository $events) : Response
+    public function show(User $user, EventRepository $events,int $id, ChannelRepository $channelRepository) : Response
     {
-
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        return $this->render('channel/profile.html.twig', [
-            'User' => $user,
-            'events' => $events->findAll()
-        ]);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');  
+        $currentUser = $this->getUser();
+        $currentUserSpokenLangage = $currentUser->getSpokenLanguage();
+        $currentUserLTL = $currentUser->getLanguageToLearn();
+        $buddyLTL = $user->getLanguageToLearn();
+        $buddySL = $user->getSpokenLanguage();
+        //GP
+        if(($user->getIsGodson() && $currentUser->getIsGodParent()) || in_array('ROLE_ADMIN', $currentUser->getRoles())){
+            if (!empty(array_intersect($buddyLTL, $currentUserSpokenLangage))) {
+                return $this->render('channel/profile.html.twig', [
+                    'User' => $user,
+                    'events' => $events->findAll()
+                ]);
+            }
+        }//GS
+        elseif(($currentUser->getIsGodson() && $user->getIsGodParent()) || in_array('ROLE_ADMIN', $currentUser->getRoles())){
+            if (!empty(array_intersect($buddySL, $currentUserLTL))) {
+                return $this->render('channel/profile.html.twig', [
+                    'User' => $user,
+                    'events' => $events->findAll()
+                ]);
+            }
+        }
+        else {
+                $this->addFlash("error", "Vous n'avez pas accès à ce profil");
+                return $this->redirectToRoute('messagerie');
+        } if ((  $channelRepository->findOneBy(['author_id' => $id, 'get_participant' => $currentUser->getId()])) || 
+        ( $channelRepository->findOneBy([ 'author_id' => $currentUser->getId(), 'get_participant' => $id ]))){
+            return $this->render('channel/profile.html.twig', [
+                'User' => $user,
+                'events' => $events->findAll()
+            ]);
+        }else{
+            $this->addFlash(
+                'error',
+                "Vous n'avez pas accès à ce profil."
+            );
+            return $this->RedirectToRoute('messagerie');
+        }
+        $this->addFlash(
+            'error',
+            "Erreur serveur veuillez réessayer plus tard."
+        );
+        return $this->redirectToRoute('messagerie');
+        
     }
 
     /**
