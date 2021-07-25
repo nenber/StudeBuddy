@@ -881,12 +881,7 @@ i, isoLangs[i]
 
 
 {% endfor %}
-{
-# arr.forEach(function (item, index) {
-console.log(item, index)
-});
-#
-}
+
 langcode.forEach(function (item, index) {
 let resultsLtl = arr.filter(val => item["dataLtl"].includes(val[0]))
 let resultsSl = arr.filter(val => item["dataSl"].includes(val[0]))
