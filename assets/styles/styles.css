@@ -156,7 +156,7 @@ hr {
 }
 #presentation .block-blue {
   background: #97ccef;
-  height: 600px;
+  height: 100%;
 }
 @media (min-width: 1200px) {
   #presentation .block-blue .m-xl-5 {
@@ -415,10 +415,6 @@ footer .modal-header h1 {
   flex-direction: row;
 }
 
-#register a {
-  color: #97ccef;
-}
-
 #register h1 {
   color: #366db4;
 }
@@ -481,7 +477,7 @@ footer .modal-header h1 {
     # MAP #
 } */
 #map-display #map {
-  height: 100vh;
+  height: 90vh;
 }
 #map-display {
   margin-top: 5%;
@@ -502,6 +498,14 @@ footer .modal-header h1 {
 
 .matching-card button{
   background-color: #5bb572 !important;
+}
+
+.matching-card .sendmessage {
+  color: #FFFFFF !important;
+}
+
+.matching-card .name {
+  color: #366db4;
 }
 
 .matching-card .card{

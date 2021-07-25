@@ -21,20 +21,22 @@
             {% set connected = false %}
             {% for friendship in friendships %}
                 {% if friendship.user.id == app.user.id and friendship.friend.id == userProfile and friendship.hasBeenHelpful == true %}
-                    <button class="btn-danger ml-2">
-                        <a href="{{ path('friendship_delete_id', {'id': friendship.id}) }}">
+                    <div>
+                        <a class="btn btn-danger ml-5" href="{{ path('friendship_delete_id', {'id': friendship.id}) }}">
                             Retirer cet ami
                         </a>
-                    </button>
+                    </div>
+
                     {% set connected = true %}
                 {% endif %}
             {% endfor %}
             {% if not connected %}
-                <button class="ml-5">
-                    <a href="{{ path('friendship_new_id', {'id': channel.authorId}) }}">
+                <div>
+                    <a class="btn btn-primary ml-5" href="{{ path('friendship_new_id', {'id': channel.authorId}) }}">
                         Ajouter en ami
                     </a>
-                </button>
+                </div>
+
             {% endif %}
             {% endif %}
 
