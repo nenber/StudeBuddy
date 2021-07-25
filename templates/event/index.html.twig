@@ -10,6 +10,11 @@
                 {{message}}
             </div>
         {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger" role="danger">
+                {{message}}
+            </div>
+        {% endfor %}
         <div class="row">
             <div class="col-12">
                 <h1>Mes évènements rejoints</h1>

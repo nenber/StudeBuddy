@@ -19,12 +19,33 @@
                         	{{message}}
                     	</div>
                 	{% endfor %}
-	<div id="map-display">
+		<div id="map-display">
 		<div class="row">
 			<div class="col-xl-4 p-4">
 				<h1>Rejoindre un évènement
 					<hr></h1>
-			</div>
+				<ul class="list-group">
+
+					{% for event in events %}
+						{% set entity = event[0] %}
+						{% set url = event[1] %}
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-7">{{ entity.address }}
+								</div>
+								<div class="col-5">
+									<a type="button" href="{{ url }}" class="btn btn-outline-primary float-right">Rejoindre
+								</a>
+								</div>
+							</div>
+						</li>
+
+
+			{% endfor %}
+		</ul>
+</div>
+
 			<div class="col-xl-8">
 				<div id="map"></div>
 			</div>
@@ -43,7 +64,7 @@
 
 		 markers.push([{{ entity.id }},"{{ entity.address }}", {{ entity.lat }}, {{ entity.lng }}, "{{url}}"]) 
 		{% endfor %}
-		console.log(markers)
+		{# console.log(markers) #}
 	</script>
 	{{ encore_entry_script_tags('map') }}
 

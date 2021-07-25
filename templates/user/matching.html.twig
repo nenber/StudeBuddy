@@ -66,7 +66,6 @@
 							{% for item in buddies|shuffle %}
 								{% if not item.isconnected %}
 							{% if not item.isBanned %}
-							{# {{dump(item.id)}} #}
 							{% if item.id in app.user.blacklist %}
 							{% else %}
 								<div id="user-{{ item.id }}" class="card text-center mx-auto mr-xl-3 mr-sm-0 mr-0 mb-3">
@@ -855,8 +854,8 @@
 var arr = [];
 var languages = [];
 var langcode = [];
-
-
+let temp1;
+let temp2
 for (i in isoLangs) {
     arr.push([i, isoLangs[i]]);
 }
@@ -864,8 +863,8 @@ for (i in isoLangs) {
 	{% if not item.isBanned %}
 		{% if item.id in app.user.blacklist %}
 		{% else %}
-		let temp1 = {{ item.languageToLearn | json_encode | raw }};
-		let temp2 = {{ item.spokenLanguage | json_encode | raw }};
+		temp1 = {{ item.languageToLearn | json_encode | raw }};
+		temp2 = {{ item.spokenLanguage | json_encode | raw }};
 		
 			langcode.push({"id":{{ item.id }} , "dataLtl": temp1, "dataSl": temp2} );
 			console.log(langcode)
