@@ -80,7 +80,7 @@
 
 														<div class="card-body">
 															<div class="card-title">
-																<a href="{{ path('show', { 'id': item.id }) }}">
+																<a class="name" href="{{ path('show', { 'id': item.id }) }}">
 																	<h5>
 																		<b>
 																			{{ item.firstname}}<br>
@@ -98,7 +98,7 @@
 															</div>
 															<div class="center-btn">
 																<button>
-																	<a href="{{ path('messagerie_new_id', {'id': item.id}) }}">
+																	<a class="sendmessage" href="{{ path('messagerie_new_id', {'id': item.id}) }}">
 																		Envoyer un message
 																	</a>
 																</button>

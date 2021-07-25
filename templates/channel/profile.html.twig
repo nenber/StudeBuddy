@@ -50,12 +50,11 @@
         <br>
         <h2><b>Évènements de {{ User.firstname }}</b></h2>
         <div class="row">
-            <div class="col-12">
         {% set i = 0 %}
         {% for event in events %}
             {% if User.id == event.organizerId.id %}
                 {% set i = i + 1 %}
-                <div class="card" style="width: 18rem;">
+                <div class="card mr-2" style="width: 18rem;">
                     <div class="card-body">
                         <h3>{{ event.name }}</h3>
                         <p><span class="gras">Description :</span> {{ event.description }}</p>
@@ -68,7 +67,6 @@
         {% if i == 0 %}
             <p>{{ User.firstname }} n'a créé aucun évènement</p>
         {% endif %}
-            </div>
         </div>
 
     </div>
