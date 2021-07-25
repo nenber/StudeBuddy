@@ -130,7 +130,6 @@ class ChannelController extends AbstractController
         }
         else {
                 $this->addFlash("error", "Vous n'avez pas accès à ce profil");
-                dump($this);
                 return $this->redirectToRoute('messagerie');
         } if ((  $channelRepository->findOneBy(['author_id' => $id, 'get_participant' => $currentUser->getId()])) || 
         ( $channelRepository->findOneBy([ 'author_id' => $currentUser->getId(), 'get_participant' => $id ]))){
