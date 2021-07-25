@@ -88,15 +88,23 @@ class ChannelController extends AbstractController
     {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $messages = $messageRepository->findBy([
-            'channel' => $channel
-        ], ['createdAt' => 'ASC']);
 
-        return $this->render('channel/chat.html.twig', [
-            'channel' => $channel,
-            'friendships' => $friendshipRepository->findAll(),
-            'messages' => $messages,
-        ]);
+        if($channel->getAuthorId()->getId() == $this->getUser()->getId() or $channel->getGetParticipant()->getId() == $this->getUser()->getId()){
+            $messages = $messageRepository->findBy([
+                'channel' => $channel
+            ], ['createdAt' => 'ASC']);
+    
+            return $this->render('channel/chat.html.twig', [
+                'channel' => $channel,
+                'friendships' => $friendshipRepository->findAll(),
+                'messages' => $messages,
+            ]);
+        } else {
+            $this->addFlash('error', "Vous n'avez pas accès à cette conversation.");
+            return $this->redirectToRoute('app_index');
+        }
+
+        
     }
 
 

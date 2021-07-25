@@ -36,13 +36,12 @@
         </tbody>
     </table>
     </div>
-    <h3 class="pt-4 pb-3">Utilisateurs reportés</h3>
+    <h3 class="pt-4 pb-3">Utilisateurs signalés</h3>
     <div class="container-fluid table-responsive">
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">Nom</th>
-                <th scope="col">Prénom</th>
+                <th scope="col">Utilisateur</th>
                 <th scope="col">Email</th>
                 <th scope="col">Plaignant</th>
                 <th scope="col">Raison</th>
@@ -54,19 +53,24 @@
             {% for user in users %}
                 {% if user.isReported %}
                     <tr>
-                        <td>{{ user.firstName }}</td>
-                        <td>{{ user.lastName }}</td>
+                        <td><a href="{{ path('show', { 'id': user.id }) }}">{{ user.firstName }} {{ user.lastName }}</a></td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.reportedBy.firstName }}  {{ user.reportedBy.lastName }} </td>
                         <td>{{ user.reportReason }} </td>
                         {% set break = false %}
+                        {% set iter = 0 %}
                         {% for channel in channels %}
                             {% if user.reportedBy.id == channel.authorId.id and user.id == channel.getParticipant.id %}
                                 <td> <a href="{{ path('chat', { 'id': channel.id }) }}">Conversation</a></td>
+                                {% set iter = iter + 1 %}
                             {% elseif user.reportedBy.id == channel.getParticipant.id and user.id == channel.authorId.id %}
                                 <td> <a href="{{ path('chat', { 'id': channel.id }) }}">Conversation</a></td>
+                                {% set iter = iter + 1 %}
                             {% endif %} 
                         {% endfor %}
+                        {% if (iter == 0) %}
+                            <td> Aucune </td>
+                        {% endif %}
                         
                         <td>
                             <a class="btn btn-danger" role="button" href="{{ path('ban', { 'id': user.id }) }}">Bannir</a>
@@ -83,8 +87,7 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">Nom</th>
-                <th scope="col">Prénom</th>
+                <th scope="col">Utilisateur</th>
                 <th scope="col">Email</th>
                 <th scope="col">Raison</th>
             </tr>
@@ -93,10 +96,10 @@
             {% for user in users %}
                 {% if user.isBanned %}
                     <tr>
-                        <td>{{ user.firstName }}</td>
-                        <td>{{ user.lastName }}</td>
+                        <td><a href="{{ path('show', { 'id': user.id }) }}">{{ user.firstName }} {{ user.lastName }}</a></td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.reportReason }} </td>
+                        </a>
                     </tr>
                 {% endif %}
             {% endfor %}
