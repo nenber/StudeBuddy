@@ -112,7 +112,7 @@ class ChannelController extends AbstractController
         $buddyLTL = $user->getLanguageToLearn();
         $buddySL = $user->getSpokenLanguage();
         //GP
-        if($user->getIsGodson() && $currentUser->getIsGodParent()){
+        if(($user->getIsGodson() && $currentUser->getIsGodParent()) || in_array('ROLE_ADMIN', $currentUser->getRoles())){
             if (!empty(array_intersect($buddyLTL, $currentUserSpokenLangage))) {
                 return $this->render('channel/profile.html.twig', [
                     'User' => $user,
@@ -120,7 +120,7 @@ class ChannelController extends AbstractController
                 ]);
             }
         }//GS
-        elseif($currentUser->getIsGodson() && $user->getIsGodParent()){
+        elseif(($currentUser->getIsGodson() && $user->getIsGodParent()) || in_array('ROLE_ADMIN', $currentUser->getRoles())){
             if (!empty(array_intersect($buddySL, $currentUserLTL))) {
                 return $this->render('channel/profile.html.twig', [
                     'User' => $user,
@@ -132,18 +132,8 @@ class ChannelController extends AbstractController
                 $this->addFlash("error", "Vous n'avez pas accès à ce profil");
                 dump($this);
                 return $this->redirectToRoute('messagerie');
-        } if((
-                $channelRepository->findOneBy([
-                'author_id' => $id,
-                'get_participant' => $currentUser->getId()
-                ])
-            ) || (
-                $channelRepository->findOneBy([
-                'author_id' => $currentUser->getId(),
-                'get_participant' => $id
-                ])
-            )
-        ){
+        } if ((  $channelRepository->findOneBy(['author_id' => $id, 'get_participant' => $currentUser->getId()])) || 
+        ( $channelRepository->findOneBy([ 'author_id' => $currentUser->getId(), 'get_participant' => $id ]))){
             return $this->render('channel/profile.html.twig', [
                 'User' => $user,
                 'events' => $events->findAll()
