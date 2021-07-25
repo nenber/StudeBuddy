@@ -105,13 +105,33 @@ class ChannelController extends AbstractController
      */
     public function show(User $user, EventRepository $events) : Response
     {
-
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        return $this->render('channel/profile.html.twig', [
-            'User' => $user,
-            'events' => $events->findAll()
-        ]);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');  
+        $currentUser = $this->getUser();
+        $currentUserSpokenLangage = $currentUser->getSpokenLanguage();
+        $currentUserLTL = $currentUser->getLanguageToLearn();
+        $buddyLTL = $user->getLanguageToLearn();
+        $buddySL = $user->getSpokenLanguage();
+        //GP
+        if($user->getIsGodson() && $currentUser->getIsGodParent()){
+            if (!empty(array_intersect($buddyLTL, $currentUserSpokenLangage))) {
+                return $this->render('channel/profile.html.twig', [
+                    'User' => $user,
+                    'events' => $events->findAll()
+                ]);
+            }
+        }//GS
+        elseif($currentUser->getIsGodson() && $user->getIsGodParent()){
+            if (!empty(array_intersect($buddySL, $currentUserLTL))) {
+                return $this->render('channel/profile.html.twig', [
+                    'User' => $user,
+                    'events' => $events->findAll()
+                ]);
+            }
+        }else {
+                $this->addFlash("error", "Vous n'avez pas accès à ce profil");
+                return $this->redirectToRoute('messagerie');
+        }
+        
     }
 
     /**
