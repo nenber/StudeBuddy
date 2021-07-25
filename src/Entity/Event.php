@@ -30,7 +30,7 @@ class Event
     private $address;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Marker::class, inversedBy="events")
+     * @ORM\ManyToOne(targetEntity=Marker::class, inversedBy="events", cascade={"persist", "remove"})
      */
     private $marker_id;
 

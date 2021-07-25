@@ -18,7 +18,7 @@ class Friendship
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="friends")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="friends", cascade={"persist", "remove"})
      */
     private $user;
 

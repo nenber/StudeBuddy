@@ -37,16 +37,40 @@
                         <div class="p-2">
                             <a href="{{ path('report', { 'id': User.id }) }}" class="btn btn-danger btn-lg">Signaler</a>
                         </div>
-                        <div class="p-2">
+                        {# <div class="p-2">
                             <a href="{{ path('block', { 'id': User.id }) }}" class="btn btn-danger btn-lg">Bloquer</a>
-                        </div>
+                        </div> #}
                     </div>
                 </div>
-                <div class="col-xl-8">
+                {# <div class="col-xl-8">
                     <button type="button" class="btn btn-success btn-lg">Inviter à un événement</button>
-                </div>
+                </div> #}
             </div>
         {% endif %}
+        <br>
+        <h2><b>Évènements de {{ User.firstname }}</b></h2>
+        <div class="row">
+            <div class="col-12">
+        {% set i = 0 %}
+        {% for event in events %}
+            {% if User.id == event.organizerId.id %}
+                {% set i = i + 1 %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h3>{{ event.name }}</h3>
+                        <p><span class="gras">Description :</span> {{ event.description }}</p>
+                        <p><span class="gras">Adresse :</span> {{ event.address }}</p>
+                        <p><span class="gras">Date :</span> {{ event.date ? event.date|date('Y-m-d') : '' }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% if i == 0 %}
+            <p>{{ User.firstname }} n'a créé aucun évènement</p>
+        {% endif %}
+            </div>
+        </div>
+
     </div>
 
 {% endblock %}

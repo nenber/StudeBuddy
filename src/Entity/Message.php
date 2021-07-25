@@ -29,7 +29,7 @@ class Message
     private string $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups("message")
      */
