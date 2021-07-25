@@ -53,25 +53,61 @@ class ChannelController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $channel->setAuthorId($userA);
         $channel->setName($user->getFirstName());
-        $channel->setGetParticipant($user);
-        $entityManager->persist($channel);
-
-        foreach($channelRepository->findAll() as $existingChannel){
-            if(($channel->getAuthorId()->getId() == $existingChannel->getAuthorId()->getId()
-                    &&  $channel->getGetParticipant()->getId() == $existingChannel->getGetParticipant()->getId())
-                || ($channel->getAuthorId()->getId() == $existingChannel->getGetParticipant()->getId()
-                    && $channel->getGetParticipant()->getId() == $existingChannel->getAuthorId()->getId()) )
-            {
-                $this->addFlash(
-                    'error',
-                    'Vous avez déjà une conversation avec cette personne.'
-                );
-                return $this->redirectToRoute('app_index');
+        $currentUserSpokenLangage = $userA->getSpokenLanguage();
+        $currentUserLTL = $userA->getLanguageToLearn();
+        $buddyLTL = $user->getLanguageToLearn();
+        $buddySL = $user->getSpokenLanguage();
+        //GP
+        if($user->getIsGodson() && $userA->getIsGodParent()){
+            if (!empty(array_intersect($buddyLTL, $currentUserSpokenLangage))) {
+                $channel->setGetParticipant($user);
+                $entityManager->persist($channel);
+                foreach($channelRepository->findAll() as $existingChannel){
+                    if(($channel->getAuthorId()->getId() == $existingChannel->getAuthorId()->getId()
+                            &&  $channel->getGetParticipant()->getId() == $existingChannel->getGetParticipant()->getId())
+                        || ($channel->getAuthorId()->getId() == $existingChannel->getGetParticipant()->getId()
+                            && $channel->getGetParticipant()->getId() == $existingChannel->getAuthorId()->getId()) )
+                    {
+                        $this->addFlash(
+                            'error',
+                            'Vous avez déjà une conversation avec cette personne.'
+                        );
+                        return $this->redirectToRoute('app_index');
+                    }
+                }
+                $pa = $userRepository->findOneBy(["id" => $channel->getGetParticipant()->getId()]);
+                $entityManager->flush();
+                return $this->redirectToRoute('chat', ['id' => $channel->getId(), "pa" => $pa]);
             }
+        }//GS
+        elseif($userA->getIsGodson() && $user->getIsGodParent()){
+            if (!empty(array_intersect($buddySL, $currentUserLTL))) {
+                $channel->setGetParticipant($user);
+                $entityManager->persist($channel);
+                foreach($channelRepository->findAll() as $existingChannel){
+                    if(($channel->getAuthorId()->getId() == $existingChannel->getAuthorId()->getId()
+                            &&  $channel->getGetParticipant()->getId() == $existingChannel->getGetParticipant()->getId())
+                        || ($channel->getAuthorId()->getId() == $existingChannel->getGetParticipant()->getId()
+                            && $channel->getGetParticipant()->getId() == $existingChannel->getAuthorId()->getId()) )
+                    {
+                        $this->addFlash(
+                            'error',
+                            'Vous avez déjà une conversation avec cette personne.'
+                        );
+                        return $this->redirectToRoute('app_index');
+                    }
+                }
+                $pa = $userRepository->findOneBy(["id" => $channel->getGetParticipant()->getId()]);
+                $entityManager->flush();
+                return $this->redirectToRoute('chat', ['id' => $channel->getId(), "pa" => $pa]);
+            }
+        }else {
+            $this->addFlash(
+                'error',
+                'Vous ne pouvez pas créer une conversation avec cette personne.'
+            );
+            return $this->redirectToRoute('app_index');
         }
-        $pa = $userRepository->findOneBy(["id" => $channel->getGetParticipant()->getId()]);
-        $entityManager->flush();
-        return $this->redirectToRoute('chat', ['id' => $channel->getId(), "pa" => $pa]);
 
 
     }
