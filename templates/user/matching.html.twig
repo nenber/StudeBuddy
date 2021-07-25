@@ -58,6 +58,7 @@
 							</div>
 						{% endif %}
 					</div>
+
 					<div class="matching-card row">
 						<div class="col">
 							<div
@@ -859,23 +860,25 @@
 var arr = [];
 var languages = [];
 var langcode = [];
-
-
+let temp1;
+let temp2
 for (i in isoLangs) {
 arr.push([
 i, isoLangs[i]
 ]);
 }
 {% for item in buddies %}
-{% if not item.isBanned %}
-{% if item.id in app.user.blacklist %}
-{% else %}
-let temp1 = {{ item.languageToLearn | json_encode | raw }};
-let temp2 = {{ item.spokenLanguage | json_encode | raw }};
+	{% if not item.isBanned %}
+		{% if item.id in app.user.blacklist %}
+		{% else %}
+		temp1 = {{ item.languageToLearn | json_encode | raw }};
+		temp2 = {{ item.spokenLanguage | json_encode | raw }};
+		
+			langcode.push({"id":{{ item.id }} , "dataLtl": temp1, "dataSl": temp2} );
+			console.log(langcode)
+		{% endif %}
+	{% endif %}
 
-langcode.push({"id": {{ item.id }}, "dataLtl": temp1, "dataSl": temp2});
-console.log(langcode){% endif %}
-{% endif %}
 
 {% endfor %}
 {
