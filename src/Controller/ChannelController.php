@@ -103,7 +103,7 @@ class ChannelController extends AbstractController
     /**
      * @Route("messagerie/{id}", name="show", methods="GET")
      */
-    public function show(User $user, EventRepository $events) : Response
+    public function show(User $user, EventRepository $events,int $id, ChannelRepository $channelRepository) : Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');  
         $currentUser = $this->getUser();
@@ -127,10 +127,39 @@ class ChannelController extends AbstractController
                     'events' => $events->findAll()
                 ]);
             }
-        }else {
-                $this->addFlash("error", "Vous n'avez pas accès à ce profil");
-                return $this->redirectToRoute('messagerie');
         }
+        else {
+                $this->addFlash("error", "Vous n'avez pas accès à ce profil");
+                dump($this);
+                return $this->redirectToRoute('messagerie');
+        } if((
+                $channelRepository->findOneBy([
+                'author_id' => $id,
+                'get_participant' => $currentUser->getId()
+                ])
+            ) || (
+                $channelRepository->findOneBy([
+                'author_id' => $currentUser->getId(),
+                'get_participant' => $id
+                ])
+            )
+        ){
+            return $this->render('channel/profile.html.twig', [
+                'User' => $user,
+                'events' => $events->findAll()
+            ]);
+        }else{
+            $this->addFlash(
+                'error',
+                "Vous n'avez pas accès à ce profil."
+            );
+            return $this->RedirectToRoute('messagerie');
+        }
+        $this->addFlash(
+            'error',
+            "Erreur serveur veuillez réessayer plus tard."
+        );
+        return $this->redirectToRoute('messagerie');
         
     }
 
