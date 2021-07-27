@@ -84,7 +84,7 @@
         chatDiv.scrollTop = chatDiv.scrollHeight; // On souhaite scroller toujours jusqu'au dernier message du chat
         let form = document.getElementById('form');
         function handleForm(event) {
-            //  event.preventDefault(); // Empêche la page de se rafraîchir après le submit du formulaire
+              event.preventDefault(); // Empêche la page de se rafraîchir après le submit du formulaire
         }
         form.addEventListener('submit', handleForm);
         const submit = document.getElementById('btnEnvoi');
@@ -96,7 +96,7 @@
                 'channel': {{ channel.id }} // ... Et le canal correspondant
             }
             console.log(data); // Pour vérifier vos informations
-            console.log("clique ici !!")
+            //console.log("clique ici !!")
             fetch('/message', { // On envoie avec un post nos datas sur le endpoint /message de notre application
                 method: 'POST',
                 body: JSON.stringify(data) // On envoie les data sous format JSON
@@ -106,7 +106,7 @@
                 //window.location.reload();
             });
         }
-        var interval = 2000;
+        var interval = 4000;
         var globalMessages = [];
         var contactName = "";
         {% for message in messages %}

@@ -885,7 +885,7 @@ i, isoLangs[i]
 langcode.forEach(function (item, index) {
 let resultsLtl = arr.filter(val => item["dataLtl"].includes(val[0]))
 let resultsSl = arr.filter(val => item["dataSl"].includes(val[0]))
-document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "<p> J'apprend le "
+document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "<p> J'apprends le "
 resultsLtl.forEach(function (v, i) {
 if (i == resultsLtl.length - 1) 
 document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += v[1].name
