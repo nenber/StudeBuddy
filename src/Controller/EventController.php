@@ -119,6 +119,10 @@ class EventController extends AbstractController
                 $this->addFlash('success', "L'évènement a bien été créé.");
                 return $this->redirectToRoute('event_index');
             }
+            else{
+                $this->addFlash('error', "Impossible de trouver l'adresse");
+                return $this->redirectToRoute('event_new');
+            }
         }
 
         return $this->render('event/new.html.twig', [

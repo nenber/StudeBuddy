@@ -16,6 +16,16 @@
 
 		<div class="circle-right"></div>
 		<div class="container">
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success" role="success">
+					{{message}}
+				</div>
+			{% endfor %}
+			{% for message in app.flashes('error') %}
+				<div class="alert alert-danger" role="danger">
+					{{message}}
+				</div>
+			{% endfor %}
 			<div class="row form-group">
 				<div class="col-xl-6">
 					<div class="mb-xl-5 mb-2">
