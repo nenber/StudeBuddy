@@ -125,7 +125,7 @@ class ChannelController extends AbstractController
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if($channel->getAuthorId()->getId() == $this->getUser()->getId() or $channel->getGetParticipant()->getId() == $this->getUser()->getId()){
+        if($channel->getAuthorId()->getId() == $this->getUser()->getId() or $channel->getGetParticipant()->getId() == $this->getUser()->getId() or $this->isGranted('ROLE_ADMIN')){
             $messages = $messageRepository->findBy([
                 'channel' => $channel
             ], ['createdAt' => 'ASC']);
