@@ -888,9 +888,9 @@ let resultsSl = arr.filter(val => item["dataSl"].includes(val[0]))
 document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "<p> J'apprends le "
 resultsLtl.forEach(function (v, i) {
 if (i == resultsLtl.length - 1) 
-document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += v[1].name
+document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "<p class='langage'>" + v[1].name + "</p>"
  else 
-document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += v[1].name + ", "
+document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "<p class='langage'>" + v[1].name + "</p>, "
 
 })
 document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "</p>"
@@ -898,9 +898,9 @@ document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML 
 document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "<p> et je parle : "
 resultsSl.forEach(function (v, i) {
 if (i == resultsSl.length - 1) 
-document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += v[1].name
+document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "<p class='langage'>" + v[1].name + "</p>"
  else 
-document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += v[1].name + ", "
+document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "<p class='langage'>" + v[1].name + "</p>, "
 
 })
 document.getElementById("user-" + item["id"]).children[1].children[0].innerHTML += "</p>"

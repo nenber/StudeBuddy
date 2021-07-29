@@ -41,7 +41,7 @@
                 {% endfor %}
             {% else %}
                 <p>Pas d'évènements rejoints</p>
-                <a href="{{ path('event_map') }}">Rejoindre un évènement</a>
+                <button href="{{ path('event_map') }}">Rejoindre un évènement</button>
             {% endif %}
             </div>
         </div>
@@ -75,7 +75,7 @@
                 {% endfor %}
                 {% if i == 0 %}
                     <p>Pas d'évènements encore créés</p>
-                    <a href="{{ path('event_new') }}">Créer un évènement</a>
+                    <button href="{{ path('event_new') }}">Créer un évènement</button>
                 {% endif %}
             </div>
         </div>
