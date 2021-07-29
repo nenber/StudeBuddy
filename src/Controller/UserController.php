@@ -48,7 +48,7 @@ class UserController extends AbstractController
     public function forgotPassword(Request $request, MailerInterface $mailer)
     {
         $this->denyAccessUnlessGranted('IS_ANONYMOUS');
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $ip_server = $request->server->get('SERVER_ADDR');
         if ($request->request->get("email") != null) {
             $result = $this->getDoctrine()
